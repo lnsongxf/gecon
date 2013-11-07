@@ -1,0 +1,82 @@
+# basic RBC model with variable capacity utilization
+
+options
+{
+    output logfile = TRUE;
+    output LaTeX = TRUE;
+};
+
+block CONSUMER
+{
+    definitions
+    {
+        u[] = (C[]^mu * (1 - L_s[])^(1 - mu))^(1 - eta) / (1 - eta);
+    };
+    controls
+    {
+        C[], L_s[];
+    };
+    objective
+    {
+        U[] = u[] + beta * E[][U[1]]    : lambda_U[];
+    };
+    constraints
+    {
+        C[] = W[] * L_s[] + pi[]                                                            : lambda_c[];
+    };
+    calibration
+    {
+        beta = 0.99;
+        eta = 2;
+        mu = 0.3;
+    };
+};
+
+block FIRM
+{
+    controls
+    {
+        K[], L_d[], Y[], I[], pi[], CapUt[];
+    };
+    objective
+    {
+        SPI[] = pi[] + E[][lambda_U[1]  * lambda_c[1] / lambda_c[] * SPI[1]]              : lambda_SPI[];
+    };
+    constraints
+    {
+        Y[] = Z[] ^ (1 - alpha) * (K[-1] * CapUt[])^alpha * (L_d[] )^(1 - alpha)          : lambda_y[];
+        K[] = (1 - delta * CapUt[] ^ omega) * K[-1]  + I[]                                : lambda_k[];
+        pi[] = P[] * Y[] - L_d[] * W[] - I[]                                              : lambda_pi[];
+    };
+    calibration
+    {
+        alpha = 0.36;
+        delta = 0.025;
+        omega = 1.45;
+    };
+};
+
+block EQUILIBRIUM
+{
+    identities
+    {
+        P[] = 1;
+        L_d[] = L_s[];
+    };
+};
+
+block EXOG 
+{
+    identities
+    {
+        Z[] = exp(phi * log(Z[-1]) + epsilon_Z[]);
+    };
+    shocks
+    {
+        epsilon_Z[];
+    };
+    calibration
+    {
+        phi = 0.95;
+    };
+};

@@ -1,0 +1,133 @@
+# two-country model with perfect risk sharing
+
+options
+{
+    output logfile = TRUE;
+    output LaTeX = TRUE;
+};
+
+block CONSUMER
+{
+    definitions
+    {
+        u[] = (C[]^(mu) * (1 - H[])^ (1 - mu)) ^ (1 - eta) / (1 - eta);
+    };
+    controls
+    {
+        K[], C[], H[], I[];
+    };
+    objective
+    {
+        U[] = u[] + beta * E[][U[1]]                                    : lambda_U[];
+    };
+    constraints
+    {
+        I[] + C[] + T[] = pi[] + r[] * K[-1] + W[] * H[] - psi * K[-1] * (I[] / K[-1] - delta)^2 + TR[] : lambda_c[];
+        K[] = (1 - delta) * K[-1] + I[]                                 : lambda_k[];
+    };
+    calibration
+    {
+        delta = 0.025;
+        beta = 0.99;
+        eta = 2;
+        mu = 0.3;
+        psi = 0.8;
+    };
+};
+
+block FIRM
+{
+    controls
+    {
+        K_d[], H_d[], Y[], pi[];
+    };
+    objective
+    {
+        SPI[] = pi[]                                                    : lambda_SPI[];
+    };
+    constraints
+    {
+        Y[] = Z[] * K_d[]^alpha * H_d[]^(1 - alpha)                     : lambda_y[];
+        pi[] = Y[] - H_d[] * W[] - r[] * K_d[]                          : lambda_pi[];
+    };
+    calibration
+    {
+        alpha = 0.4;
+    };
+};
+
+block CONSUMER_ast
+{
+    definitions
+    {
+        u_ast[] = (C_ast[]^(mu) * (1 - H_ast[])^ (1 - mu)) ^ (1 - eta) / (1 - eta);
+    };
+    controls
+    {
+        K_ast[], C_ast[], H_ast[], I_ast[];
+    };
+    objective
+    {
+        U_ast[] = u_ast[] + beta * E[][U_ast[1]]                        : lambda_U_ast[];
+    };
+    constraints
+    {
+        I_ast[] + C_ast[] + T_ast[] = pi_ast[] + r_ast[] * K_ast[-1] + W_ast[] * H_ast[] - psi * K_ast[-1] * (I_ast[] / K_ast[-1] - delta)^2 - TR[]  : lambda_c_ast[];
+        K_ast[] = (1 - delta) * K_ast[-1] + I_ast[]                     : lambda_k_ast[];
+    };
+};
+
+block FIRM_ast
+{
+    controls
+    {
+        K_d_ast[], H_d_ast[], Y_ast[], pi_ast[];
+    };
+    objective
+    {
+        SPI_ast[] = pi_ast[]                                            : lambda_SPI_ast[];
+    };
+    constraints
+    {
+        Y_ast[] = Z_ast[] * K_d_ast[]^alpha * H_d_ast[]^(1 - alpha)     : lambda_y_ast[];
+        pi_ast[] = Y_ast[] - H_d_ast[] * W_ast[] - r_ast[] * K_d_ast[]  : lambda_pi_ast[];
+    };
+};
+
+block EQUILIBRIUM
+{
+    identities
+    {
+        K_d[] = K[-1];
+        H_d[] = H[];
+        T[] = G_d[];
+        K_d_ast[] = K_ast[-1];
+        H_d_ast[] = H_ast[];
+        T_ast[] = G_d_ast[];
+        # risk sharing condition
+        lambda_c[] = lambda_c_ast[];
+    };
+};
+
+block EXOG 
+{
+    identities
+    {
+        G_d[] = (phi_G * (G_d[-1]) + epsilon_G[]);
+        Z[] = exp(phi_Z * log(Z[-1]) + epsilon_Z[]);
+        G_d_ast[] = (phi_G * (G_d_ast[-1]) + epsilon_G_ast[]);
+        Z_ast[] = exp(phi_Z * log(Z_ast[-1]) + epsilon_Z_ast[]);
+    };
+    shocks
+    {
+        epsilon_G[];
+        epsilon_Z[];
+        epsilon_G_ast[];
+        epsilon_Z_ast[];
+    };
+    calibration
+    {
+        phi_Z = 0.95;
+        phi_G = 0.95;
+    };
+};

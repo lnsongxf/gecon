@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>gEcon - general equilibrium economic modelling
+language and solution framework </title>
+<meta http-equiv="Content-Language" content="English">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="style.css" media="screen">
+</head>
+<body>
+
+
+<div id="content">
+
+<div id="header">
+<h1><img src="pics/gEcon.png" width="164" height="94" alt="gEcon" /></h1>
+<h2>General equilibrium economic modelling language and solution framework</h2>
+</div>
+
+<div id="navbar">
+<div class="navit"><a href="index.html">Home</a></div>
+<div class="navit"><a href="feat.html">Features</a></div>
+<div class="navit">Documentation &amp; FAQ</div>
+<div class="navit"><a href="download.html">Download!</a></div>
+<div class="navitlst"><a href="links.html">Links</a></div>
+<div class="clear"></div>
+</div>
+
+
+<div id="main">
+
+
+
+<h2>User's guide and manual</h2>
+
+<ul>
+<li> <a href="files/gEcon-users-guide.pdf"> <b> User's guide </b> </a> <br>
+<p> Contains the beginner introduction to model creation process as well as detailed description 
+of&nbsp;implementation and solvers. </p>
+<li> <a href="files/gEcon-manual.pdf"> <b> Manual </b> </a>
+<p> A manual automatically generated from R documentation. </p>
+</ul>
+
+<h2>Prerequisites</h2>
+<p>
+<ul>
+<li> R version >=3.0.0 
+<li> Packages <span class="fixedII">Matrix</span>, <span class="fixedII">MASS</span>, 
+<span class="fixedII">nleqslv</span>, <span class="fixedII">Rcpp</span> and <span class="fixedII">methods</span>.
+</ul>
+</p>
+
+<h2>Short installation instructions</h2>
+
+<p>
+In order to use <span class="fixedI">gEcon</span> you should first install packages 
+on which <span class="fixedI">gEcon</span> depends and then 
+<span class="fixedI">gEcon</span> package. You&nbsp;can do this in two ways:
+<ul> 
+<li> through the command line interface - after changing current working directory to the folder where 
+<span class="fixedI">gEcon</span>
+package has been saved, it is sufficient to run a command: <br>
+<span class="fixedII">
+> R CMD INSTALL gEcon_x.x.x.zip </span> <br>
+or <br>
+<span class="fixedII"> 
+> R CMD INSTALL gEcon_x.x.x.tar.gz </span> <br>
+<li> directly from R using installation options available in the GUI used.
+</ul>
+</p>
+
+
+
+<h2>FAQ</h2>
+
+
+
+<ul>
+<li> Q: Is this software reliable?
+<li> A: This software comes with no warranty (see the disclaimer in licence), but
+we have put a lot of effort to test <span class="fixedI">gEcon</span> 
+and compare its results with other software. 
+</ul>
+
+<ul>
+<li> Q: Other software offers estimation, higher order perturbation etc.
+Why doesn't <span class="fixedI">gEcon</span> offer these functionalities?
+<li> A: <span class="fixedI">gEcon</span>  is a framework for developing 
+and solving large scale dynamic stochastic general equilibrium models. 
+With large scale models, calibration is the method of choice for bringing models 
+to data. Estimation and higher order perturbation would be numerically too complex 
+to be feasible for large models. In the future however, 
+<span class="fixedI">gEcon</span> functionality may be extended and include
+also Bayesian estimation or 2nd order perturbation. Please note, that this is 
+the first release of the software.
+</ul>
+
+<ul>
+<li> Q: Why R?
+<li> A: All popular DSGE toolboxes work within Matlab/Octave environments. The decision to break up with this tradition
+was carefully weighted. Firstly, all vector programming languages/environments (Matlab, Octave, R, Ox) are build
+atop low level linear algebra and other numerical libraries like BLAS and LAPACK. The main differences between
+them fall into following categories: language features, number of extensions (libraries/packages), support and user
+base. Matlab and Octave offer much more functionality through their toolboxes in fields like differential equations,
+optimisation etc. On the other hand, R language is more flexible (not everything has to be a matrix!) and has many
+more packages intended for analysis of economic data. Flexibility of the language and natural synergies between
+economic modelling and econometric work have made R the environment of choice for this project.
+</ul>
+
+
+</div>
+
+
+<div class="clear"></div>
+
+</div>
+
+
+<div id="footer">
+</div>
+
+
+</body></html>

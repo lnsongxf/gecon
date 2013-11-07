@@ -1,0 +1,105 @@
+# basic RBC model with two sectors (consumption and investment goods)
+
+options
+{
+    output logfile = TRUE;
+    output LaTeX = TRUE;
+};
+
+block CONSUMER
+{
+    definitions
+    {
+        u[] = (C[]^mu * (1 - L_s[])^(1 - mu))^(1 - eta) / (1 - eta);
+    };
+    controls
+    {
+        K_s[], C[], L_s[], I[];
+    };
+    objective
+    {
+        U[] = u[] + beta * E[][U[1]]                                        : lambda_U[];
+    };
+    constraints
+    {
+        p[] * I[] + C[] = pi_I[] + pi_C[] + r[] * K_s[-1] + W[] * L_s[]     : lambda_c[];
+        K_s[] = (1 - delta) * K_s[-1] + I[]                                 : lambda_k[];
+    };
+    identities
+    {
+        Y[] = C[] + p[] * I[];
+    };
+    calibration
+    {
+        delta = 0.025;
+        beta = 0.99;
+        eta = 2;
+        mu = 0.3;
+    };
+};
+
+block FIRM_C
+{
+    controls
+    {
+        K_C_d[], L_C_d[], C_s[];
+    };
+    objective
+    {
+        pi_C[] = C_s[] - L_C_d[] * W[] - r[] * K_C_d[]                      : lambda_pi_C[];
+    };
+    constraints
+    {
+        C_s[] = Z[] * K_C_d[]^alpha * L_C_d[]^(1 - alpha)                   : lambda_y_C[];
+    };
+    calibration
+    {
+        alpha = 0.2;
+    };
+};
+
+block FIRM2
+{
+    controls
+    {
+        K_I_d[], L_I_d[], I_s[];
+    };
+    objective
+    {
+        pi_I[] = I_s[] - L_I_d[] * W[] - r[] * K_I_d[]                      : lambda_pi_I[];
+    };
+    constraints
+    {
+        I_s[] = Z[] * K_I_d[]^sigma * L_I_d[]^(1 - alpha)                   : lambda_y_I[];
+    };
+    calibration
+    {
+        sigma = 0.4;
+    };
+};
+
+block EQUILIBRIUM
+{
+    identities
+    {
+        K_C_d[] + K_I_d[] = K_s[-1];
+        L_C_d[] + L_I_d[] = L_s[];
+        C[] = C_s[];
+    };
+};
+
+block EXOG 
+{
+    identities
+    {
+        Z[] = exp(phi * log(Z[-1]) + epsilon_Z[]);
+    };
+    shocks
+    {
+        epsilon_Z[];
+    };
+    calibration
+    {
+        phi = 0.95;
+    };
+};

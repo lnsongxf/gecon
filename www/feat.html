@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>gEcon - general equilibrium economic modelling
+language and solution framework </title>
+<meta http-equiv="Content-Language" content="English">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="style.css" media="screen">
+</head>
+<body>
+
+
+<div id="content">
+
+<div id="header">
+<h1><img src="pics/gEcon.png" width="164" height="94" alt="gEcon" /></h1>
+<h2>General equilibrium economic modelling language and solution framework</h2>
+</div>
+
+<div id="navbar">
+<div class="navit"><a href="index.html">Home</a></div>
+<div class="navit">Features</div>
+<div class="navit"><a href="doc.html">Documentation &amp; FAQ</a></div>
+<div class="navit"><a href="download.html">Download!</a></div>
+<div class="navitlst"><a href="links.html">Links</a></div>
+<div class="clear"></div>
+</div>
+
+
+<div id="main">
+
+<h2>Language</h2>
+
+<p>
+Models in <span class="fixedI">gEcon</span> are written using language
+suited for formulating economic dynamic optimisation problems. 
+<span class="fixedI">gEcon</span> model file consists of blocks describing agents
+optimisation problems, exogenous shocks and market clearing conditions.
+Within each optimisation block the user specifies objective, control variables
+and constraints of particular agent. Blocks can also be created to 
+impose market clearing conditions and describe the behaviour of exogenous variables.
+</p>
+
+<p>
+Parameters of models can be set either in a <span class="fixedII">.gcn</span> file or later on
+using R interface. Parameters can be also calibrated based on user supplied steady state relationships 
+between variables.
+</p>
+
+<h2>R class <span class="fixedII">gecon_model</span></h2>
+<p>
+<span class="fixedI">gEcon</span> has user friendly interface written in R. 
+Model file created by the shared library is loaded into R environment and
+an object of <span class="fixedII">gecon_model</span> class is created. Model can be solved and 
+analysed using such <span class="fixedI">gEcon</span> features as:
+<ul>
+<li> automatically created <span class="fixedII">LaTeX</span> documentation,
+<li> calibration utilities,
+<li> steady state and perturbation solvers,
+<li> tools for IRFs and statistics computations.
+</ul>
+<span class="fixedI">gEcon</span> interface is interactive, enabling users to
+change settings, parameters "on the fly" without the need to recompute the whole model.
+Moreover <span class="fixedI">gEcon</span> is equipped with a set of tools
+for analysing model specification, which can be useful in debugging
+or searching for the steady state.
+</p>
+
+
+<h2>Numerical solvers employed</h2>
+<ul>
+<li> <span class="fixedII">nleqslv</span> for solving systems of nonlinear equations using Newton or Broyden methods with line searches,
+<li> <span class="fixedII">gensys</span> for solving perturbations of the first order.
+</ul>
+
+
+
+</div>
+
+
+<div class="clear"></div>
+
+</div>
+
+
+<div id="footer">
+</div>
+
+
+</body></html>

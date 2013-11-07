@@ -1,0 +1,90 @@
+# time-to-build model
+# calibration based on Backus, Kehoe, Kydland
+
+options
+{
+    output logfile = TRUE;
+    output LaTeX = TRUE;
+};
+
+block CONSUMER
+{
+    definitions
+    {
+        u[] = (C[]^mu * (L[])^(1 - mu))^gamma / gamma;
+    };
+    controls
+    {
+        C[], N[], a[], L[];
+    };
+    objective
+    {
+        U[] = u[] + beta * E[][U[1]]                                        : lambda_U[];
+    };
+    constraints
+    {
+        C[] = pi[] + W[] * N[]                                              : lambda_c[];
+        L[] = 1 - alpha * N[] - (1 - alpha) * eta * a[-1]                   : lambda_l[];
+        a[] = (1 - eta) * a[-1] + N[]                                       : lambda_a[];
+    };
+    calibration
+    {
+        alpha = 1;
+        eta = 0.5;
+        mu = 0.34;
+        gamma = -1.0;
+        beta = 0.99;
+    };
+};
+
+block FIRM
+{
+    controls
+    {
+        K[], N_d[], Z[], Y[], S[], X[], pi[];
+    };
+    objective
+    {
+        PI[] = pi[]  + E[][(lambda_U[1] * lambda_c[1] / lambda_c[]) * PI[1]]                              : lambda_PI[];
+    };
+    constraints
+    {
+        Y[] = ((LAMBDA[] * K[-1]^theta * N_d[]^(1 - theta)) ^(-nu) + sigma * Z[-1] ^(-nu)) ^ (-1 / nu)    : lambda_y[];
+        K[] = (1 - delta) * K[-1] + S[-3]                                                                 : lambda_k[];
+        X[] = psi *	(S[] + S[-1] + S[-2] + S[-3])                                                         : lambda_x[];
+        pi[] = Y[] - Z[] + Z[-1] - X[]  - W[] * N_d[]                                                     : lambda_pi[];
+    };
+    calibration
+    {
+        theta = 0.36;
+        nu = 3;
+        sigma = 0.01;
+        delta = 0.025;
+        psi = 0.25;
+    };
+};
+
+block EQUILIBRIUM
+{
+    identities
+    {
+        N_d[] = N[];
+    };
+};
+
+block EXOG 
+{
+    identities
+    {
+        LAMBDA[] - 1 = phi_a * (LAMBDA[-1] - 1) + phi_b * (LAMBDA[-1] - 1) + epsilon_LAMBDA[];
+    };
+    shocks
+    {
+        epsilon_LAMBDA[];
+    };
+    calibration
+    {
+        phi_a = 0.906;
+        phi_b = 0.088;
+    };
+};
