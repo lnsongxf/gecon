@@ -38,51 +38,57 @@ language and solution framework </title>
 stochastic general equilibrium models. It&nbsp;consists of model description
 language and an interface with a set of solvers in R. It
 was developed at&nbsp;the&nbsp;Department for Strategic Analyses at the Chancellery of
-the Prime Minister of the Republic of Poland as&nbsp;a&nbsp;part of a project aiming at
+the Prime Minister of the Republic of Poland as&nbsp;the&nbsp;part of a project aiming at
 construction of large scale DSGE models of Polish economy.
 </p>
 
 <p>
 Publicly available toolboxes/toolkits used in RBC/DSGE modelling require
-users to derive first order conditions and 
-linearisation equations by pen \& pencil (e.g. <a href="http://www2.wiwi.hu-berlin.de/institute/wpol/html/toolkit.htm">Uhlig’s toolkit</a>) or at least require manual derivation
-of FOCs (e.g. <a href="http://www.dynare.org/">Dynare</a>). Owing to the development and implementation of an algorithm for automatic derivation of first order conditions, <span class="fixedI">gEcon</span> allows users to
+users to derive the first order conditions and
+linearisation equations by pen & pencil (e.g. <a href="http://www2.wiwi.hu-berlin.de/institute/wpol/html/toolkit.htm">Uhlig’s toolkit</a>) or at least require manual derivation
+of the FOCs (e.g. <a href="http://www.dynare.org/">Dynare</a>). Owing to the development and implementation of an algorithm for automatic derivation of first order conditions, <span class="fixedI">gEcon</span> allows users to
 describe their models in terms of optimisation problems of agents. To&nbsp;authors'
 best knowledge there is no other publicly available framework for writing and
-solving DSGE models in this natural way. Writing models in terms of optimisation problems instead of FOCs is
+solving DSGE models in this natural way. Writing models in terms of optimisation problems instead of the FOCs is
 far more natural to&nbsp;an&nbsp;economist, takes off the burden of tedious
 differentiation and reduces the risk of making a mistake. <span class="fixedI">gEcon</span>  allows users
 to focus on economic aspects of the model and makes it possible to design
-large-scale (100+ variables) models. As a bonus <span class="fixedI">gEcon</span>  can automatically produce
+large-scale (100+ variables) models. Additionally, <span class="fixedI">gEcon</span>  can automatically produce
 a draft of LaTeX documentation for&nbsp;a&nbsp;model.
 </p>
 
 <p>
 The model description language is simple and intuitive. Given optimisation
-problems, constraints and&nbsp;identities, computer automatically derives FOCs, steady
-state equations and linearisation matrices. Numerical solvers can then be
+problems, constraints and&nbsp;identities, computer  derives the FOCs, steady
+state equations, and linearisation matrices automatically. Numerical solvers can then be
 employed to determine steady state and approximate equilibrium laws of&nbsp;motion
 around it.
 </p>
 
-<h2>About current release (0.4.0)</h2>
+<h2>About current release (0.4.2)</h2>
 
 <p>
-This is the first (beta stage) release of the software.
+This is the second public release of the software.
+
+
+Few minor bugs have been&nbsp;removed in the current release. It is no longer necessary to put semicolons after the&nbsp;blocks and&nbsp;sections.
+Moreover,&nbsp;the&nbsp;documentation has&nbsp;been corrected.
+
 </p>
 
 
 <h2>Development team</h2>
 
 <span class="fixedI">gEcon</span> is developed by:
-Grzegorz Klima, Karol Podemski and Kaja Retkiewicz-Wijtiwiak.
+<a href="http://gklima.users.sourceforge.net">Grzegorz Klima</a>,
+Karol Podemski and Kaja Retkiewicz-Wijtiwiak.
 
 <h2>Contact</h2>
 
 <p>
 Please send bugs, comments, suggestions to:
 <span class="fixedII">
-gklima&lt;AT&gt;users&lt;DOT&gt;sourceforge&lt;DOT&gt;net</span>.
+gklima&lt;AT&gt;users&lt;DOT&gt;sourceforge&lt;DOT&gt;com</span>.
 </p>
 
 

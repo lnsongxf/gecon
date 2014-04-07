@@ -30,21 +30,20 @@ language and solution framework </title>
 
 
 
-<h2>User's guide and manual</h2>
+<h2>Users' guide and manual</h2>
 
 <ul>
-<li> <a href="files/gEcon-users-guide.pdf"> <b> User's guide </b> </a> <br>
-<p> Contains the beginner introduction to model creation process as well as detailed description 
-of&nbsp;implementation and solvers. </p>
+<li> <a href="files/gEcon-users-guide.pdf"> <b> Users' guide </b> </a> <br>
+<p> Contains a beginner introduction to model creation process as well as detailed description of&nbsp;implementation and solvers. </p>
 <li> <a href="files/gEcon-manual.pdf"> <b> Manual </b> </a>
-<p> A manual automatically generated from R documentation. </p>
+<p> A manual automatically generated from R&nbsp;documentation. </p>
 </ul>
 
-<h2>Prerequisites</h2>
+<h2>Prequisites</h2>
 <p>
 <ul>
-<li> R version >=3.0.0 
-<li> Packages <span class="fixedII">Matrix</span>, <span class="fixedII">MASS</span>, 
+<li> R version >=3.0.0
+<li> Packages <span class="fixedII">Matrix</span>, <span class="fixedII">MASS</span>,
 <span class="fixedII">nleqslv</span>, <span class="fixedII">Rcpp</span> and <span class="fixedII">methods</span>.
 </ul>
 </p>
@@ -52,17 +51,15 @@ of&nbsp;implementation and solvers. </p>
 <h2>Short installation instructions</h2>
 
 <p>
-In order to use <span class="fixedI">gEcon</span> you should first install packages 
-on which <span class="fixedI">gEcon</span> depends and then 
-<span class="fixedI">gEcon</span> package. You&nbsp;can do this in two ways:
-<ul> 
-<li> through the command line interface - after changing current working directory to the folder where 
-<span class="fixedI">gEcon</span>
+In order to use <span class="fixedI">gEcon</span> you should first install the packages
+on which <span class="fixedI">gEcon</span> depends and then proceed to installing the gEcon R package. You&nbsp;can do this in two ways:
+<ul>
+<li> through the command line interface - after changing current working directory to the folder where gEcon
 package has been saved, it is sufficient to run a command: <br>
 <span class="fixedII">
 > R CMD INSTALL gEcon_x.x.x.zip </span> <br>
 or <br>
-<span class="fixedII"> 
+<span class="fixedII">
 > R CMD INSTALL gEcon_x.x.x.tar.gz </span> <br>
 <li> directly from R using installation options available in the GUI used.
 </ul>
@@ -76,33 +73,28 @@ or <br>
 
 <ul>
 <li> Q: Is this software reliable?
-<li> A: This software comes with no warranty (see the disclaimer in licence), but
-we have put a lot of effort to test <span class="fixedI">gEcon</span> 
-and compare its results with other software. 
+<li> A: This software comes with no warranty (see the disclaimer in the licence), but
+we have put a lot of effort to test <span class="fixedI">gEcon</span>
+and compare its results with other software.
 </ul>
 
 <ul>
 <li> Q: Other software offers estimation, higher order perturbation etc.
-Why doesn't <span class="fixedI">gEcon</span> offer these functionalities?
-<li> A: <span class="fixedI">gEcon</span>  is a framework for developing 
-and solving large scale dynamic stochastic general equilibrium models. 
-With large scale models, calibration is the method of choice for bringing models 
-to data. Estimation and higher order perturbation would be numerically too complex 
-to be feasible for large models. In the future however, 
-<span class="fixedI">gEcon</span> functionality may be extended and include
-also Bayesian estimation or 2nd order perturbation. Please note, that this is 
-the first release of the software.
+Why doesn't <span class="fixedI">gEcon</span> offer this functionality?
+<li> A: <span class="fixedI">gEcon</span>  is a framework for developing and solving large scale dynamic stochastic general equilibrium models. With large scale models, calibration
+is the method of choice for bringing models to data. Estimation and higher order perturbation would be too complex numerically in order to be feasible for large models. In the future however,  <span class="fixedI">gEcon</span> functionality may be extended and include also
+Bayesian estimation or 2nd order perturbation. Please note, that this is the first release of the software.
 </ul>
 
 <ul>
 <li> Q: Why R?
 <li> A: All popular DSGE toolboxes work within Matlab/Octave environments. The decision to break up with this tradition
 was carefully weighted. Firstly, all vector programming languages/environments (Matlab, Octave, R, Ox) are build
-atop low level linear algebra and other numerical libraries like BLAS and LAPACK. The main differences between
-them fall into following categories: language features, number of extensions (libraries/packages), support and user
-base. Matlab and Octave offer much more functionality through their toolboxes in fields like differential equations,
+atop low level linear algebra and other numerical libraries such as BLAS and LAPACK. The main differences between
+them fall into the following categories: language features, number of extensions (libraries/packages), support, and user's
+base. Matlab and Octave offer much more functionality through their toolboxes in fields such as differential equations,
 optimisation etc. On the other hand, R language is more flexible (not everything has to be a matrix!) and has many
-more packages intended for analysis of economic data. Flexibility of the language and natural synergies between
+more packages intended for analysis of the economic data. Flexibility of the language and natural synergies between
 economic modelling and econometric work have made R the environment of choice for this project.
 </ul>
 

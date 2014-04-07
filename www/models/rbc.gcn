@@ -1,4 +1,17 @@
-# RBC model with installation costs
+# ###################################################################
+# (c) Kancelaria Prezesa Rady Ministrów 2012-2014                   #
+# Treść licencji w pliku:                                           #
+# http://gecon.r-forge.r-project.org/files/gEcon_licence.txt        #
+#                                                                   #
+# (c) Chancellery of the Prime Minister 2012-2014                   #
+# Licence terms can be found in the file:                           #
+# http://gecon.r-forge.r-project.org/files/gEcon_licence.txt        #
+#                                                                   #
+# Author(s): Grzegorz Klima, Karol Podemski,                        #
+#            Kaja Retkiewicz-Wijtiwiak                              #
+# ###################################################################
+# Basic RBC model
+# ###################################################################
 
 options
 {
@@ -22,7 +35,7 @@ block CONSUMER
     };
     constraints
     {
-        I[] + C[] = pi[] + r[] * K_s[-1] + W[] * L_s[] - psi * K_s[-1] * (I[] / K_s[-1] - delta)^2    : lambda_c[];
+        I[] + C[] = pi[] + r[] * K_s[-1] + W[] * L_s[]                  : lambda_c[];
         K_s[] = (1 - delta) * K_s[-1] + I[]                             : lambda_k[];
     };
     calibration
@@ -31,7 +44,6 @@ block CONSUMER
         beta = 0.99;
         eta = 2;
         mu = 0.3;
-        psi = 0.8;
     };
 };
 

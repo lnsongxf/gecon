@@ -1,4 +1,16 @@
-# basic RBC model with two sectors (consumption and investment goods)
+# ###################################################################
+# (c) Kancelaria Prezesa Rady Ministrów 2012-2014                   #
+# Treść licencji w pliku:                                           #
+# http://gecon.r-forge.r-project.org/files/gEcon_licence.txt        #
+#                                                                   #
+# (c) Chancellery of the Prime Minister 2012-2014                   #
+# Licence terms can be found in the file:                           #
+# http://gecon.r-forge.r-project.org/files/gEcon_licence.txt        #
+#                                                                   #
+# Author(s): Anna Sowińska                                          #
+# ###################################################################
+# Basic RBC model with two sectors (consumption and investment goods)
+# ###################################################################
 
 options
 {

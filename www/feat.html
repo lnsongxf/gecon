@@ -31,38 +31,37 @@ language and solution framework </title>
 <h2>Language</h2>
 
 <p>
-Models in <span class="fixedI">gEcon</span> are written using language
-suited for formulating economic dynamic optimisation problems. 
-<span class="fixedI">gEcon</span> model file consists of blocks describing agents
-optimisation problems, exogenous shocks and market clearing conditions.
-Within each optimisation block the user specifies objective, control variables
-and constraints of particular agent. Blocks can also be created to 
-impose market clearing conditions and describe the behaviour of exogenous variables.
+The models in <span class="fixedI">gEcon</span> are written by using a language
+suited for writing the economic dynamic optimisation problems.
+<span class="fixedI">gEcon</span> model file consists of blocks defining agents
+optimization problems, exogenous shocks and market clearing conditions.
+Within each optimisation block, the user specifies objective, control variables
+and constraints of particular agent. Blocks can be also created  for
+defining market clearing conditions and behaviour of exogenous variables.
 </p>
 
 <p>
-Parameters of models can be set either in a <span class="fixedII">.gcn</span> file or later on
-using R interface. Parameters can be also calibrated based on user supplied steady state relationships 
-between variables.
+The parameters of models can be set either in a <span class="fixedII">.gcn</span> file or&nbsp;
+by&nbsp;using R interface later on. Parameters can be&nbsp;also calibrated based on&nbsp;the&nbsp;user supplied steady
+state relationships between variables.
 </p>
 
 <h2>R class <span class="fixedII">gecon_model</span></h2>
 <p>
-<span class="fixedI">gEcon</span> has user friendly interface written in R. 
-Model file created by the shared library is loaded into R environment and
-an object of <span class="fixedII">gecon_model</span> class is created. Model can be solved and 
-analysed using such <span class="fixedI">gEcon</span> features as:
+<span class="fixedI">gEcon</span> has user friendly interface written in R.
+A model file created by the shared library is loaded into R environment and
+then a <span class="fixedII">gecon_model</span> class object is created. The user can
+solve and analyze models by using the elements implemented in <span class="fixedII">gEcon</span>:
 <ul>
 <li> automatically created <span class="fixedII">LaTeX</span> documentation,
 <li> calibration utilities,
 <li> steady state and perturbation solvers,
 <li> tools for IRFs and statistics computations.
 </ul>
-<span class="fixedI">gEcon</span> interface is interactive, enabling users to
-change settings, parameters "on the fly" without the need to recompute the whole model.
-Moreover <span class="fixedI">gEcon</span> is equipped with a set of tools
-for analysing model specification, which can be useful in debugging
-or searching for the steady state.
+<span class="fixedI">gEcon</span> interface is interactive and it enables users to
+change settings and parameters "on the fly" without the need to recompute the whole model.
+Moreover, <span class="fixedI">gEcon</span> is equipped with a set of tools for&nbsp;analysing model
+specification, which can be useful in&nbsp;debugging or&nbsp;searching for&nbsp;the&nbsp;steady state.
 </p>
 
 

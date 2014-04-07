@@ -1,10 +1,25 @@
-# RBC Model with home production based on Benhabib J., Rogerson R. & Wright R. 
-# "Homework in macroeconomics: Household production and aggregate fluctuations." (1991)
+# ###################################################################
+# (c) Kancelaria Prezesa Rady Ministrów 2012-2014                   #
+# Treść licencji w pliku:                                           #
+# http://gecon.r-forge.r-project.org/files/gEcon_licence.txt        #
+#                                                                   #
+# (c) Chancellery of the Prime Minister 2012-2014                   #
+# Licence terms can be found in the file:                           #
+# http://gecon.r-forge.r-project.org/files/gEcon_licence.txt        #
+#                                                                   #
+# Author(s): Grzegorz Klima, Karol Podemski,                        #
+#            Kaja Retkiewicz-Wijtiwiak                              #
+# ###################################################################
+# RBC Model with home production based on Benhabib J., 
+# Rogerson R. & Wright R. "Homework in macroeconomics: 
+# Household production and aggregate fluctuations." (1991)
 #
-# Due to the expression 'log(1 - N_m[] - N_h[])' finding model steady state 
-# requires setting initial values for the following variables: N_h, N_m, N 
-# and N_m_d. An example set of initial values: N = 0.5, N_h = 0.25, N_m = 0.25, 
-# N_m_d = 0.25.
+# Due to the expression 'log(1 - N_m[] - N_h[])' finding model 
+# steady state requires setting initial values 
+# for the following variables: N_h, N_m, N and N_m_d. 
+# An example set of initial values: N = 0.5, N_h = 0.25, N_m = 0.25, 
+#                                   N_m_d = 0.25.
+# ###################################################################
 
 options
 {
