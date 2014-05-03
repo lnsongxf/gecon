@@ -129,6 +129,16 @@ a:hover {
 }
 
 
+#main h3 {
+/*     color: #165747; */
+/*     color: #155D5D; */
+    color: #C76033;
+    font-size: 1em;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+
 #main ul {
     padding: 5px 0 5px 20px;
     margin:0;
