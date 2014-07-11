@@ -31,12 +31,12 @@ language and solution framework </title>
 <h2>Language</h2>
 
 <p>
-The models in <span class="fixedI">gEcon</span> are written by using a language
-suited for writing the economic dynamic optimisation problems.
-<span class="fixedI">gEcon</span> model file consists of blocks defining agents
+The models in <span class="fixedI">gEcon</span> are written using a language
+suited for writing economic dynamic optimisation problems.
+<span class="fixedI">gEcon</span> model file consists of blocks describing agents
 optimization problems, exogenous shocks and market clearing conditions.
 Within each optimisation block, the user specifies objective, control variables
-and constraints of particular agent. Blocks can be also created  for
+and constraints of&nbsp;a&nbsp;particular agent. Blocks can be also created  for
 defining market clearing conditions and behaviour of exogenous variables.
 </p>
 
@@ -46,6 +46,21 @@ by&nbsp;using R interface later on. Parameters can be&nbsp;also calibrated based
 state relationships between variables.
 </p>
 
+<h2>Deriving model equations</h2>
+
+<p>
+<span class="fixedI">gEcon</span> reduces pen &amp; paper derivations of model equations thanks
+to the following functionality:
+<ul>
+<li> automatic derivation of first order conditions,
+<li> automatic reduction of variables,
+<li> automatic derivation of first order perturbation matrices,
+<li> automatic log-linearisation of model equations.
+</ul>
+</p>
+
+
+
 <h2>R class <span class="fixedII">gecon_model</span></h2>
 <p>
 <span class="fixedI">gEcon</span> has user friendly interface written in R.
@@ -53,7 +68,6 @@ A model file created by the shared library is loaded into R environment and
 then a <span class="fixedII">gecon_model</span> class object is created. The user can
 solve and analyze models by using the elements implemented in <span class="fixedII">gEcon</span>:
 <ul>
-<li> automatically created <span class="fixedII">LaTeX</span> documentation,
 <li> calibration utilities,
 <li> steady state and perturbation solvers,
 <li> tools for IRFs and statistics computations.
@@ -64,10 +78,23 @@ Moreover, <span class="fixedI">gEcon</span> is equipped with a set of tools for&
 specification, which can be useful in&nbsp;debugging or&nbsp;searching for&nbsp;the&nbsp;steady state.
 </p>
 
+<h2>Model documentation and diagnostics</h2>
+
+<p>
+<span class="fixedI">gEcon</span> reduces time required for documenting the model
+and time spent on debugging through the following features:
+<ul>
+<li> automatically created <span class="fixedII">LaTeX</span> documentation,
+<li> automatically created text logfiles,
+<li> a set of functions for retrieving information about variables, shocks and
+parameters.
+</ul>
+</p>
+
 
 <h2>Numerical solvers employed</h2>
 <ul>
-<li> <span class="fixedII">nleqslv</span> for solving systems of nonlinear equations using Newton or Broyden methods with line searches,
+<li> <span class="fixedII">nleqslv</span> for solving systems of non-linear equations using Newton or Broyden methods with line searches,
 <li> <span class="fixedII">gensys</span> for solving perturbations of the first order.
 </ul>
 
