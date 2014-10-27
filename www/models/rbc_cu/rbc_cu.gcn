@@ -10,8 +10,7 @@
 # Author(s): Grzegorz Klima, Karol Podemski,                        #
 #            Kaja Retkiewicz-Wijtiwiak                              #
 # ###################################################################
-# Time-to-build model
-# Calibration based on Backus, Kehoe, Kydland
+# Basic RBC model with capacity utilization
 # ###################################################################
 
 options
@@ -20,33 +19,34 @@ options
     output LaTeX = TRUE;
 };
 
+tryreduce
+{
+    P[], L_d[], pi[];
+};
+
 block CONSUMER
 {
     definitions
     {
-        u[] = (C[]^mu * (L[])^(1 - mu))^gamma / gamma;
+        u[] = (C[]^mu * (1 - L_s[])^(1 - mu)) ^ (1 - eta) / (1 - eta);
     };
     controls
     {
-        C[], N[], a[], L[];
+        C[], L_s[];
     };
     objective
     {
-        U[] = u[] + beta * E[][U[1]]                                        : lambda_U[];
+        U[] = u[] + beta * E[][U[1]]     : lambda_U[];
     };
     constraints
     {
-        C[] = pi[] + W[] * N[]                                              : lambda_c[];
-        L[] = 1 - alpha * N[] - (1 - alpha) * eta * a[-1]                   : lambda_l[];
-        a[] = (1 - eta) * a[-1] + N[]                                       : lambda_a[];
+        C[] = W[] * L_s[] + pi[]         : lambda_c[];
     };
     calibration
     {
-        alpha = 1;
-        eta = 0.5;
-        mu = 0.34;
-        gamma = -1.0;
         beta = 0.99;
+        eta = 2;
+        mu = 0.3;
     };
 };
 
@@ -54,26 +54,23 @@ block FIRM
 {
     controls
     {
-        K[], N_d[], Z[], Y[], S[], X[], pi[];
+        K[], L_d[], Y[], I[], pi[], CapUt[];
     };
     objective
     {
-        PI[] = pi[]  + E[][(lambda_U[1] * lambda_c[1] / lambda_c[]) * PI[1]]                              : lambda_PI[];
+        PI[] = pi[] + E[][lambda_U[1]  * lambda_c[1] / lambda_c[] * PI[1]];
     };
     constraints
     {
-        Y[] = ((LAMBDA[] * K[-1]^theta * N_d[]^(1 - theta)) ^(-nu) + sigma * Z[-1] ^(-nu)) ^ (-1 / nu)    : lambda_y[];
-        K[] = (1 - delta) * K[-1] + S[-3]                                                                 : lambda_k[];
-        X[] = psi *	(S[] + S[-1] + S[-2] + S[-3])                                                         : lambda_x[];
-        pi[] = Y[] - Z[] + Z[-1] - X[]  - W[] * N_d[]                                                     : lambda_pi[];
+        Y[] = Z[] ^ (1 - alpha) * (K[-1] * CapUt[])^alpha * (L_d[])^(1 - alpha);
+        K[] = (1 - delta * CapUt[] ^ omega) * K[-1]  + I[];
+        pi[] = P[] * Y[] - L_d[] * W[] - I[];
     };
     calibration
     {
-        theta = 0.36;
-        nu = 3;
-        sigma = 0.01;
+        alpha = 0.36;
         delta = 0.025;
-        psi = 0.25;
+        omega = 1.45;
     };
 };
 
@@ -81,7 +78,8 @@ block EQUILIBRIUM
 {
     identities
     {
-        N_d[] = N[];
+        P[] = 1;
+        L_d[] = L_s[];
     };
 };
 
@@ -89,15 +87,14 @@ block EXOG
 {
     identities
     {
-        LAMBDA[] - 1 = phi_a * (LAMBDA[-1] - 1) + phi_b * (LAMBDA[-1] - 1) + epsilon_LAMBDA[];
+        Z[] = exp(phi * log(Z[-1]) + epsilon_Z[]);
     };
     shocks
     {
-        epsilon_LAMBDA[];
+        epsilon_Z[];
     };
     calibration
     {
-        phi_a = 0.906;
-        phi_b = 0.088;
+        phi = 0.95;
     };
 };

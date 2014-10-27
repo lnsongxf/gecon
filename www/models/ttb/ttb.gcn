@@ -10,43 +10,50 @@
 # Author(s): Grzegorz Klima, Karol Podemski,                        #
 #            Kaja Retkiewicz-Wijtiwiak                              #
 # ###################################################################
-# Stochastic growth model with Epstein-Zin preferences
-# ###################################################################   
+# Time-to-build model
+# Calibration based on Backus, Kehoe and Kydland (1992): 
+# "International Real Business Cycles", Journal of Political Economy
+# ###################################################################
+
 options
 {
     output logfile = TRUE;
     output LaTeX = TRUE;
+    verbose = TRUE;
+};
+
+tryreduce
+{
+    N_d[], X[], lambda_c[], lambda_U[];
 };
 
 block CONSUMER
 {
     definitions
     {
-        u[] = (C[]^(1 - eta) - 1) / (1 - eta);
+        u[] = (C[]^mu * (L[])^(1 - mu))^gamma / gamma;
     };
     controls
     {
-        K_s[], C[], I[];
+        C[], N[], a[], L[];
     };
     objective
     {
-        U[] = u[] + beta * E[][U[1]^(1 - theta_EZ)]^(1 / (1 - theta_EZ))    : lambda_U[];
+        U[] = u[] + beta * E[][U[1]]                                        : lambda_U[];
     };
     constraints
     {
-        I[] + C[] = pi[] + r[] * K_s[-1] + W[] * L_s[]      : lambda_c[];
-        K_s[] = (1 - delta) * K_s[-1] + I[]                 : lambda_k[];
-    };
-    identities
-    {
-        L_s[] = 1;
+        C[] = pi[] + W[] * N[]                               : lambda_c[];
+        L[] = 1 - alpha * N[] - (1 - alpha) * eta * a[-1];
+        a[] = (1 - eta) * a[-1] + N[];
     };
     calibration
     {
-        delta = 0.025;
+        alpha = 1;
+        eta = 0.5;
+        mu = 0.34;
+        gamma = -1.0;
         beta = 0.99;
-        eta = 2;
-        theta_EZ = 0.05;
     };
 };
 
@@ -54,19 +61,26 @@ block FIRM
 {
     controls
     {
-        K_d[], L_d[], Y[];
+        K[], N_d[], Z[], Y[], S[], X[], pi[];
     };
     objective
     {
-        pi[] = Y[] - L_d[] * W[] - r[] * K_d[]              : lambda_pi[];
+        PI[] = pi[]  + E[][(lambda_U[1] * lambda_c[1] / lambda_c[]) * PI[1]];
     };
     constraints
     {
-        Y[] = Z[] * K_d[]^alpha * L_d[]^(1 - alpha)         : lambda_y[];
+        Y[] = ((LAMBDA[] * K[-1]^theta * N_d[]^(1 - theta)) ^(-nu) + sigma * Z[-1] ^(-nu)) ^ (-1 / nu);
+        K[] = (1 - delta) * K[-1] + S[-3];
+        X[] = psi *	(S[] + S[-1] + S[-2] + S[-3]);
+        pi[] = Y[] - Z[] + Z[-1] - X[]  - W[] * N_d[];
     };
     calibration
     {
-        r[ss] * K_d[ss] = 0.36 * Y[ss] -> alpha;
+        theta = 0.36;
+        nu = 3;
+        sigma = 0.01;
+        delta = 0.025;
+        psi = 0.25;
     };
 };
 
@@ -74,8 +88,7 @@ block EQUILIBRIUM
 {
     identities
     {
-        K_d[] = K_s[-1];
-        L_d[] = L_s[];
+        N_d[] = N[];
     };
 };
 
@@ -83,14 +96,15 @@ block EXOG
 {
     identities
     {
-        Z[] = exp(phi * log(Z[-1]) + epsilon_Z[]);
+        LAMBDA[] - 1 = phi_a * (LAMBDA[-1] - 1) + phi_b * (LAMBDA[-1] - 1) + epsilon_LAMBDA[];
     };
     shocks
     {
-        epsilon_Z[];
+        epsilon_LAMBDA[];
     };
     calibration
     {
-        phi = 0.95;
+        phi_a = 0.906;
+        phi_b = 0.088;
     };
 };

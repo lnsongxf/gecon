@@ -19,6 +19,13 @@ options
     output LaTeX = TRUE;
 };
 
+tryreduce
+{
+    pi[], pi_ast[], PI_ast[], PI[], 
+    T_ast[], K_d[], H_d[],
+    T[], K_d_ast[], H_d_ast[];
+};
+
 block CONSUMER
 {
     definitions
@@ -31,12 +38,12 @@ block CONSUMER
     };
     objective
     {
-        U[] = u[] + beta * E[][U[1]]                                    : lambda_U[];
+        U[] = u[] + beta * E[][U[1]];
     };
     constraints
     {
         I[] + C[] + T[] = pi[] + r[] * K[-1] + W[] * H[] - psi * K[-1] * (I[] / K[-1] - delta)^2 + TR[] : lambda_c[];
-        K[] = (1 - delta) * K[-1] + I[]                                 : lambda_k[];
+        K[] = (1 - delta) * K[-1] + I[];
     };
     calibration
     {
@@ -56,12 +63,12 @@ block FIRM
     };
     objective
     {
-        SPI[] = pi[]                                                    : lambda_SPI[];
+        PI[] = pi[];
     };
     constraints
     {
-        Y[] = Z[] * K_d[]^alpha * H_d[]^(1 - alpha)                     : lambda_y[];
-        pi[] = Y[] - H_d[] * W[] - r[] * K_d[]                          : lambda_pi[];
+        Y[] = Z[] * K_d[]^alpha * H_d[]^(1 - alpha);
+        pi[] = Y[] - H_d[] * W[] - r[] * K_d[];
     };
     calibration
     {
@@ -81,12 +88,12 @@ block CONSUMER_ast
     };
     objective
     {
-        U_ast[] = u_ast[] + beta * E[][U_ast[1]]                        : lambda_U_ast[];
+        U_ast[] = u_ast[] + beta * E[][U_ast[1]];
     };
     constraints
     {
-        I_ast[] + C_ast[] + T_ast[] = pi_ast[] + r_ast[] * K_ast[-1] + W_ast[] * H_ast[] - psi * K_ast[-1] * (I_ast[] / K_ast[-1] - delta)^2 - TR[]  : lambda_c_ast[];
-        K_ast[] = (1 - delta) * K_ast[-1] + I_ast[]                     : lambda_k_ast[];
+        I_ast[] + C_ast[] + T_ast[] = pi_ast[] + r_ast[] * K_ast[-1] + W_ast[] * H_ast[] - psi * K_ast[-1] * (I_ast[] / K_ast[-1] - delta)^2 - TR[] : lambda_c_ast[];
+        K_ast[] = (1 - delta) * K_ast[-1] + I_ast[];
     };
 };
 
@@ -98,12 +105,12 @@ block FIRM_ast
     };
     objective
     {
-        SPI_ast[] = pi_ast[]                                            : lambda_SPI_ast[];
+        PI_ast[] = pi_ast[];
     };
     constraints
     {
-        Y_ast[] = Z_ast[] * K_d_ast[]^alpha * H_d_ast[]^(1 - alpha)     : lambda_y_ast[];
-        pi_ast[] = Y_ast[] - H_d_ast[] * W_ast[] - r_ast[] * K_d_ast[]  : lambda_pi_ast[];
+        Y_ast[] = Z_ast[] * K_d_ast[]^alpha * H_d_ast[]^(1 - alpha);
+        pi_ast[] = Y_ast[] - H_d_ast[] * W_ast[] - r_ast[] * K_d_ast[];
     };
 };
 
@@ -133,10 +140,7 @@ block EXOG
     };
     shocks
     {
-        epsilon_G[];
-        epsilon_Z[];
-        epsilon_G_ast[];
-        epsilon_Z_ast[];
+        epsilon_G[], epsilon_Z[], epsilon_G_ast[], epsilon_Z_ast[];
     };
     calibration
     {

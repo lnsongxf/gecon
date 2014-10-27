@@ -10,13 +10,18 @@
 # Author(s): Grzegorz Klima, Karol Podemski,                        #
 #            Kaja Retkiewicz-Wijtiwiak                              #
 # ###################################################################
-# Basic RBC model with variable capacity utilization
+# RBC model with installation costs
 # ###################################################################
 
 options
 {
     output logfile = TRUE;
     output LaTeX = TRUE;
+};
+
+tryreduce
+{
+    K_d[], L_d[], pi[];
 };
 
 block CONSUMER
@@ -27,21 +32,24 @@ block CONSUMER
     };
     controls
     {
-        C[], L_s[];
+        K_s[], C[], L_s[], I[];
     };
     objective
     {
-        U[] = u[] + beta * E[][U[1]]    : lambda_U[];
+        U[] = u[] + beta * E[][U[1]];
     };
     constraints
     {
-        C[] = W[] * L_s[] + pi[]                                                            : lambda_c[];
+        I[] + C[] = pi[] + r[] * K_s[-1] + W[] * L_s[] - psi * K_s[-1] * (I[] / K_s[-1] - delta)^2;
+        K_s[] = (1 - delta) * K_s[-1] + I[];
     };
     calibration
     {
+        delta = 0.025;
         beta = 0.99;
         eta = 2;
         mu = 0.3;
+        psi = 0.8;
     };
 };
 
@@ -49,23 +57,19 @@ block FIRM
 {
     controls
     {
-        K[], L_d[], Y[], I[], pi[], CapUt[];
+        K_d[], L_d[], Y[];
     };
     objective
     {
-        SPI[] = pi[] + E[][lambda_U[1]  * lambda_c[1] / lambda_c[] * SPI[1]]              : lambda_SPI[];
+        pi[] = Y[] - L_d[] * W[] - r[] * K_d[];
     };
     constraints
     {
-        Y[] = Z[] ^ (1 - alpha) * (K[-1] * CapUt[])^alpha * (L_d[] )^(1 - alpha)          : lambda_y[];
-        K[] = (1 - delta * CapUt[] ^ omega) * K[-1]  + I[]                                : lambda_k[];
-        pi[] = P[] * Y[] - L_d[] * W[] - I[]                                              : lambda_pi[];
+        Y[] = Z[] * K_d[]^alpha * L_d[]^(1 - alpha);
     };
     calibration
     {
-        alpha = 0.36;
-        delta = 0.025;
-        omega = 1.45;
+        r[ss] * K_s[ss] = 0.36 * Y[ss] -> alpha;
     };
 };
 
@@ -73,7 +77,7 @@ block EQUILIBRIUM
 {
     identities
     {
-        P[] = 1;
+        K_d[] = K_s[-1];
         L_d[] = L_s[];
     };
 };

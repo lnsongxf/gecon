@@ -19,6 +19,11 @@ options
     output LaTeX = TRUE;
 };
 
+tryreduce
+{
+    L_d[], K_d[], pi[];
+};
+
 block CONSUMER
 {
     definitions
@@ -31,13 +36,13 @@ block CONSUMER
     };
     objective
     {
-        U[] = u[] + beta * E[][U[1]]                                    : lambda_U[];
+        U[] = u[] + beta * E[][U[1]];
     };
     constraints
     {
-        I[] + C[] = pi[] + r[] * K_s[-1] + W[] * L_s[]                  : lambda_c[];
-        K_s[] = (1 - delta) * K_s[-1] + I[]                             : lambda_k[];
-        H[] = C[-1]                                                     : lambda_h[];
+        I[] + C[] = pi[] + r[] * K_s[-1] + W[] * L_s[];
+        K_s[] = (1 - delta) * K_s[-1] + I[];
+        H[] = C[-1];
     };
     calibration
     {
@@ -57,15 +62,15 @@ block FIRM
     };
     objective
     {
-        pi[] = Y[] - L_d[] * W[] - r[] * K_d[]                          : lambda_pi[];
+        pi[] = Y[] - L_d[] * W[] - r[] * K_d[];
     };
     constraints
     {
-        Y[] = Z[] * K_d[]^alpha * L_d[]^(1 - alpha)                     : lambda_y[];
+        Y[] = Z[] * K_d[]^alpha * L_d[]^(1 - alpha);
     };
     calibration
     {
-        r[ss] * K_d[ss] = 0.36 * Y[ss] -> alpha;
+        r[ss] * K_s[ss] = 0.36 * Y[ss] -> alpha;
     };
 };
 

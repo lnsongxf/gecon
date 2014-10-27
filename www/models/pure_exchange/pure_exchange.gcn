@@ -18,6 +18,11 @@ options
     output LaTeX = TRUE;
 };
 
+tryreduce
+{
+    e_B1[], e_B2[], e_A1[], e_A2[], p_1[], C_A1[];
+};
+
 block AGENT_A
 {
     controls
@@ -26,11 +31,11 @@ block AGENT_A
     };
     objective
     {
-        U_A[] = log(C_A1[]) + psi_A * log(C_A2[])                          : lambda_U_A[];
+        U_A[] = log(C_A1[]) + psi_A * log(C_A2[]);
     };
     constraints
     {
-        p_1[] * C_A1[] + p_2[] * C_A2[] = p_1[] * e_A1[] + p_2[] * e_A2[]  : lambda_e_A[];
+        p_1[] * C_A1[] + p_2[] * C_A2[] = p_1[] * e_A1[] + p_2[] * e_A2[];
     };
     identities
     {
@@ -51,11 +56,11 @@ block AGENT_B
     };
     objective
     {
-        U_B[] = log(C_B1[]) + psi_B * log(C_B2[]) 	                       : lambda_U_B[];
+        U_B[] = log(C_B1[]) + psi_B * log(C_B2[]);
     };
     constraints
     {
-        p_1[] * C_B1[] + p_2[] * C_B2[] = p_1[] * e_B1[] + p_2[] * e_B2[]  : lambda_e_B[];
+        p_1[] * C_B1[] + p_2[] * C_B2[] = p_1[] * e_B1[] + p_2[] * e_B2[];
     };
     identities
     {

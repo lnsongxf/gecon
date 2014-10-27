@@ -7,16 +7,20 @@
 # Licence terms can be found in the file:                           #
 # http://gecon.r-forge.r-project.org/files/gEcon_licence.txt        #
 #                                                                   #
-# Author(s): Grzegorz Klima, Karol Podemski,                        #
-#            Kaja Retkiewicz-Wijtiwiak                              #
+# Author(s): Anna Sowińska                                          #
 # ###################################################################
-# RBC model with installation costs
+# Basic RBC model with two sectors (consumption and investment goods)
 # ###################################################################
 
 options
 {
     output logfile = TRUE;
     output LaTeX = TRUE;
+};
+
+tryreduce
+{
+    pi_C[], pi_I[], C_s[];
 };
 
 block CONSUMER
@@ -31,12 +35,16 @@ block CONSUMER
     };
     objective
     {
-        U[] = u[] + beta * E[][U[1]]                                    : lambda_U[];
+        U[] = u[] + beta * E[][U[1]];
     };
     constraints
     {
-        I[] + C[] = pi[] + r[] * K_s[-1] + W[] * L_s[] - psi * K_s[-1] * (I[] / K_s[-1] - delta)^2    : lambda_c[];
-        K_s[] = (1 - delta) * K_s[-1] + I[]                             : lambda_k[];
+        p[] * I[] + C[] = pi_I[] + pi_C[] + r[] * K_s[-1] + W[] * L_s[];
+        K_s[] = (1 - delta) * K_s[-1] + I[];
+    };
+    identities
+    {
+        Y[] = C[] + p[] * I[];
     };
     calibration
     {
@@ -44,27 +52,46 @@ block CONSUMER
         beta = 0.99;
         eta = 2;
         mu = 0.3;
-        psi = 0.8;
     };
 };
 
-block FIRM
+block FIRM_C
 {
     controls
     {
-        K_d[], L_d[], Y[];
+        K_C_d[], L_C_d[], C_s[];
     };
     objective
     {
-        pi[] = Y[] - L_d[] * W[] - r[] * K_d[]                          : lambda_pi[];
+        pi_C[] = C_s[] - L_C_d[] * W[] - r[] * K_C_d[];
     };
     constraints
     {
-        Y[] = Z[] * K_d[]^alpha * L_d[]^(1 - alpha)                     : lambda_y[];
+        C_s[] = Z[] * K_C_d[]^alpha * L_C_d[]^(1 - alpha);
     };
     calibration
     {
-        r[ss] * K_d[ss] = 0.36 * Y[ss] -> alpha;
+        alpha = 0.2;
+    };
+};
+
+block FIRM_I
+{
+    controls
+    {
+        K_I_d[], L_I_d[], I_s[];
+    };
+    objective
+    {
+        pi_I[] = I_s[] - L_I_d[] * W[] - r[] * K_I_d[];
+    };
+    constraints
+    {
+        I_s[] = Z[] * K_I_d[]^sigma * L_I_d[]^(1 - alpha);
+    };
+    calibration
+    {
+        sigma = 0.4;
     };
 };
 
@@ -72,8 +99,9 @@ block EQUILIBRIUM
 {
     identities
     {
-        K_d[] = K_s[-1];
-        L_d[] = L_s[];
+        K_C_d[] + K_I_d[] = K_s[-1];
+        L_C_d[] + L_I_d[] = L_s[];
+        C[] = C_s[];
     };
 };
 

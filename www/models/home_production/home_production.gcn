@@ -17,14 +17,18 @@
 # Due to the expression 'log(1 - N_m[] - N_h[])' finding model 
 # steady state requires setting initial values 
 # for the following variables: N_h, N_m, N and N_m_d. 
-# An example set of initial values: N = 0.5, N_h = 0.25, N_m = 0.25, 
-#                                   N_m_d = 0.25.
+# An example set of initial values: N = 0.5, N_h = 0.25, N_m = 0.25.
 # ###################################################################
 
 options
 {
     output logfile = TRUE;
     output LaTeX = TRUE;
+};
+
+tryreduce
+{
+    K_m_d[], N_m_d[], pi[];
 };
 
 block CONSUMER
@@ -39,14 +43,14 @@ block CONSUMER
     };
     objective
     {
-        U[] = u[] + beta * E[][U[1]]                                : lambda_U[];
+        U[] = u[] + beta * E[][U[1]];
     };
     constraints
     {
-        I_m[] + I_h[] + C_m[] = r[] * K_m[-1] + W[] * N_m[] + pi[]  : lambda_c_m[];
-        K_m[] = (1 - delta) * K_m[-1] + I_m[]                       : lambda_k_m[];
-        K_h[] = (1 - delta) * K_h[-1] + I_h[]                       : lambda_k_h[];
-        C_h[] = Z_h[] * Gamma * K_h[-1]^theta * N_h[]^(1 - theta)   : lambda_c_h[];
+        I_m[] + I_h[] + C_m[] = r[] * K_m[-1] + W[] * N_m[] + pi[];
+        K_m[] = (1 - delta) * K_m[-1] + I_m[];
+        K_h[] = (1 - delta) * K_h[-1] + I_h[];
+        C_h[] = Z_h[] * Gamma * K_h[-1]^theta * N_h[]^(1 - theta);
     };
     identities
     {
@@ -74,12 +78,12 @@ block FIRM
     };
     objective
     {
-        PI[] = pi[]                                                 : lambda_PI[];
+        PI[] = pi[];
     };
     constraints
     {
-        pi[] = Y[] - N_m_d[] * W[] - r[] * K_m_d[]                  : lambda_pi[];
-        Y[] = Z_m[] * Gamma * K_m_d[]^alpha * N_m_d[]^(1 - alpha)   : lambda_y[];
+        pi[] = Y[] - N_m_d[] * W[] - r[] * K_m_d[];
+        Y[] = Z_m[] * Gamma * K_m_d[]^alpha * N_m_d[]^(1 - alpha);
     };
     calibration
     {
@@ -105,8 +109,7 @@ block EXOG
     };
     shocks
     {
-        epsilon_h[];
-        epsilon_m[];
+        epsilon_h[], epsilon_m[];
     };
     calibration
     {
