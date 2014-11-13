@@ -16,11 +16,12 @@ options
 {
     output logfile = TRUE;
     output LaTeX = TRUE;
+    output LaTeX landscape = TRUE;
 };
 
 tryreduce
 {
-    pi_C[], pi_I[], C_s[];
+    pi_C[], pi_I[], C_s[], K_I_d[], L_I_d[];
 };
 
 block CONSUMER

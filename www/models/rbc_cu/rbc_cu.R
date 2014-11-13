@@ -33,7 +33,7 @@ rbc_cu <- make_model('rbc_cu.gcn')
 # Finding steady state
 rbc_cu <- steady_state(rbc_cu)
 get_ss_values(rbc_cu, to_tex = save_latex)
-get_parameter_vals(rbc_cu)
+get_par_values(rbc_cu)
 
 # Perturbation solution
 rbc_cu <- solve_pert(rbc_cu, norm_tol = 1e-6, loglin = TRUE)
@@ -43,7 +43,7 @@ get_pert_solution(rbc_cu, to_tex = save_latex)
 shock_info(rbc_cu, all_shocks = TRUE)
 rbc_cu <- set_shock_distr_par(rbc_cu, 
                              distr_par = list("var(epsilon_Z)" = 0.005))
-rbc_cu <- compute_corr(rbc_cu, ref_var='Y')
+rbc_cu <- compute_moments(rbc_cu, ref_var='Y')
 
 get_moments(model = rbc_cu, 
             relative_to = FALSE, 

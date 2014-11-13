@@ -30,9 +30,10 @@ library(gEcon)
 rbc_ts <- make_model('rbc_ts.gcn')
 
 # Finding steady state
+rbc_ts <- initval_var(rbc_ts, init_var = c(K_C_d = 0.5, L_C_d = 0.5))
 rbc_ts <- steady_state(rbc_ts)
 get_ss_values(rbc_ts, to_tex = save_latex)
-get_parameter_vals(rbc_ts)
+get_par_values(rbc_ts)
 
 # Perturbation solution
 rbc_ts <- solve_pert(rbc_ts, norm_tol = 1e-6, loglin = TRUE)
@@ -42,7 +43,7 @@ get_pert_solution(rbc_ts, to_tex = save_latex)
 shock_info(rbc_ts, all_shocks = TRUE)
 rbc_ts <- set_shock_distr_par(rbc_ts, 
                              distr_par = list("var(epsilon_Z)" = 0.005))
-rbc_ts <- compute_corr(rbc_ts, ref_var='Y')
+rbc_ts <- compute_moments(rbc_ts, ref_var='Y')
 
 get_moments(model = rbc_ts, 
             var_names = c("p", "r", "C", "I", "I_s", "K_s", "L_s", 

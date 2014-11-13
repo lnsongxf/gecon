@@ -14,10 +14,10 @@
 # Rogerson R. & Wright R. "Homework in macroeconomics: 
 # Household production and aggregate fluctuations." (1991)
 #
-# Due to the expression 'log(1 - N_m[] - N_h[])' finding model 
+# Due to the expression 'log(1 - N__M[] - N_H[])' finding model 
 # steady state requires setting initial values 
-# for the following variables: N_h, N_m, N and N_m_d. 
-# An example set of initial values: N = 0.5, N_h = 0.25, N_m = 0.25.
+# for the following variables: N__H, N__M, N and N_m_d. 
+# An example set of initial values: N = 0.5, N__H = 0.25, N__M = 0.25.
 # ###################################################################
 
 options
@@ -25,6 +25,11 @@ options
     output logfile = TRUE;
     output LaTeX = TRUE;
     output LaTeX landscape = TRUE;
+};
+
+indexsets
+{
+    IND = { 'M', 'H' };
 };
 
 tryreduce
@@ -36,11 +41,11 @@ block CONSUMER
 {
     definitions
     {
-        u[] = b / e * log(a * C_m[]^e + (1 - a) * C_h[]^e) + (1 - b) * log(1 - N_m[] - N_h[]);
+        u[] = b / e * log(a * C<'M'>[]^e + (1 - a) * C<'H'>[]^e) + (1 - b) * log(1 - SUM<i::IND>N<i>[]);
     };
     controls
     {
-        K_m[], K_h[], C_m[], C_h[], N_m[], N_h[], I_m[], I_h[];
+        <i::IND>K<i>[], <i::IND>C<i>[], <i::IND>N<i>[], <i::IND>I<i>[];
     };
     objective
     {
@@ -48,16 +53,15 @@ block CONSUMER
     };
     constraints
     {
-        I_m[] + I_h[] + C_m[] = r[] * K_m[-1] + W[] * N_m[] + pi[];
-        K_m[] = (1 - delta) * K_m[-1] + I_m[];
-        K_h[] = (1 - delta) * K_h[-1] + I_h[];
-        C_h[] = Z_h[] * Gamma * K_h[-1]^theta * N_h[]^(1 - theta);
+        SUM<i::IND>I<i>[] + C<'M'>[] = r[] * K<'M'>[-1] + W[] * N<'M'>[] + pi[];
+        <i::IND>K<i>[] = (1 - delta) * K<i>[-1] + I<i>[];
+        C<'H'>[] = Z<'H'>[] * Gamma * K<'H'>[-1]^theta * N<'H'>[]^(1 - theta);
     };
     identities
     {
-        K[] = K_m[] + K_h[];
-        I[] = I_m[] + I_h[];
-        N[] = N_m[] + N_h[];
+        K[] = SUM<i::IND>K<i>[];
+        I[] = SUM<i::IND>I<i>[];
+        N[] = SUM<i::IND>N<i>[];
     };
     calibration
     {
@@ -84,7 +88,7 @@ block FIRM
     constraints
     {
         pi[] = Y[] - N_m_d[] * W[] - r[] * K_m_d[];
-        Y[] = Z_m[] * Gamma * K_m_d[]^alpha * N_m_d[]^(1 - alpha);
+        Y[] = Z<'M'>[] * Gamma * K_m_d[]^alpha * N_m_d[]^(1 - alpha);
     };
     calibration
     {
@@ -96,8 +100,8 @@ block EQUILIBRIUM
 {
     identities
     {
-        K_m_d[] = K_m[-1];
-        N_m_d[] = N_m[];
+        K_m_d[] = K<'M'>[-1];
+        N_m_d[] = N<'M'>[];
     };
 };
 
@@ -105,16 +109,14 @@ block EXOG
 {
     identities
     {
-        Z_h[] = exp(psi * log(Z_h[-1]) + epsilon_h[]);
-        Z_m[] = exp(phi * log(Z_m[-1]) + epsilon_m[]);
+        <i::IND>Z<i>[] = exp(psi<i> * log(Z<i>[-1]) + epsilon<i>[]);
     };
     shocks
     {
-        epsilon_h[], epsilon_m[];
+        <i::IND>epsilon<i>[];
     };
     calibration
     {
-        psi = 0.95;
-        phi = 0.95;
+        <i::IND>psi<i> = 0.95;
     };
 };

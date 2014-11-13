@@ -37,57 +37,84 @@ language and solution framework </title>
 <p>
 <span class="fixedI">gEcon</span> is a framework for developing and solving large scale dynamic
 (stochastic) &amp;&nbsp;static general equilibrium models. It&nbsp;consists of model description
-language and an interface with a set of solvers in R. It
-was developed at&nbsp;the&nbsp;Department for Strategic Analyses at the Chancellery of
-the Prime Minister of the Republic of Poland as&nbsp;a&nbsp;part of a&nbsp;project aiming at
-construction of large scale DSGE &amp;&nbsp;CGE models of Polish economy.
+language and an interface with a&nbsp;set of solvers in&nbsp;R. It was developed at&nbsp;the&nbsp;Department
+for Strategic Analyses at&nbsp;the&nbsp;Chancellery of&nbsp;the&nbsp;Prime Minister of&nbsp;the&nbsp;Republic
+of&nbsp;Poland as&nbsp;a&nbsp;part of a&nbsp;project aiming at construction of large scale DSGE &amp;&nbsp;CGE
+models of the&nbsp;Polish economy.
 </p>
 
 <p>
-Publicly available toolboxes/toolkits used in RBC/DSGE modelling require
-users to derive the first order conditions and
-linearisation equations by pen &amp; pencil (e.g. <a href="http://www2.wiwi.hu-berlin.de/institute/wpol/html/toolkit.htm">Uhlig’s toolkit</a>) or at least require manual derivation
-of the FOCs (e.g. <a href="http://www.dynare.org/">Dynare</a>).
+Publicly available toolboxes used in RBC/DSGE modelling require
+users to derive the first order conditions (FOCs) and linearisation equations by pen
+&amp;&nbsp;paper (e.g. <a href="http://www2.wiwi.hu-berlin.de/institute/wpol/html/toolkit.htm">Uhlig’s tool-kit</a>) or at least require manual
+derivation of the FOCs (e.g. <a href="http://www.dynare.org/">Dynare</a>).
 Derivation of&nbsp;FOCs is&nbsp;also required by&nbsp;<a href="http://www.gams.com/">GAMS</a> and&nbsp;<a href="http://www.copsmodels.com/gempack.htm">GEMPACK</a>&nbsp;&mdash;&nbsp;probably the two most popular frameworks used in&nbsp;CGE modelling.
-Owing to the development and implementation of&nbsp;an&nbsp;algorithm for&nbsp;automatic derivation of&nbsp;first order conditions, <span class="fixedI">gEcon</span> allows users to&nbsp;describe their models in&nbsp;terms of&nbsp;optimisation problems of&nbsp;agents. To&nbsp;authors'
-best knowledge there is no&nbsp;other publicly available framework for&nbsp;writing and
-solving DSGE &amp;&nbsp;CGE models in this natural way. Writing models in terms of&nbsp;optimisation problems instead of the FOCs is
-far more natural to&nbsp;an&nbsp;economist, takes off the&nbsp;burden of&nbsp;tedious
-differentiation, and reduces the risk of&nbsp;making a&nbsp;mistake. <span class="fixedI">gEcon</span>  allows users
+Owing to the&nbsp;development of&nbsp;an&nbsp;algorithm for&nbsp;automatic derivation
+of&nbsp;first order conditions and implementation of a&nbsp;comprehensive symbolic library,
+<span class="fixedI">gEcon</span> allows users to&nbsp;describe their models in&nbsp;terms
+of&nbsp;optimisation problems of&nbsp;agents. To&nbsp;authors' best knowledge there is no&nbsp;other
+publicly available framework for&nbsp;writing and solving DSGE &amp;&nbsp;CGE models in&nbsp;this
+natural way. Writing models in terms of&nbsp;optimisation problems instead of the FOCs
+is&nbsp;far more natural to&nbsp;an&nbsp;economist, takes off the&nbsp;burden of&nbsp;tedious
+differentiation, and&nbsp;reduces the&nbsp;risk of&nbsp;making a&nbsp;mistake. <span class="fixedI">gEcon</span> allows users
 to&nbsp;focus on&nbsp;economic aspects of&nbsp;the&nbsp;model and makes it possible to&nbsp;design
-large-scale (100+ variables) models. Additionally, <span class="fixedI">gEcon</span>  can automatically produce
-a&nbsp;draft of&nbsp;LaTeX documentation for&nbsp;a&nbsp;model.
+large-scale (100+ variables) models. To this end, <span class="fixedI">gEcon</span> provides template mechanism
+(similar to those found in CGE modelling packages), which allows to declare similar
+agents (differentiated by parameters only) in a single block.
+Additionally, <span class="fixedI">gEcon</span> can automatically produce a&nbsp;draft of&nbsp;LaTeX documentation
+for&nbsp;a&nbsp;model.
 </p>
 
 <p>
-The model description language is simple and intuitive. Given optimisation
-problems, constraints and&nbsp;identities, computer  derives the FOCs, steady
-state equations, and linearisation matrices automatically. Numerical solvers can then be
-employed to determine steady state and approximate equilibrium laws of&nbsp;motion
-around it.
+The model description language is simple and intuitive. Given optimisation problems, constraints and&nbsp;identities, computer derives the&nbsp;FOCs, steady state equations, and&nbsp;linearisation matrices automatically. Numerical solvers can be then employed to&nbsp;determine the&nbsp;steady state and approximate equilibrium laws of&nbsp;motion around&nbsp;it.
 </p>
 
-<h2>About current release (0.7.0)</h2>
+<h2>About current release</h2>
+
+<h3>Version 0.8.0 (with template support) <b><font color="red">(NEW!)</font></b></h2>
 
 <p>
-<span class="fixedI">gEcon</span> 0.7.0 was released on October 27, 2014. This is the&nbsp;last release
-before templates are introduced to the language.
+<span class="fixedI">gEcon</span> 0.8.0 was released on November 13, 2014. This is the&nbsp;first release
+with template support.
 </p>
 <p>
-<span class="fixedI">gEcon</span> 0.7.0 comes with a few bug fixes and the following new features:
+The&nbsp;template support in <span class="fixedI">gEcon</span> 0.8.0 has the following features:
 <ul>
-<li> automatic generation of Lagrange multipliers for&nbsp;constraints,
-<li> improved (two-step) symbolic reduction algorithm,
-<li> additional functionality in&nbsp;the&nbsp;R interface&nbsp;&mdash;&nbsp;shock distribution parameters (covariances, correlations, variances and standard deviations) can now be&nbsp;set one at&nbsp;a&nbsp;time, without the&nbsp;need to&nbsp;reconstruct the&nbsp;whole variance-covariance matrix.
+<li> it allows to easily construct large scale models with many consumers, sectors, countries, etc.,
+<li> variables and model blocks can be indexed using arbitrary index sets created by the user,
+<li> a set of operations on indexing sets (union, intersection, difference, relational operators) is provided&nbsp;&mdash;&nbsp;indexing sets are easy to construct and validate,
+<li> operations of summation and product over indices are provided,
+<li> FOCs are derived for a &ldquo;templated&rdquo; block only once,
+<li> symbolic reduction algorithm for &ldquo;templated&rdquo; expressions
+is&nbsp;provided.
 </ul>
 </p>
 
+
 <p>
-<b><font color="red">Important note to the users of previous versions:</font></b> models written for versions prior to&nbsp;0.7.0 will not&nbsp;work
+<b><font color="red">Important note to the users of versions prior to&nbsp;0.8.0:</font></b>
+Changes have been made in the&nbsp;names of&nbsp;the&nbsp;functions and classes in the&nbsp;R interface that relate to&nbsp;model parameters. The goal of those changes was to assure consistency with
+the&nbsp;naming convention for functions and classes pertaining to&nbsp;variables.
+The following functions and classes have changed their names:<br>
+<span class="fixedII">get_free_parameter_names</span> to <span class="fixedII">get_par_names</span> (with extended functionality),<br>
+<span class="fixedII">get_parameter_vals</span> to <span class="fixedII">get_par_values</span>,<br>
+<span class="fixedII">parameter_info</span> to <span class="fixedII">par_info</span>,<br>
+<span class="fixedII">gecon_parameter_info</span> to <span class="fixedII">gecon_par_info</span>.<br>
+In addition, names of the following four functions have been changed:<br>
+<span class="fixedII">find_eq</span> to <span class="fixedII">list_eq</span>,<br>
+<span class="fixedII">find_calibr_eq</span> to <span class="fixedII">list_calibr_eq</span>,<br>
+<span class="fixedII">set_shocks</span> to <span class="fixedII">set_shock_cov_mat</span>,<br>
+<span class="fixedII">compute_corr</span> to <span class="fixedII">compute_moments</span>.<br>
+Please adjust your R code accordingly.
+</p>
+
+
+<p>
+<b><font color="red">Important note to the users of versions prior to&nbsp;0.7.0:</font></b> models written for versions prior to&nbsp;0.7.0 will not&nbsp;work
 in&nbsp;the&nbsp;same way or&nbsp;may even fail. Changes include:
 <ul>
-<li> shocks listed in the <span class="fixedII">.gcn</span> should be now separated by commas (<span class="fixedII">,</span>) instead of&nbsp;colons&nbsp;(<span class="fixedII">;</span>),
-<li> <span class="fixedI">gEcon</span> inserts Lagrange multipliers for constraints automatically&nbsp;&mdash;&nbsp;explicitly
+<li> shocks listed in the <span class="fixedII">.gcn</span> file should now be separated by commas (<span class="fixedII">,</span>) instead of&nbsp;semicolons&nbsp;(<span class="fixedII">;</span>),
+<li> <span class="fixedI">gEcon</span> now inserts Lagrange multipliers for constraints automatically&nbsp;&mdash;&nbsp;explicitly
 declared Lagrange multipliers will&nbsp;not&nbsp;be automatically selected for&nbsp;reduction, and declarations of&nbsp;Lagrange multipliers
 on time aggregators in&nbsp;static problems will cause an&nbsp;error.
 </ul>
@@ -105,8 +132,10 @@ Please adjust your R code accordingly.
 <h2>Plans for development</h2>
 
 <p>
-<span class="fixedI">gEcon</span> version 0.8.0 (beta) supporting templates is&nbsp;being actively tested and documented. It&nbsp;is planned for release
-on&nbsp;November&nbsp;12, 2014.
+Current work is focused on the&nbsp;block references, which will make it easy to&nbsp;solve models with Stackelberg competition, Nash bargaining, and Ramsey (benevolent government) problems.
+</p>
+<p>
+An add-on package allowing for Bayesian estimation of models will be released by the end of&nbsp;the year.
 </p>
 
 

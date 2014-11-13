@@ -7,11 +7,11 @@
 # Licence terms can be found in the file:                           #
 # http://gecon.r-forge.r-project.org/files/gEcon_licence.txt        #
 #                                                                   #
-# Author(s): Grzegorz Klima, Karol Podemski,                        #
-#            Kaja Retkiewicz-Wijtiwiak                              #
+# Author(s): Marta Retkiewicz                                       #
 # ###################################################################
-# Basic RBC model with habit formation
+# Simple CGE model (2x3x2)
 # ###################################################################
+
 
 options
 {
@@ -20,58 +20,53 @@ options
     output LaTeX landscape = TRUE;
 };
 
-tryreduce
+indexsets
 {
-    L_d[], K_d[], pi[];
+    SEC = { 'A', 'B', 'C' };
+    HH = { '1', '2' };
 };
 
-block CONSUMER
+block <h::HH> HOUSEHOLD
 {
-    definitions
+	definitions
     {
-        u[] = ((C[] - pers * H[])^mu * (1 - L_s[])^(1 - mu))^(1 - eta) / (1 - eta);
+        u<h>[] = (SUM<s::SEC>(alpha<h, s> * D<h, s>[]^((omega - 1)/omega)))^(omega/(omega - 1));
     };
-    controls
+	controls
     {
-        K_s[], C[], L_s[], I[], H[];
+        <s::SEC>D<h, s>[]; # Household h demand for good s
     };
     objective
     {
-        U[] = u[] + beta * E[][U[1]];
+		U<h>[] = u<h>[];
     };
     constraints
     {
-        I[] + C[] = pi[] + r[] * K_s[-1] + W[] * L_s[];
-        K_s[] = (1 - delta) * K_s[-1] + I[];
-        H[] = C[-1];
+        SUM<s::SEC>(D<h, s>[] * p<s>[]) = K<h>[] * p_k[] + L<h>[]
+            + (SUM<s::SEC>(pi<s>[]) * ((1 - KRONECKER_DELTA<h, '1'>) * phi<h>
+                + KRONECKER_DELTA<h, '1'> * (1 - SUM<h2::HH\'1'>(phi<h2>))));
+                # phi - household h share in firms' profits
     };
-    calibration
+	identities
     {
-        delta = 0.025;
-        beta = 0.99;
-        eta = 2;
-        mu = 0.3;
-        pers = 0.57;
+		<hi::HH>K<hi>[] = par_k<hi>;
+		<hi::HH>L<hi>[] = par_l<hi>;
     };
 };
 
-block FIRM
+block <s::SEC> FIRM
 {
     controls
     {
-        K_d[], L_d[], Y[];
+		Y<s>[], K<s>[], L<s>[], <si::SEC>X<s, si>[];
     };
     objective
     {
-        pi[] = Y[] - L_d[] * W[] - r[] * K_d[];
+		pi<s>[] = Y<s>[] * p<s>[] - (K<s>[] * p_k[] + L<s>[] + SUM<si::SEC>(X<s, si>[] * p<si>[]));
     };
     constraints
     {
-        Y[] = Z[] * K_d[]^alpha * L_d[]^(1 - alpha);
-    };
-    calibration
-    {
-        r[ss] * K_s[ss] = 0.36 * Y[ss] -> alpha;
+		Y<s>[] = gamma<s> * K<s>[]^beta_k<s> * L<s>[]^beta_l<s> * PROD<si::SEC>(X<s, si>[]^beta_x<s, si>);
     };
 };
 
@@ -79,23 +74,7 @@ block EQUILIBRIUM
 {
     identities
     {
-        K_d[] = K_s[-1];
-        L_d[] = L_s[];
-    };
-};
-
-block EXOG 
-{
-    identities
-    {
-        Z[] = exp(phi * log(Z[-1]) + epsilon_Z[]);
-    };
-    shocks
-    {
-        epsilon_Z[];
-    };
-    calibration
-    {
-        phi = 0.95;
+		<s::SEC>Y<s>[] = SUM<h::HH>D<h, s>[] + SUM<si::SEC>(X<si, s>[]);
+        SUM<h::HH>L<h>[] = SUM<s::SEC>(L<s>[]);
     };
 };

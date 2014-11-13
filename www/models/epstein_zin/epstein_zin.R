@@ -34,22 +34,22 @@ ez <- make_model('epstein_zin.gcn')
 ez <- initval_calibr_par(ez, c(alpha = 0.4))
 ez <- steady_state(ez) 
 get_ss_values(ez)
-get_parameter_vals(ez)
+get_par_values(ez)
 
 # ... or treating "alpha" as a free parameter
 ez <- initval_calibr_par(ez, c(alpha = 0.4))
 ez <- steady_state(ez, calibration = FALSE)
 get_ss_values(ez)
 get_ss_values(ez, to_tex = save_latex)
-get_parameter_vals(ez)
+get_par_values(ez)
 
 # Perturbation solution
 ez <- solve_pert(ez, norm_tol = 1e-6, loglin = TRUE)
 get_pert_solution(ez, to_tex = save_latex)
 
 # Stochastic simulation
-ez <- set_shocks(ez, matrix(c(1), 1, 1), shock_order = "epsilon_Z")
-ez <- compute_corr(ez, ref_var='Y')
+ez <- set_shock_cov_mat(ez, matrix(c(1), 1, 1), shock_order = "epsilon_Z")
+ez <- compute_moments(ez, ref_var='Y')
 
 get_moments(model = ez, 
             relative_to = FALSE, 

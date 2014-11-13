@@ -37,13 +37,13 @@ get_ss_values(rbc, to_tex = save_latex)
 # Perturbation solution
 rbc <- solve_pert(model = rbc, loglin = TRUE)
 get_pert_solution(rbc, to_tex = save_latex)
-get_parameter_vals(rbc)
+get_par_values(rbc)
 
 # Stochastic simulation
-rbc <- set_shocks(rbc, shock_matrix = matrix(c(0.01), 1, 1),
+rbc <- set_shock_cov_mat(rbc, shock_matrix = matrix(c(0.01), 1, 1),
                   shock_order = c("epsilon_Z"))
 shock_info(rbc, all_shocks = TRUE)
-rbc <- compute_corr(rbc, ref_var = 'Y', n_leadlags = 5)
+rbc <- compute_moments(rbc, ref_var = 'Y', n_leadlags = 5)
 
 get_moments(model = rbc, 
             relative_to = FALSE, 

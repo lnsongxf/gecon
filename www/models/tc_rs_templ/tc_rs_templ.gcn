@@ -10,7 +10,7 @@
 # Author(s): Grzegorz Klima, Karol Podemski,                        #
 #            Kaja Retkiewicz-Wijtiwiak                              #
 # ###################################################################
-# RBC model with installation costs
+# Two-country model with perfect risk sharing
 # ###################################################################
 
 options
@@ -20,59 +20,57 @@ options
     output LaTeX landscape = TRUE;
 };
 
-tryreduce
+indexsets
 {
-    K_d[], L_d[], lambda_c[], pi[], PI[];
+    COUNTRY = { 'H', 'F' };
 };
 
-block CONSUMER
+tryreduce
+{
+    pi<'H'>[], pi<'F'>[], 
+    PI<'F'>[], PI<'H'>[], 
+    T<'H'>[], K_d<'H'>[], H_d<'H'>[],
+    T<'F'>[], K_d<'F'>[], H_d<'F'>[],
+    TR<'F'>[];
+};
+
+block <c::COUNTRY> CONSUMER
 {
     definitions
     {
-        u[] = (C[]^mu * (1 - L_s[])^(1 - mu))^(1 - eta) / (1 - eta);
+        u<c>[] = (C<c>[]^(mu) * (1 - H<c>[])^ (1 - mu)) ^ (1 - eta) / (1 - eta);
     };
     controls
     {
-        K_s[], C[], L_s[], I[];
+        K<c>[], C<c>[], H<c>[], I<c>[];
     };
     objective
     {
-        U[] = u[] + beta * E[][U[1]];
+        U<c>[] = u<c>[] + beta * E[][U<c>[1]];
     };
     constraints
     {
-        I[] + C[] = r[] * K_s[-1] + W[] * L_s[] - 
-                    psi * K_s[-1] * (I[] / K_s[-1] - delta)^2 + pi[]    :lambda_c[];
-        K_s[] = (1 - delta) * K_s[-1] + I[];
-    };
-    calibration
-    {
-        delta = 0.025;
-        beta = 0.99;
-        eta = 2;
-        mu = 0.3;
-        psi = 0.8;
+		I<c>[] + C<c>[] + T<c>[] = pi<c>[] + r<c>[] * K<c>[-1] +
+                                   W<c>[] * H<c>[] - psi<c> * K<c>[-1] * (I<c>[] / K<c>[-1] - delta<c>) ^ 2 + TR<c>[]	: lambda_c<c>[];
+        K<c>[] = (1 - delta<c>) * K<c>[-1] + I<c>[];
     };
 };
 
-block FIRM
+
+block <c::COUNTRY> FIRM
 {
     controls
     {
-        K_d[], L_d[], Y[], pi[];
+        K_d<c>[], H_d<c>[], Y<c>[], pi<c>[];
     };
     objective
     {
-        PI[] = pi[];
+        PI<c>[] = pi<c>[];
     };
     constraints
     {
-        Y[] = Z[] * K_d[]^alpha * L_d[]^(1 - alpha);
-        pi[] = Y[] - L_d[] * W[] - r[] * K_d[];
-    };
-    calibration
-    {
-        r[ss] * K_s[ss] = 0.36 * Y[ss] -> alpha;
+		Y<c>[] = Z<c>[] * K_d<c>[] ^ alpha<c> * H_d<c>[]^(1 - alpha<c>);
+		pi<c>[] = Y<c>[] - H_d<c>[] * W<c>[] - r<c>[] * K_d<c>[];
     };
 };
 
@@ -80,23 +78,25 @@ block EQUILIBRIUM
 {
     identities
     {
-        K_d[] = K_s[-1];
-        L_d[] = L_s[];
+		SUM<c::COUNTRY>(TR<c>[]) = 0;
+        <c::COUNTRY> K_d<c>[] = K<c>[-1];
+        <c::COUNTRY> H_d<c>[] = H<c>[];
+        <c::COUNTRY> T<c>[] = G_d<c>[];
+        lambda_c<'H'>[] = lambda_c<'F'>[]; # Risk sharing condition
     };
+
 };
 
-block EXOG 
+block EXOG
 {
     identities
     {
-        Z[] = exp(phi * log(Z[-1]) + epsilon_Z[]);
+		<c::COUNTRY> G_d<c>[] = (phi_G<c> * (G_d<c>[-1]) + epsilon_G<c>[]);
+        <c::COUNTRY> Z<c>[] = exp(phi_Z<c> * log(Z<c>[-1]) + epsilon_Z<c>[]);
     };
     shocks
     {
-        epsilon_Z[];
-    };
-    calibration
-    {
-        phi = 0.95;
+		<c::COUNTRY> epsilon_G<c>[],
+		<c::COUNTRY> epsilon_Z<c>[];
     };
 };

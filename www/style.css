@@ -155,6 +155,26 @@ a:hover {
     text-align: justify;
 }
 
+#main table{
+    border: 0px solid black;
+    border-collapse: collapse;
+}
+
+#main th {
+    color: #C76033;
+    padding: 5px;
+    border-bottom: 1px solid #C76033;
+    border-collapse: collapse;
+}
+
+#main td {
+    padding: 5px;
+    text-align: left;
+    border-bottom: 1px solid black;
+    border-collapse: collapse;
+}
+
+
 .clear {
     display: block;
     clear: both;

@@ -29,20 +29,26 @@ library(gEcon)
 # Bulding model from the *.gcn file
 pe <- make_model('pure_exchange.gcn')
 
+# Set parameter values
+pe <- set_free_par(pe, c(e_A1_calibr = 2,
+                         e_A2_calibr = 0,
+                         e_B1_calibr = 0,
+                         e_B2_calibr = 2))
+
 # Finding steady state
 pe <- steady_state(pe)
 get_ss_values(pe, to_tex = save_latex)
-get_parameter_vals(pe)
+get_par_values(pe)
 
 # Overwriting parameter values specified in the *.gcn file
 pe <- set_free_par(pe, free_par = list(psi_A = 2))
-get_parameter_vals(pe)
+get_par_values(pe)
 pe <- steady_state(pe)
 get_ss_values(pe)
 
 # Restoring parameter values set in the *.gcn file
 pe <- set_free_par(pe, reset = TRUE)
-get_parameter_vals(pe)
+get_par_values(pe)
 
 # Diagnostics - structure and results of the model
 print(pe)

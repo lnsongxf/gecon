@@ -10,9 +10,9 @@
 # Author(s): Grzegorz Klima, Karol Podemski,                        #
 #            Kaja Retkiewicz-Wijtiwiak                              #
 # ###################################################################
-# Time-to-build model
-# Calibration based on Backus, Kehoe and Kydland (1992): 
-# "International Real Business Cycles", Journal of Political Economy
+# RBC Model with home production based on Benhabib J., 
+# Rogerson R. & Wright R. "Homework in macroeconomics: 
+# Household production and aggregate fluctuations." (1991)
 # ###################################################################
 
 # ###################################################################
@@ -29,55 +29,53 @@ library(gEcon)
 # ############################# MODEL ###############################
 # ###################################################################
 
-# Bulding model from the *.gcn file
-ttb <- make_model('ttb.gcn')
+# Building model from the *.gcn file
+hp_templ <- make_model("home_prod_templ.gcn")
 
 # Finding steady state
-ttb <- steady_state(ttb)
-get_ss_values(ttb, to_tex = save_latex, 
-              var_names = setdiff(get_var_names(ttb), 
-                                  c("lambda__FIRM_2",
-                                    "lambda__FIRM_S__lag_1",
-                                    "lambda__FIRM_S__lag_2")))
-get_par_values(ttb)
+hp_templ <- initval_var(hp_templ, list(N = 0.5,
+                                       N__H = 0.25,
+                                       N__M = 0.25))
+hp_templ <- steady_state(hp_templ)
+get_ss_values(hp_templ, to_tex = save_latex)
 
-# Perturbation solution
-ttb <- solve_pert(ttb, norm_tol = 1e-6, loglin = TRUE)
-get_pert_solution(ttb, to_tex = save_latex)
+# Perturbation solution - log-linearisation
+hp_templ <- solve_pert(model = hp_templ, loglin = TRUE)
+get_pert_solution(hp_templ, to_tex = save_latex)
+get_par_values(hp_templ)
 
 # Stochastic simulation
-shock_info(ttb, all_shocks = TRUE)
-ttb <- set_shock_cov_mat(ttb, matrix(c(0.1), 1, 1))
-ttb <- compute_moments(ttb, ref_var='Y')
+hp_templ <- set_shock_cov_mat(hp_templ, shock_matrix = matrix(c(0.49, 0.33, 0.33, 0.49), 2, 2),
+                       shock_order = c("epsilon__H", "epsilon__M"))
+hp_templ <- compute_moments(hp_templ, ref_var = 'Y')
 
-get_moments(model = ttb, 
-            var_names = c('C', 'K', 'L', 'LAMBDA', 'N', 'U', 'Y', 'W'),
+get_moments(model = hp_templ, 
+            var_names = c("r", "C__M", "I", "I__M", "I__H", "K", 
+                          "N", "N__M", "N__H", "W", "Y"),
             relative_to = FALSE, 
             moments = TRUE, 
             correlations = TRUE, 
             autocorrelations = TRUE, 
-            var_dec = FALSE,
+            var_dec = TRUE, 
             to_tex = save_latex)
 
-get_moments(model = ttb, 
-            var_names = c('C', 'K', 'L', 'LAMBDA', 'N', 'U', 'Y', 'W'),
+get_moments(model = hp_templ, 
             relative_to = TRUE, 
             moments = TRUE, 
-            correlations = TRUE,
+            correlations = TRUE, 
             to_tex = save_latex)
 
 # Computing and drawing impulse response functions
-var_info(ttb, all_variables = TRUE)
-plotirf <- compute_irf(ttb, var_list = c('C', 'K', 'L', 'S', 'Y', 'N'), 
-                       shock_list = 'epsilon_LAMBDA',
-                       path_length = 20)
-plot_simulation(plotirf, to_tex = save_latex)
-print(plotirf)
+hp_templ_irf <- compute_irf(model = hp_templ,
+                            var_list = c('C__M', 'C__H', 'Y',
+                                         'K__M', 'K__H', 'N__M', 'N__H', 'W'))
+plot_simulation(hp_templ_irf, to_tex = save_latex)
+shock_info(hp_templ, all_shocks = TRUE)
 
 # Diagnostics - structure and results of the model
-print(ttb)
-summary(ttb)
-show(ttb)
+print(hp_templ)
+summary(hp_templ)
+show(hp_templ)
 
 # ###################################################################
 # ############################## END ################################

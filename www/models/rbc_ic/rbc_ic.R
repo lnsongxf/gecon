@@ -29,7 +29,7 @@ library(gEcon)
 
 # Building model from the *.gcn file
 rbc_ic <- make_model("rbc_ic.gcn")
-parameter_info(rbc_ic, all_parameters = TRUE)
+par_info(rbc_ic, all_parameters = TRUE)
 
 # Finding steady state
 rbc_ic <- initval_calibr_par(rbc_ic, calibr_par = list(alpha = 0.5))
@@ -38,11 +38,11 @@ get_ss_values(rbc_ic, to_tex = save_latex)
 
 # Perturbation solution
 rbc_ic <- solve_pert(model = rbc_ic, loglin = TRUE)
-get_pert_solution(rbc_ic)
+get_pert_solution(rbc_ic, to_tex = save_latex)
 
 # Stochastic simulation
-rbc_ic <- set_shocks(rbc_ic, shock_matrix = matrix(c(0.01), 1, 1))
-rbc_ic <- compute_corr(rbc_ic, ref_var = 'Y')
+rbc_ic <- set_shock_cov_mat(rbc_ic, shock_matrix = matrix(c(0.01), 1, 1))
+rbc_ic <- compute_moments(rbc_ic, ref_var = 'Y')
 
 get_moments(model = rbc_ic, 
             relative_to = FALSE, 

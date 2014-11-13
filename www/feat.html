@@ -39,12 +39,13 @@ optimization problems, exogenous shocks and market clearing conditions.
 Within each optimisation block, the user specifies objective, control variables
 and constraints of&nbsp;a&nbsp;particular agent. Blocks can be also created  for
 defining market clearing conditions and behaviour of exogenous variables.
+Blocks can be &ldquo;templated&rdquo;, which means that problems of similar agents can
+be written and solved only once.
 </p>
 
 <p>
 The parameters of models can be set either in a <span class="fixedII">.gcn</span> file or&nbsp;
-by&nbsp;using R interface later on. Parameters can be&nbsp;also calibrated based on&nbsp;the&nbsp;user supplied steady
-state relationships between variables.
+by&nbsp;using R interface later on. Parameters can be&nbsp;also calibrated based on&nbsp;the&nbsp;user-supplied steady-state relationships between variables.
 </p>
 
 <h2>Deriving model equations</h2>
@@ -53,8 +54,11 @@ state relationships between variables.
 <span class="fixedI">gEcon</span> reduces pen &amp; paper derivations of model equations thanks
 to the following functionality:
 <ul>
-<li> automatic derivation of first order conditions,
-<li> automatic reduction of variables,
+<li> template mechanism (similar to those found in CGE modelling software) which allows to declare
+similar agents (differentiated by parameters only) in a&nbsp;single block,
+<li> automatic derivation of first order conditions (FOCs),
+<li> automatic generation and reduction (after deriving FOCs) of Lagrange multipliers,
+<li> automatic reduction of user-selected variables,
 <li> automatic derivation of first order perturbation matrices,
 <li> automatic log-linearisation of model equations.
 </ul>
@@ -64,19 +68,19 @@ to the following functionality:
 
 <h2>R class <span class="fixedII">gecon_model</span></h2>
 <p>
-<span class="fixedI">gEcon</span> has user friendly interface written in R.
-A model file created by the shared library is loaded into R environment and
-then a <span class="fixedII">gecon_model</span> class object is created. The user can
-solve and analyze models by using the elements implemented in <span class="fixedII">gEcon</span>:
+<span class="fixedI">gEcon</span> has user-friendly interface written in R.
+A model file written by the shared library is read from R environment and
+an&nbsp;object <span class="fixedII">gecon_model</span> class  is created. The user can
+solve and analyze models by using facilities implemented in <span class="fixedII">gEcon</span>:
 <ul>
 <li> calibration utilities,
 <li> steady state and perturbation solvers,
 <li> tools for IRFs and statistics computations.
 </ul>
-<span class="fixedI">gEcon</span> interface is interactive and it enables users to
-change settings and parameters "on the fly" without the need to recompute the whole model.
+<span class="fixedI">gEcon</span> interface is interactive. It allows users to
+change settings and parameters &ldquo;on the fly&rdquo; without the need to recompute the whole model.
 Moreover, <span class="fixedI">gEcon</span> is equipped with a set of tools for&nbsp;analysing model
-specification, which can be useful in&nbsp;debugging or&nbsp;searching for&nbsp;the&nbsp;steady state.
+specification, which can be useful in&nbsp;debugging.
 </p>
 
 <h2>Model documentation and diagnostics</h2>
@@ -96,7 +100,7 @@ parameters.
 <h2>Numerical solvers employed</h2>
 <ul>
 <li> <span class="fixedII">nleqslv</span> for solving systems of non-linear equations using Newton or Broyden methods with line searches,
-<li> <span class="fixedII">gensys</span> for solving perturbations of the first order.
+<li> <span class="fixedII">gensys</span> for solving the first order perturbation.
 </ul>
 
 

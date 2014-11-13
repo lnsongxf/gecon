@@ -33,7 +33,7 @@ rbc_hf <- make_model('rbc_hf.gcn')
 # Finding steady state
 rbc_hf <- steady_state(rbc_hf)
 get_ss_values(rbc_hf, to_tex = save_latex)
-get_parameter_vals(rbc_hf)
+get_par_values(rbc_hf)
 
 # Perturbation solution
 rbc_hf <- solve_pert(rbc_hf, norm_tol = 1e-6, loglin = FALSE)
@@ -43,7 +43,7 @@ get_pert_solution(rbc_hf, to_tex = save_latex)
 shock_info(rbc_hf, all_shocks = TRUE)
 rbc_hf <- set_shock_distr_par(rbc_hf, 
                              distr_par = list("var(epsilon_Z)" = 0.005))
-rbc_hf <- compute_corr(rbc_hf, ref_var='Y')
+rbc_hf <- compute_moments(rbc_hf, ref_var='Y', n_leadlags = 5)
 
 get_moments(model = rbc_hf, 
             var_names = setdiff(get_var_names(rbc_hf), "lambda__CONSUMER_2"),
@@ -57,7 +57,7 @@ get_moments(model = rbc_hf,
 get_moments(model = rbc_hf, 
             relative_to = TRUE, 
             moments = TRUE, 
-            correlations = TRUE, 
+            correlations = TRUE,
             to_tex = save_latex)
 
 # Computing and drawing impulse response functions

@@ -20,6 +20,7 @@ options
     output logfile = TRUE;
     output LaTeX = TRUE;
     verbose = TRUE;
+    output LaTeX landscape = TRUE;
 };
 
 tryreduce

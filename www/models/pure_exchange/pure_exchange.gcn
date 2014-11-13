@@ -39,8 +39,8 @@ block AGENT_A
     };
     identities
     {
-        e_A1[] = 2;
-        e_A2[] = 0;
+        e_A1[] = e_A1_calibr;
+        e_A2[] = e_A2_calibr;
     };
     calibration
     {
@@ -64,8 +64,8 @@ block AGENT_B
     };
     identities
     {
-        e_B1[] = 0;
-        e_B2[] = 2;
+        e_B1[] = e_B1_calibr;
+        e_B2[] = e_B2_calibr;
     };
     calibration
     {

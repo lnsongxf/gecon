@@ -39,18 +39,17 @@ get_ss_values(mc, to_tex = save_latex)
 # Perturbation solution
 mc <- solve_pert(mc, loglin = TRUE)
 get_pert_solution(mc, to_tex = save_latex)
-summary(mc)
 
 # Stochastic simulation
-mc <- set_shocks(mc, matrix(c(1), 1, 1), shock_order = "epsilon_Z")
-mc <- compute_corr(mc, filter = TRUE)
+mc <- set_shock_cov_mat(mc, matrix(c(1), 1, 1), shock_order = "epsilon_Z")
+mc <- compute_moments(mc, filter = TRUE)
 get_moments(mc, 
             var_names = c("C", "I", "K", "L_s",   
                           "U", "W", "Y", "Z"),
             var_dec = FALSE,
             to_tex = save_latex)
 
-mc_sim <- compute_corr(mc, sim = TRUE, filter = FALSE)
+mc_sim <- compute_moments(mc, sim = TRUE, filter = FALSE)
 get_moments(mc, 
             var_names = c("C", "I", "K", "L_s",  
                           "U", "W", "Y", "Z"),

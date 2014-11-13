@@ -42,15 +42,15 @@ get_ss_values(hp, to_tex = save_latex)
 # Perturbation solution - log-linearisation
 hp <- solve_pert(model = hp, loglin = TRUE)
 get_pert_solution(hp, to_tex = save_latex)
-get_parameter_vals(hp)
+get_par_values(hp)
 
 # Stochastic simulation
-hp <- set_shocks(hp, shock_matrix = matrix(c(0.49, 0.33, 0.33, 0.49), 2, 2),
+hp <- set_shock_cov_mat(hp, shock_matrix = matrix(c(0.49, 0.33, 0.33, 0.49), 2, 2),
                  shock_order = c("epsilon_h", "epsilon_m"))
-hp <- compute_corr(hp, ref_var = 'Y')
+hp <- compute_moments(hp, ref_var = 'Y')
 
 get_moments(model = hp, 
-            var_names = c("r", "C_m", "C_h", "I", "I_m", "I_h", "K", 
+            var_names = c("r", "C_m", "I", "I_m", "I_h", "K", 
                           "N", "N_m", "N_h", "W", "Y"),
             relative_to = FALSE, 
             moments = TRUE, 

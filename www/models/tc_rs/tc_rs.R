@@ -33,7 +33,7 @@ tc_rs <- make_model('tc_rs.gcn')
 # Finding steady state
 tc_rs <- steady_state(tc_rs)
 get_ss_values(tc_rs, to_tex = save_latex)
-get_parameter_vals(tc_rs)
+get_par_values(tc_rs)
 
 # Perturbation solution
 tc_rs <- solve_pert(tc_rs, norm_tol = 1e-6, loglin = FALSE)
@@ -48,7 +48,7 @@ tc_rs <- set_shock_distr_par(tc_rs,
                                               "var(epsilon_G_ast)" = 0.01,
                                               "cor(epsilon_Z, epsilon_G)" = 0.5,
                                               "cor(epsilon_Z_ast, epsilon_G_ast)" = 0.5))
-tc_rs <- compute_corr(tc_rs, ref_var='Y')
+tc_rs <- compute_moments(tc_rs, ref_var='Y')
 
 get_moments(model = tc_rs, 
             var_names = c("r", "C", "G_d", "H", "I", "K", "TR", "U",

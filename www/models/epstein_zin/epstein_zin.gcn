@@ -20,7 +20,7 @@ options
 
 tryreduce
 {
-    pi[], L_s[], K_d[];
+    pi[], L_s[], K_d[], L_d[];
 };
 
 block CONSUMER

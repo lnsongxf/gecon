@@ -10,9 +10,7 @@
 # Author(s): Grzegorz Klima, Karol Podemski,                        #
 #            Kaja Retkiewicz-Wijtiwiak                              #
 # ###################################################################
-# Time-to-build model
-# Calibration based on Backus, Kehoe and Kydland (1992): 
-# "International Real Business Cycles", Journal of Political Economy
+# Pure exchange model with two consumers and three goods
 # ###################################################################
 
 # ###################################################################
@@ -29,55 +27,44 @@ library(gEcon)
 # ############################# MODEL ###############################
 # ###################################################################
 
-# Bulding model from the *.gcn file
-ttb <- make_model('ttb.gcn')
+# Building model from the *.gcn file
+pure_exchange_t <- make_model("pure_exchange_t.gcn")
 
-# Finding steady state
-ttb <- steady_state(ttb)
-get_ss_values(ttb, to_tex = save_latex, 
-              var_names = setdiff(get_var_names(ttb), 
-                                  c("lambda__FIRM_2",
-                                    "lambda__FIRM_S__lag_1",
-                                    "lambda__FIRM_S__lag_2")))
-get_par_values(ttb)
+# Setting parameter values
+pure_exchange_t <- set_free_par(pure_exchange_t, 
+                                    free_par= c("alpha__A__1" = 0.3, "alpha__A__2" = 0.4,
+                                                "alpha__A__3" = 0.3, "alpha__B__1" = 0.3,
+                                                "alpha__B__2" = 0.4, "alpha__B__3" = 0.3,
+                                                "e_calibr__A__1" = 3, "e_calibr__B__1" = 1,
+                                                "e_calibr__A__2" = 2, "e_calibr__B__2" = 1,
+                                                "e_calibr__A__3" = 1, "e_calibr__B__3" = 3))
 
-# Perturbation solution
-ttb <- solve_pert(ttb, norm_tol = 1e-6, loglin = TRUE)
-get_pert_solution(ttb, to_tex = save_latex)
+# Finding equilibrium
+pure_exchange_t <- steady_state(pure_exchange_t)
 
-# Stochastic simulation
-shock_info(ttb, all_shocks = TRUE)
-ttb <- set_shock_cov_mat(ttb, matrix(c(0.1), 1, 1))
-ttb <- compute_moments(ttb, ref_var='Y')
-
-get_moments(model = ttb, 
-            var_names = c('C', 'K', 'L', 'LAMBDA', 'N', 'U', 'Y', 'W'),
-            relative_to = FALSE, 
-            moments = TRUE, 
-            correlations = TRUE, 
-            autocorrelations = TRUE, 
-            var_dec = FALSE,
-            to_tex = save_latex)
-
-get_moments(model = ttb, 
-            var_names = c('C', 'K', 'L', 'LAMBDA', 'N', 'U', 'Y', 'W'),
-            relative_to = TRUE, 
-            moments = TRUE, 
-            correlations = TRUE,
-            to_tex = save_latex)
-
-# Computing and drawing impulse response functions
-var_info(ttb, all_variables = TRUE)
-plotirf <- compute_irf(ttb, var_list = c('C', 'K', 'L', 'S', 'Y', 'N'), 
-                       shock_list = 'epsilon_LAMBDA',
-                       path_length = 20)
-plot_simulation(plotirf, to_tex = save_latex)
-print(plotirf)
 
 # Diagnostics - structure and results of the model
-print(ttb)
-summary(ttb)
-show(ttb)
+print(pure_exchange_t)
+summary(pure_exchange_t)
+show(pure_exchange_t)
+
+
+# Analysing results
+
+# index sets
+cat("\nIndex sets used in the model:\n")
+print(get_index_sets(pure_exchange_t))
+
+agent_A_vars <- get_var_names_by_index(pure_exchange_t, index_names=c('A'))
+agent_B_vars <- get_var_names_by_index(pure_exchange_t, index_names=c('B'))
+
+# Agent A
+cat("\nVariables related to agent A:\n")
+get_ss_values(pure_exchange_t, var_names = agent_A_vars, to_tex = save_latex)
+
+# Agent B
+cat("\nVariables related to agent B:\n")
+get_ss_values(pure_exchange_t, var_names = agent_B_vars, to_tex = save_latex)
 
 # ###################################################################
 # ############################## END ################################
