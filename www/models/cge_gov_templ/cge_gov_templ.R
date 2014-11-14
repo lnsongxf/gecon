@@ -1,6 +1,6 @@
 # ###################################################################
-# (c) Kancelaria Prezesa Rady Ministr?w 2012-2014                   #
-# Tre?? licencji w pliku:                                           #
+# (c) Kancelaria Prezesa Rady Ministrów 2012-2014                   #
+# Treść licencji w pliku:                                           #
 # http://gecon.r-forge.r-project.org/files/gEcon_licence.txt        #
 #                                                                   #
 # (c) Chancellery of the Prime Minister 2012-2014                   #
