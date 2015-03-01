@@ -83,43 +83,6 @@ of&nbsp;Poland, but it is still maintained and developed by&nbsp;its original au
 <span class="fixedI">gEcon</span> 0.9.0 was released on&nbsp;February 28, 2015. This version introduces the&nbsp;so-called references allowing users to&nbsp;formulate problems constrained by&nbsp;solution to&nbsp;other agents’ problems (eg.&nbsp;Nash bargaining, optimal policy).
 </p>
 
-<p>
-<b><font color="red">Important note to the users of versions prior to&nbsp;0.8.0:</font></b>
-Changes have been made in the&nbsp;names of&nbsp;the&nbsp;functions and classes in the&nbsp;R interface that relate to&nbsp;model parameters. The goal of those changes was to assure consistency with
-the&nbsp;naming convention for functions and classes pertaining to&nbsp;variables.
-The following functions and classes have changed their names:<br>
-<span class="fixedII">get_free_parameter_names</span> to <span class="fixedII">get_par_names</span> (with extended functionality),<br>
-<span class="fixedII">get_parameter_vals</span> to <span class="fixedII">get_par_values</span>,<br>
-<span class="fixedII">parameter_info</span> to <span class="fixedII">par_info</span>,<br>
-<span class="fixedII">gecon_parameter_info</span> to <span class="fixedII">gecon_par_info</span>.<br>
-In addition, names of the following four functions have been changed:<br>
-<span class="fixedII">find_eq</span> to <span class="fixedII">list_eq</span>,<br>
-<span class="fixedII">find_calibr_eq</span> to <span class="fixedII">list_calibr_eq</span>,<br>
-<span class="fixedII">set_shocks</span> to <span class="fixedII">set_shock_cov_mat</span>,<br>
-<span class="fixedII">compute_corr</span> to <span class="fixedII">compute_moments</span>.<br>
-Please adjust your R code accordingly.
-</p>
-
-
-<p>
-<b><font color="red">Important note to the users of versions prior to&nbsp;0.7.0:</font></b> models written for versions prior to&nbsp;0.7.0 will not&nbsp;work
-in&nbsp;the&nbsp;same way or&nbsp;may even fail. Changes include:
-<ul>
-<li> shocks listed in the <span class="fixedII">.gcn</span> file should now be separated by commas (<span class="fixedII">,</span>) instead of&nbsp;semicolons&nbsp;(<span class="fixedII">;</span>),
-<li> <span class="fixedI">gEcon</span> now inserts Lagrange multipliers for constraints automatically&nbsp;&mdash;&nbsp;explicitly
-declared Lagrange multipliers will&nbsp;not&nbsp;be automatically selected for&nbsp;reduction, and declarations of&nbsp;Lagrange multipliers
-on time aggregators in&nbsp;static problems will cause an&nbsp;error.
-</ul>
-In order to force backward compatibility use <span class="fixedII">backwardcomp</span> option in the <span class="fixedII">options</span> section of your <span class="fixedII">.gcn</span> model file.<br>
-R interface has also been slightly changed. In particular shock list provided as&nbsp;an&nbsp;argument to&nbsp;functions:
-<span class="fixedII">random_path</span>,
-<span class="fixedII">compute_irf</span>,
-<span class="fixedII">simulate_model</span> and
-<span class="fixedII">gecon_simulation</span> class constructor
-should now be called <span class="fixedII">shock_list</span> instead of <span class="fixedII">eps_list</span>.
-Please adjust your R code accordingly.
-</p>
-
 
 <h2>Plans for development</h2>
 
