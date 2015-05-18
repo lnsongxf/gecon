@@ -83,54 +83,13 @@ save it on your disk, and install
 package from this file.
 </p>
 
-<h3>Download version 0.9.0 from R-forge</h3>
+<h3>Download version 0.9.0/0.9.1 from R-forge</h3>
 </p>
 <ul>
-<li><a href="files/gEcon_0.9.0.tar.gz"><span class="fixedI">gEcon_0.9.0.tar.gz</span> [366 KB]</a> &mdash; source code (Linux / Un*x systems)
-<li><a href="files/gEcon_0.9.0.zip"><span class="fixedI">gEcon_0.9.0.zip</span> [1.9 MB]</a> &mdash; binary version for Windows
+<li><a href="files/gEcon_0.9.1.tar.gz"><span class="fixedI">gEcon_0.9.1.tar.gz</span> [366 KB]</a> &mdash; source code (Linux / Un*x systems)
+<li><a href="files/gEcon_0.9.1.zip"><span class="fixedI">gEcon_0.9.1.zip</span> [1.9 MB]</a> &mdash; binary version for Windows
 <li><a href="files/gEcon_0.9.0.tgz"><span class="fixedI">gEcon_0.9.0.tgz</span> [801 KB]</a> &mdash; binary version for Mac (built under&nbsp;OS&nbsp;X&nbsp;10.9.5)
 </ul>
-
-
-
-
-<p>
-<b><font color="red">Important note to the users of versions prior to&nbsp;0.8.0:</font></b>
-Changes have been made in the&nbsp;names of&nbsp;the&nbsp;functions and classes in the&nbsp;R interface that relate to&nbsp;model parameters. The goal of those changes was to assure consistency with
-the&nbsp;naming convention for functions and classes pertaining to&nbsp;variables.
-The following functions and classes have changed their names:<br>
-<span class="fixedII">get_free_parameter_names</span> to <span class="fixedII">get_par_names</span> (with extended functionality),<br>
-<span class="fixedII">get_parameter_vals</span> to <span class="fixedII">get_par_values</span>,<br>
-<span class="fixedII">parameter_info</span> to <span class="fixedII">par_info</span>,<br>
-<span class="fixedII">gecon_parameter_info</span> to <span class="fixedII">gecon_par_info</span>.<br>
-In addition, names of the following four functions have been changed:<br>
-<span class="fixedII">find_eq</span> to <span class="fixedII">list_eq</span>,<br>
-<span class="fixedII">find_calibr_eq</span> to <span class="fixedII">list_calibr_eq</span>,<br>
-<span class="fixedII">set_shocks</span> to <span class="fixedII">set_shock_cov_mat</span>,<br>
-<span class="fixedII">compute_corr</span> to <span class="fixedII">compute_moments</span>.<br>
-Please adjust your R code accordingly.
-</p>
-
-
-<p>
-<b><font color="red">Important note to the users of versions prior to&nbsp;0.7.0:</font></b> models written for versions prior to&nbsp;0.7.0 will not&nbsp;work
-in&nbsp;the&nbsp;same way or&nbsp;may even fail. Changes include:
-<ul>
-<li> shocks listed in the <span class="fixedII">.gcn</span> file should now be separated by commas (<span class="fixedII">,</span>) instead of&nbsp;semicolons&nbsp;(<span class="fixedII">;</span>),
-<li> <span class="fixedI">gEcon</span> now inserts Lagrange multipliers for constraints automatically&nbsp;&mdash;&nbsp;explicitly
-declared Lagrange multipliers will&nbsp;not&nbsp;be automatically selected for&nbsp;reduction, and declarations of&nbsp;Lagrange multipliers
-on time aggregators in&nbsp;static problems will cause an&nbsp;error.
-</ul>
-In order to force backward compatibility use <span class="fixedII">backwardcomp</span> option in the <span class="fixedII">options</span> section of your <span class="fixedII">.gcn</span> model file.<br>
-R interface has also been slightly changed. In particular shock list provided as&nbsp;an&nbsp;argument to&nbsp;functions:
-<span class="fixedII">random_path</span>,
-<span class="fixedII">compute_irf</span>,
-<span class="fixedII">simulate_model</span> and
-<span class="fixedII">gecon_simulation</span> class constructor
-should now be called <span class="fixedII">shock_list</span> instead of <span class="fixedII">eps_list</span>.
-Please adjust your R code accordingly.
-</p>
-
 
 </div>
 
