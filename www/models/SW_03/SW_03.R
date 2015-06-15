@@ -7,7 +7,19 @@
 #          Kaja Retkiewicz-Wijtiwiak, Anna Sowińska                 #
 # ###################################################################
 
+# ###################################################################
+# ########################### SETTINGS ##############################
+# ###################################################################
+
+# Are the results to be saved to *.tex file or displayed in the console?
+save_latex <- FALSE
+
+# Sourcing R - code
 library(gEcon)
+
+# ###################################################################
+# ############################# MODEL ###############################
+# ###################################################################
 
 sw_gecon <- make_model('SW_03.gcn')
 
@@ -31,8 +43,8 @@ shock_info(sw_gecon, all_shocks = TRUE)
 
 sw_gecon <- compute_moments(sw_gecon)
 
-get_moments(sw_gecon)
+get_moments(sw_gecon, to_tex = save_latex)
 
 sw_gecon_irf <- compute_irf(sw_gecon, var_list = c('C', 'Y', 'K', 'I', 'L'), chol = T,
                             shock_list = list('eta_a', 'eta_R'), path_length = 40)
-plot_simulation(sw_gecon_irf)
+plot_simulation(sw_gecon_irf, to_tex = save_latex)
