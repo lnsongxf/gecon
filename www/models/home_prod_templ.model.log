@@ -1,0 +1,115 @@
+Generated on 2016-10-09 23:50:57 by gEcon ver. 1.0.0 (2016-10-09)
+http://gecon.r-forge.r-project.org/
+
+Model name: home_prod_templ
+
+Index sets (1):
+    IND = { 'H', 'M' }
+
+Block: CONSUMER
+ Controls:
+    <i::IND> K<i>[], <i::IND> C<i>[], <i::IND> N<i>[], <i::IND> I<i>[]
+ Objective:
+    U[] = beta * E[][U[1]] + log(1 - SUM<i::IND> N<i>[]) * (1 - b) + b * e^-1 * log(a * C<'M'>[]^e + (1 - a) * C<'H'>[]^e)
+ Constraints:
+    pi[] - C<'M'>[] + r[] * K<'M'>[-1] + W[] * N<'M'>[] - SUM<i::IND> I<i>[] = 0    (lambda__CONSUMER_1[])
+    <i::IND> I<i>[] - K<i>[] + K<i>[-1] * (1 - delta) = 0    (<i::IND> lambda__CONSUMER_2<i>[])
+    -C<'H'>[] + Gamma * Z<'H'>[] * K<'H'>[-1]^theta * N<'H'>[]^(1 - theta) = 0    (lambda__CONSUMER_3[])
+ Identities:
+    -K[] + SUM<i::IND> K<i>[] = 0
+    -I[] + SUM<i::IND> I<i>[] = 0
+    -N[] + SUM<i::IND> N<i>[] = 0
+ First order conditions:
+    <i::IND> -lambda__CONSUMER_2<i>[] + beta * (KRONECKER_DELTA<'M',i> * E[][lambda__CONSUMER_1[1] * r[1]] + (1 - delta) * E[][lambda__CONSUMER_2<i>[1]] + KRONECKER_DELTA<'H',i> * theta * Gamma * K<'H'>[]^(-1 + theta) * E[][lambda__CONSUMER_3[1] * Z<'H'>[1] * N<'H'>[1]^(1 - theta)]) = 0    (<i::IND> K<i>[])
+    <i::IND> -KRONECKER_DELTA<'M',i> * lambda__CONSUMER_1[] - KRONECKER_DELTA<'H',i> * lambda__CONSUMER_3[] + b * e^-1 * (a * C<'M'>[]^e + (1 - a) * C<'H'>[]^e)^-1 * (KRONECKER_DELTA<'M',i> * a * e * C<'M'>[]^(-1 + e) + KRONECKER_DELTA<'H',i> * e * (1 - a) * C<'H'>[]^(-1 + e)) = 0    (<i::IND> C<i>[])
+    <i::IND> -(1 - b) * (1 - SUM<i::IND> N<i>[])^-1 + KRONECKER_DELTA<'M',i> * lambda__CONSUMER_1[] * W[] + KRONECKER_DELTA<'H',i> * Gamma * lambda__CONSUMER_3[] * Z<'H'>[] * (1 - theta) * K<'H'>[-1]^theta * N<'H'>[]^(-theta) = 0    (<i::IND> N<i>[])
+    <i::IND> -lambda__CONSUMER_1[] + lambda__CONSUMER_2<i>[] = 0    (<i::IND> I<i>[])
+
+Block: FIRM
+ Controls:
+    K_m_d[], N_m_d[], Y[], pi[]
+ Objective:
+    PI[] = pi[]
+ Constraints:
+    -pi[] + Y[] - r[] * K_m_d[] - N_m_d[] * W[] = 0    (lambda__FIRM_1[])
+    -Y[] + Gamma * Z<'M'>[] * K_m_d[]^alpha * N_m_d[]^(1 - alpha) = 0    (lambda__FIRM_2[])
+ First order conditions:
+    -lambda__FIRM_1[] * r[] + alpha * Gamma * lambda__FIRM_2[] * Z<'M'>[] * K_m_d[]^(-1 + alpha) * N_m_d[]^(1 - alpha) = 0    (K_m_d[])
+    -lambda__FIRM_1[] * W[] + Gamma * lambda__FIRM_2[] * Z<'M'>[] * (1 - alpha) * K_m_d[]^alpha * N_m_d[]^(-alpha) = 0    (N_m_d[])
+    lambda__FIRM_1[] - lambda__FIRM_2[] = 0    (Y[])
+    1 - lambda__FIRM_1[] = 0    (pi[])
+ First order conditions after reduction:
+    -r[] + alpha * Gamma * Z<'M'>[] * K_m_d[]^(-1 + alpha) * N_m_d[]^(1 - alpha) = 0    (K_m_d[])
+    -W[] + Gamma * Z<'M'>[] * (1 - alpha) * K_m_d[]^alpha * N_m_d[]^(-alpha) = 0    (N_m_d[])
+
+Block: EQUILIBRIUM
+ Identities:
+    -K_m_d[] + K<'M'>[-1] = 0
+    -N_m_d[] + N<'M'>[] = 0
+
+Block: EXOG
+ Identities:
+    <i::IND> -Z<i>[] + exp(epsilon<i>[] + psi<i> * log(Z<i>[-1])) = 0
+
+Variables (17):
+    r[], I[], K[], N[], U[], W[], Y[], C<'H'>[], C<'M'>[], I<'H'>[], I<'M'>[], K<'H'>[], K<'M'>[], N<'H'>[], N<'M'>[], Z<'H'>[], Z<'M'>[]
+
+Shocks (2):
+    epsilon<'H'>[], epsilon<'M'>[]
+
+Parameters (10):
+    a, alpha, b, beta, delta, e, theta, Gamma, psi<'H'>, psi<'M'>
+
+Free parameters (10):
+    a, alpha, b, beta, delta, e, theta, Gamma, psi<'H'>, psi<'M'>
+
+Equations (17):
+ (1)  -r[] + alpha * Gamma * Z<'M'>[] * K<'M'>[-1]^(-1 + alpha) * N<'M'>[]^(1 - alpha) = 0
+ (2)  -W[] + Gamma * Z<'M'>[] * (1 - alpha) * K<'M'>[-1]^alpha * N<'M'>[]^(-alpha) = 0
+ (3)  -Y[] + Gamma * Z<'M'>[] * K<'M'>[-1]^alpha * N<'M'>[]^(1 - alpha) = 0
+ (4)  -C<'H'>[] + Gamma * Z<'H'>[] * K<'H'>[-1]^theta * N<'H'>[]^(1 - theta) = 0
+ (5)  -Z<'H'>[] + exp(epsilon<'H'>[] + psi<'H'> * log(Z<'H'>[-1])) = 0
+ (6)  -Z<'M'>[] + exp(epsilon<'M'>[] + psi<'M'> * log(Z<'M'>[-1])) = 0
+ (7)  beta * (a * b * E[][r[1] * (a * C<'M'>[1]^e + (1 - a) * C<'H'>[1]^e)^-1 * C<'M'>[1]^(-1 + e)] + a * b * (1 - delta) * E[][(a * C<'M'>[1]^e + (1 - a) * C<'H'>[1]^e)^-1 * C<'M'>[1]^(-1 + e)]) - a * b * (a * C<'M'>[]^e + (1 - a) * C<'H'>[]^e)^-1 * C<'M'>[]^(-1 + e) = 0
+ (8)  beta * (a * b * (1 - delta) * E[][(a * C<'M'>[1]^e + (1 - a) * C<'H'>[1]^e)^-1 * C<'M'>[1]^(-1 + e)] + b * theta * Gamma * (1 - a) * K<'H'>[]^(-1 + theta) * E[][Z<'H'>[1] * (a * C<'M'>[1]^e + (1 - a) * C<'H'>[1]^e)^-1 * C<'H'>[1]^(-1 + e) * N<'H'>[1]^(1 - theta)]) - a * b * (a * C<'M'>[]^e + (1 - a) * C<'H'>[]^e)^-1 * C<'M'>[]^(-1 + e) = 0
+ (9)  -(1 - b) * (1 - N<'H'>[] - N<'M'>[])^-1 + a * b * W[] * (a * C<'M'>[]^e + (1 - a) * C<'H'>[]^e)^-1 * C<'M'>[]^(-1 + e) = 0
+ (10)  -(1 - b) * (1 - N<'H'>[] - N<'M'>[])^-1 + b * Gamma * Z<'H'>[] * (1 - a) * (1 - theta) * (a * C<'M'>[]^e + (1 - a) * C<'H'>[]^e)^-1 * K<'H'>[-1]^theta * C<'H'>[]^(-1 + e) * N<'H'>[]^(-theta) = 0
+ (11)  -I[] + I<'H'>[] + I<'M'>[] = 0
+ (12)  -K[] + K<'H'>[] + K<'M'>[] = 0
+ (13)  -N[] + N<'H'>[] + N<'M'>[] = 0
+ (14)  I<'H'>[] - K<'H'>[] + K<'H'>[-1] * (1 - delta) = 0
+ (15)  I<'M'>[] - K<'M'>[] + K<'M'>[-1] * (1 - delta) = 0
+ (16)  U[] - beta * E[][U[1]] - log(1 - N<'H'>[] - N<'M'>[]) * (1 - b) - b * e^-1 * log(a * C<'M'>[]^e + (1 - a) * C<'H'>[]^e) = 0
+ (17)  Y[] - C<'M'>[] - I<'H'>[] - I<'M'>[] = 0
+
+Steady state equations (17):
+ (1)  -r[ss] + alpha * Gamma * Z<'M'>[ss] * K<'M'>[ss]^(-1 + alpha) * N<'M'>[ss]^(1 - alpha) = 0
+ (2)  -W[ss] + Gamma * Z<'M'>[ss] * (1 - alpha) * K<'M'>[ss]^alpha * N<'M'>[ss]^(-alpha) = 0
+ (3)  -Y[ss] + Gamma * Z<'M'>[ss] * K<'M'>[ss]^alpha * N<'M'>[ss]^(1 - alpha) = 0
+ (4)  -C<'H'>[ss] + Gamma * Z<'H'>[ss] * K<'H'>[ss]^theta * N<'H'>[ss]^(1 - theta) = 0
+ (5)  -Z<'H'>[ss] + exp(psi<'H'> * log(Z<'H'>[ss])) = 0
+ (6)  -Z<'M'>[ss] + exp(psi<'M'> * log(Z<'M'>[ss])) = 0
+ (7)  beta * (a * b * r[ss] * (a * C<'M'>[ss]^e + (1 - a) * C<'H'>[ss]^e)^-1 * C<'M'>[ss]^(-1 + e) + a * b * (1 - delta) * (a * C<'M'>[ss]^e + (1 - a) * C<'H'>[ss]^e)^-1 * C<'M'>[ss]^(-1 + e)) - a * b * (a * C<'M'>[ss]^e + (1 - a) * C<'H'>[ss]^e)^-1 * C<'M'>[ss]^(-1 + e) = 0
+ (8)  beta * (a * b * (1 - delta) * (a * C<'M'>[ss]^e + (1 - a) * C<'H'>[ss]^e)^-1 * C<'M'>[ss]^(-1 + e) + b * theta * Gamma * Z<'H'>[ss] * (1 - a) * (a * C<'M'>[ss]^e + (1 - a) * C<'H'>[ss]^e)^-1 * C<'H'>[ss]^(-1 + e) * K<'H'>[ss]^(-1 + theta) * N<'H'>[ss]^(1 - theta)) - a * b * (a * C<'M'>[ss]^e + (1 - a) * C<'H'>[ss]^e)^-1 * C<'M'>[ss]^(-1 + e) = 0
+ (9)  -(1 - b) * (1 - N<'H'>[ss] - N<'M'>[ss])^-1 + a * b * W[ss] * (a * C<'M'>[ss]^e + (1 - a) * C<'H'>[ss]^e)^-1 * C<'M'>[ss]^(-1 + e) = 0
+ (10)  -(1 - b) * (1 - N<'H'>[ss] - N<'M'>[ss])^-1 + b * Gamma * Z<'H'>[ss] * (1 - a) * (1 - theta) * (a * C<'M'>[ss]^e + (1 - a) * C<'H'>[ss]^e)^-1 * C<'H'>[ss]^(-1 + e) * K<'H'>[ss]^theta * N<'H'>[ss]^(-theta) = 0
+ (11)  -I[ss] + I<'H'>[ss] + I<'M'>[ss] = 0
+ (12)  -K[ss] + K<'H'>[ss] + K<'M'>[ss] = 0
+ (13)  -N[ss] + N<'H'>[ss] + N<'M'>[ss] = 0
+ (14)  I<'H'>[ss] - K<'H'>[ss] + K<'H'>[ss] * (1 - delta) = 0
+ (15)  I<'M'>[ss] - K<'M'>[ss] + K<'M'>[ss] * (1 - delta) = 0
+ (16)  U[ss] - beta * U[ss] - log(1 - N<'H'>[ss] - N<'M'>[ss]) * (1 - b) - b * e^-1 * log(a * C<'M'>[ss]^e + (1 - a) * C<'H'>[ss]^e) = 0
+ (17)  Y[ss] - C<'M'>[ss] - I<'H'>[ss] - I<'M'>[ss] = 0
+
+Parameter settings (10):
+ (1)  a = 0.337
+ (2)  alpha = 0.36
+ (3)  b = 0.63
+ (4)  beta = 0.99
+ (5)  delta = 0.025
+ (6)  e = 0.8
+ (7)  theta = 0.08
+ (8)  Gamma = 1
+ (9)  psi<'H'> = 0.95
+ (10)  psi<'M'> = 0.95
+

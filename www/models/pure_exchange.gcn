@@ -1,0 +1,77 @@
+# ###################################################################
+# (c) Chancellery of the Prime Minister 2012-2015                   #
+#                                                                   #
+# Authors: Grzegorz Klima, Anna Sowińska                            #
+# ###################################################################
+# Pure exchange model
+# ###################################################################
+
+options
+{
+    output logfile = TRUE;
+    output LaTeX = TRUE;
+};
+
+tryreduce
+{
+    e_B1[], e_B2[], e_A1[], e_A2[], p_1[], C_A1[];
+};
+
+block AGENT_A
+{
+    controls
+    {
+        C_A1[], C_A2[];
+    };
+    objective
+    {
+        U_A[] = log(C_A1[]) + psi_A * log(C_A2[]);
+    };
+    constraints
+    {
+        p_1[] * C_A1[] + p_2[] * C_A2[] = p_1[] * e_A1[] + p_2[] * e_A2[];
+    };
+    identities
+    {
+        e_A1[] = e_A1_calibr;
+        e_A2[] = e_A2_calibr;
+    };
+    calibration
+    {
+        psi_A = 1.72;
+    };
+};
+
+block AGENT_B
+{
+    controls
+    {
+        C_B1[], C_B2[];
+    };
+    objective
+    {
+        U_B[] = log(C_B1[]) + psi_B * log(C_B2[]);
+    };
+    constraints
+    {
+        p_1[] * C_B1[] + p_2[] * C_B2[] = p_1[] * e_B1[] + p_2[] * e_B2[];
+    };
+    identities
+    {
+        e_B1[] = e_B1_calibr;
+        e_B2[] = e_B2_calibr;
+    };
+    calibration
+    {
+        psi_B = 2.22;
+    };
+};
+
+block EQUILIBRIUM
+{
+    identities
+    {
+        p_1[] = 1;
+        C_A1[] + C_B1[] = e_A1[] + e_B1[];
+    };
+};

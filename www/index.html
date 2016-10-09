@@ -20,7 +20,9 @@ language and solution framework </title>
 <div class="navit">Home</div>
 <div class="navit"><a href="feat.html">Features</a></div>
 <div class="navit"><a href="doc.html">Documentation &amp; FAQ</a></div>
-<div class="navit"><a href="download.html">Download!</a></div>
+<div class="navit"><a href="download.html">Download <span class="fixedI">gEcon</span>!</a></div>
+<div class="navit"><a href="ext_iosam.html"><span class="fixedI">gEcon.iosam</span></a></div>
+<div class="navit"><a href="ext_estim.html"><span class="fixedI">gEcon.estimation</span></a></div>
 <div class="navit"><a href="models.html">Sample models</a></div>
 <div class="navitlst"><a href="links.html">Links</a></div>
 <div class="clear"></div>
@@ -43,11 +45,11 @@ language and an interface with a&nbsp;set of solvers in&nbsp;R.
 <p>
 Publicly available toolboxes used in RBC/DSGE modelling require
 users to derive the first order conditions (FOCs) and linearisation equations by pen
-&amp;&nbsp;paper (e.g. <a href="http://www2.wiwi.hu-berlin.de/institute/wpol/html/toolkit.htm">Uhlig’s tool-kit</a>) or at least require manual
-derivation of the FOCs (e.g. <a href="http://www.dynare.org/">Dynare</a>).
-Derivation of&nbsp;FOCs is&nbsp;also required by&nbsp;<a href="http://www.gams.com/">GAMS</a> and&nbsp;<a href="http://www.copsmodels.com/gempack.htm">GEMPACK</a>&nbsp;&mdash;&nbsp;probably the two most popular frameworks used in&nbsp;CGE modelling.
+&amp;&nbsp;paper (e.g. <a href="links.html">Uhlig’s tool-kit</a>) or at least require manual
+derivation of the FOCs (e.g. <a href="links.html">Dynare</a>).
+Derivation of&nbsp;FOCs is&nbsp;also required by&nbsp;<a href="links.html">GAMS</a> and&nbsp;<a href="links.html">GEMPACK</a>&nbsp;&mdash;&nbsp;probably the two most popular frameworks used in&nbsp;CGE modelling.
 Owing to the&nbsp;development of&nbsp;an&nbsp;algorithm for&nbsp;automatic derivation
-of&nbsp;first order conditions and implementation of a&nbsp;comprehensive symbolic library,
+of&nbsp;first order conditions and implementation of a&nbsp;comprehensive symbolic computations library,
 <span class="fixedI">gEcon</span> allows users to&nbsp;describe their models in&nbsp;terms
 of&nbsp;optimisation problems of&nbsp;agents. To&nbsp;authors' best knowledge there is no&nbsp;other
 publicly available framework for&nbsp;writing and solving DSGE &amp;&nbsp;CGE models in&nbsp;this
@@ -67,38 +69,72 @@ The model description language is simple and intuitive. Given optimisation probl
 </p>
 
 <p>
-<span class="fixedI">gEcon</span> was initially developed at&nbsp;the&nbsp;Department
+<span class="fixedI">gEcon</span> was initially developed (2012&ndash;2015) at&nbsp;the&nbsp;Department
 for Strategic Analyses at&nbsp;the&nbsp;Chancellery of&nbsp;the&nbsp;Prime Minister of&nbsp;the&nbsp;Republic
-of&nbsp;Poland.
-As of March 1, 2015 <span class="fixedI">gEcon</span> is no longer developed and maintained
-at&nbsp;the&nbsp;Chancellery of&nbsp;the&nbsp;Prime Minister of&nbsp;the&nbsp;Republic
-of&nbsp;Poland, but it is still maintained and developed by&nbsp;its original authors.
+of&nbsp;Poland as&nbsp;a&nbsp;part of a&nbsp;project aiming at&nbsp;construction of&nbsp;large scale DSGE &amp;&nbsp;CGE 
+models of&nbsp;the&nbsp;Polish economy.
+Since March 1, 2015 <span class="fixedI">gEcon</span> is no longer developed and maintained
+at&nbsp;the&nbsp;Chancellery of&nbsp;the&nbsp;Prime Minister, but it is still maintained and developed by&nbsp;its original authors.
 </p>
+
 
 <h2>About current release</h2>
 
-<h3>Version 0.9.1 <b></b></h2>
+<h3>Version 1.0 <font color="red">(new!)</font></h2>
 
 <p>
-<span class="fixedI">gEcon</span> 0.9.1 was released on&nbsp;May 19, 2015. This is a patched 0.9.0 version, which introduced the&nbsp;so-called references allowing users to&nbsp;formulate problems constrained by&nbsp;solution to&nbsp;other agents’ problems (eg.&nbsp;Nash bargaining, optimal policy).
+<span class="fixedI">gEcon</span> 1.0 was released on&nbsp;October&nbsp;9, 2016
+This version concludes four years of&nbsp;<span class="fixedI">gEcon</span> development and testing. R&nbsp;code has been reviewed and reorganised, all reported bugs (mostly in the&nbsp;template and reference&nbsp;mechanisms) have been fixed.
 </p>
-
-
-<h2><font color="red">News</font></h2>
 
 <p>
-Working paper <i>Smets-Wouters '03 model revisited&nbsp;&mdash;&nbsp;an&nbsp;implementation in&nbsp;<span class="fixedI">gEcon</span></i> is now available on-line, see the&nbsp;<a href="doc.html">documentation</a>&nbsp;page.
+<b>Note:</b> the revision of the R code has led to numerous 
+changes in the interface. In&nbsp;particular, functions
+<span class="fixedII">compute_moments</span>
+and
+<span class="fixedII">get_moments</span>
+changed their names to
+<span class="fixedII">compute_model_stats</span>
+and
+<span class="fixedII">get_model_stats</span>
+respectively and argument lists of&nbsp;the&nbsp;following functions have been
+changed:
+<span class="fixedII">par_info</span>,
+<span class="fixedII">initval_calibr_par</span>,
+<span class="fixedII">get_par_values</span>,
+<span class="fixedII">var_info</span>,
+<span class="fixedII">initval_var</span>,
+<span class="fixedII">get_ss_values</span>,
+<span class="fixedII">shock_info</span>,
+<span class="fixedII">set_shock_cov_mat</span>,
+<span class="fixedII">random_path</span>,
+<span class="fixedII">compute_irf</span>,
+<span class="fixedII">simulate_model</span>,
+<span class="fixedII">plot_simulation</span>.
+A&nbsp;more detailed list of amendments can be&nbsp;found <a href="files/R_interface_changes.txt">here</a>.
+<b>Please adjust your code accordingly</b>.
+
 </p>
-
-
-<h2>Plans for development</h2>
 
 <p>
-An add-on package simplifying calibration of CGE models using SAM matrices will&nbsp;be&nbsp;released by&nbsp;the&nbsp;end of&nbsp;June&nbsp;2015.
+Please note that <span class="fixedI">gEcon</span>
+<b>is NOT DISTRIBUTED THROUGH CRAN</b>. You have to download the
+package file appropriate for you system, save it on your disk, and install
+<span class="fixedI">gEcon</span>
+package from this file.
 </p>
+
+<h2><span class="fixedI">gEcon</span> extensions <font color="red">(new!)</font></h2>
+
 <p>
-An add-on package allowing for Bayesian estimation of models will be released&nbsp;by the&nbsp;end of&nbsp;June&nbsp;2015.
+Two packages extending <span class="fixedI">gEcon</span> functionality
+(CGE calibration and DSGE model estimation) can be found under the
+<a href="ext_iosam.html"><span class="fixedI">gEcon.iosam</span></a> 
+and
+<a href="ext_estim.html"><span class="fixedI">gEcon.estimation</span></a> 
+tabs.
 </p>
+
 
 
 <h2>Development team</h2>
@@ -115,6 +151,11 @@ Please send bugs, comments, suggestions to:
 gklima&lt;AT&gt;users&lt;DOT&gt;sourceforge&lt;DOT&gt;net</span>.
 </p>
 
+<p>
+Please note that we are developing and maintaining 
+<span class="fixedI">gEcon</span> in&nbsp;our spare time, so before asking
+any questions, please read the&nbsp;Users' guide (which can be found under the&nbsp;<a href="doc.html">documentation</a> tab).
+</p>
 
 
 </div>

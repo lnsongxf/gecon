@@ -1,0 +1,97 @@
+Generated on 2016-10-09 23:50:46 by gEcon ver. 1.0.0 (2016-10-09)
+http://gecon.r-forge.r-project.org/
+
+Model name: rbc_hf
+
+Block: CONSUMER
+ Controls:
+    K_s[], C[], L_s[], I[], H[]
+ Objective:
+    U[] = beta * E[][U[1]] + (1 - eta)^-1 * ((1 - L_s[])^(1 - mu) * (C[] - pers * H[])^mu)^(1 - eta)
+ Constraints:
+    pi[] - C[] - I[] + K_s[-1] * r[] + L_s[] * W[] = 0    (lambda__CONSUMER_1[])
+    I[] - K_s[] + K_s[-1] * (1 - delta) = 0    (lambda__CONSUMER_2[])
+    C[-1] - H[] = 0    (lambda__CONSUMER_3[])
+ First order conditions:
+    -lambda__CONSUMER_2[] + beta * ((1 - delta) * E[][lambda__CONSUMER_2[1]] + E[][lambda__CONSUMER_1[1] * r[1]]) = 0    (K_s[])
+    -lambda__CONSUMER_1[] + beta * E[][lambda__CONSUMER_3[1]] + mu * (1 - L_s[])^(1 - mu) * (C[] - pers * H[])^(-1 + mu) * ((1 - L_s[])^(1 - mu) * (C[] - pers * H[])^mu)^(-eta) = 0    (C[])
+    lambda__CONSUMER_1[] * W[] + (-1 + mu) * (1 - L_s[])^(-mu) * (C[] - pers * H[])^mu * ((1 - L_s[])^(1 - mu) * (C[] - pers * H[])^mu)^(-eta) = 0    (L_s[])
+    -lambda__CONSUMER_1[] + lambda__CONSUMER_2[] = 0    (I[])
+    -lambda__CONSUMER_3[] - mu * pers * (1 - L_s[])^(1 - mu) * (C[] - pers * H[])^(-1 + mu) * ((1 - L_s[])^(1 - mu) * (C[] - pers * H[])^mu)^(-eta) = 0    (H[])
+
+Block: FIRM
+ Controls:
+    K_d[], L_d[], Y[]
+ Objective:
+    pi[] = Y[] - L_d[] * W[] - r[] * K_d[]
+ Constraints:
+    -Y[] + Z[] * K_d[]^alpha * L_d[]^(1 - alpha) = 0    (lambda__FIRM_1[])
+ First order conditions:
+    -r[] + alpha * lambda__FIRM_1[] * Z[] * K_d[]^(-1 + alpha) * L_d[]^(1 - alpha) = 0    (K_d[])
+    -W[] + lambda__FIRM_1[] * Z[] * (1 - alpha) * K_d[]^alpha * L_d[]^(-alpha) = 0    (L_d[])
+    1 - lambda__FIRM_1[] = 0    (Y[])
+ First order conditions after reduction:
+    -r[] + alpha * Z[] * K_d[]^(-1 + alpha) * L_d[]^(1 - alpha) = 0    (K_d[])
+    -W[] + Z[] * (1 - alpha) * K_d[]^alpha * L_d[]^(-alpha) = 0    (L_d[])
+
+Block: EQUILIBRIUM
+ Identities:
+    K_s[-1] - K_d[] = 0
+    -L_d[] + L_s[] = 0
+
+Block: EXOG
+ Identities:
+    -Z[] + exp(epsilon_Z[] + phi * log(Z[-1])) = 0
+
+Variables (11):
+    lambda__CONSUMER_2[], r[], C[], H[], I[], K_s[], L_s[], U[], W[], Y[], Z[]
+
+Shocks (1):
+    epsilon_Z[]
+
+Parameters (7):
+    alpha, beta, delta, eta, mu, pers, phi
+
+Free parameters (6):
+    beta, delta, eta, mu, pers, phi
+
+Calibrated parameters (1):
+    alpha
+
+Equations (11):
+ (1)  C[-1] - H[] = 0
+ (2)  -lambda__CONSUMER_2[] + beta * ((1 - delta) * E[][lambda__CONSUMER_2[1]] + E[][lambda__CONSUMER_2[1] * r[1]]) = 0
+ (3)  -r[] + alpha * Z[] * K_s[-1]^(-1 + alpha) * L_s[]^(1 - alpha) = 0
+ (4)  -W[] + Z[] * (1 - alpha) * K_s[-1]^alpha * L_s[]^(-alpha) = 0
+ (5)  -Y[] + Z[] * K_s[-1]^alpha * L_s[]^(1 - alpha) = 0
+ (6)  -Z[] + exp(epsilon_Z[] + phi * log(Z[-1])) = 0
+ (7)  lambda__CONSUMER_2[] * W[] + (-1 + mu) * (1 - L_s[])^(-mu) * (C[] - pers * H[])^mu * ((1 - L_s[])^(1 - mu) * (C[] - pers * H[])^mu)^(-eta) = 0
+ (8)  -lambda__CONSUMER_2[] - beta * mu * pers * E[][(1 - L_s[1])^(1 - mu) * (C[1] - pers * H[1])^(-1 + mu) * ((1 - L_s[1])^(1 - mu) * (C[1] - pers * H[1])^mu)^(-eta)] + mu * (1 - L_s[])^(1 - mu) * (C[] - pers * H[])^(-1 + mu) * ((1 - L_s[])^(1 - mu) * (C[] - pers * H[])^mu)^(-eta) = 0
+ (9)  -C[] - I[] + Y[] = 0
+ (10)  I[] - K_s[] + K_s[-1] * (1 - delta) = 0
+ (11)  U[] - beta * E[][U[1]] - (1 - eta)^-1 * ((1 - L_s[])^(1 - mu) * (C[] - pers * H[])^mu)^(1 - eta) = 0
+
+Steady state equations (11):
+ (1)  -lambda__CONSUMER_2[ss] + beta * (lambda__CONSUMER_2[ss] * r[ss] + lambda__CONSUMER_2[ss] * (1 - delta)) = 0
+ (2)  -r[ss] + alpha * Z[ss] * K_s[ss]^(-1 + alpha) * L_s[ss]^(1 - alpha) = 0
+ (3)  C[ss] - H[ss] = 0
+ (4)  -W[ss] + Z[ss] * (1 - alpha) * K_s[ss]^alpha * L_s[ss]^(-alpha) = 0
+ (5)  -Y[ss] + Z[ss] * K_s[ss]^alpha * L_s[ss]^(1 - alpha) = 0
+ (6)  -Z[ss] + exp(phi * log(Z[ss])) = 0
+ (7)  lambda__CONSUMER_2[ss] * W[ss] + (-1 + mu) * (1 - L_s[ss])^(-mu) * (C[ss] - pers * H[ss])^mu * ((1 - L_s[ss])^(1 - mu) * (C[ss] - pers * H[ss])^mu)^(-eta) = 0
+ (8)  -lambda__CONSUMER_2[ss] + mu * (1 - L_s[ss])^(1 - mu) * (C[ss] - pers * H[ss])^(-1 + mu) * ((1 - L_s[ss])^(1 - mu) * (C[ss] - pers * H[ss])^mu)^(-eta) - beta * mu * pers * (1 - L_s[ss])^(1 - mu) * (C[ss] - pers * H[ss])^(-1 + mu) * ((1 - L_s[ss])^(1 - mu) * (C[ss] - pers * H[ss])^mu)^(-eta) = 0
+ (9)  -C[ss] - I[ss] + Y[ss] = 0
+ (10)  I[ss] - K_s[ss] + K_s[ss] * (1 - delta) = 0
+ (11)  U[ss] - beta * U[ss] - (1 - eta)^-1 * ((1 - L_s[ss])^(1 - mu) * (C[ss] - pers * H[ss])^mu)^(1 - eta) = 0
+
+Calibrating equations (1):
+ (1)  -0.36 * Y[ss] + r[ss] * K_s[ss] = 0
+
+Parameter settings (6):
+ (1)  beta = 0.99
+ (2)  delta = 0.025
+ (3)  eta = 2
+ (4)  mu = 0.3
+ (5)  pers = 0.57
+ (6)  phi = 0.95
+

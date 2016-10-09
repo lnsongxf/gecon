@@ -1,0 +1,127 @@
+Generated on 2016-10-09 23:51:03 by gEcon ver. 1.0.0 (2016-10-09)
+http://gecon.r-forge.r-project.org/
+
+Model name: ttb
+
+Block: CONSUMER
+ Controls:
+    C[], N[], a[], L[]
+ Objective:
+    U[] = beta * E[][U[1]] + gamma^-1 * (C[]^mu * L[]^(1 - mu))^gamma    (lambda_U[])
+ Constraints:
+    pi[] - C[] + N[] * W[] = 0    (lambda_c[])
+    1 - L[] - alpha * N[] - eta * a[-1] * (1 - alpha) = 0    (lambda__CONSUMER_2[])
+    -a[] + N[] + a[-1] * (1 - eta) = 0    (lambda__CONSUMER_3[])
+ First order conditions:
+    beta - lambda_U[] = 0    (U[])
+    -lambda_c[] + mu * C[]^(-1 + mu) * L[]^(1 - mu) * (C[]^mu * L[]^(1 - mu))^(-1 + gamma) = 0    (C[])
+    lambda__CONSUMER_3[] + lambda_c[] * W[] - alpha * lambda__CONSUMER_2[] = 0    (N[])
+    -lambda__CONSUMER_3[] + E[][lambda_U[1] * (lambda__CONSUMER_3[1] * (1 - eta) - eta * lambda__CONSUMER_2[1] * (1 - alpha))] = 0    (a[])
+    -lambda__CONSUMER_2[] + (1 - mu) * C[]^mu * L[]^(-mu) * (C[]^mu * L[]^(1 - mu))^(-1 + gamma) = 0    (L[])
+
+Block: FIRM
+ Controls:
+    K[], N_d[], Z[], Y[], S[], X[], pi[], S__lag_1[], S__lag_2[]
+ Objective:
+    PI[] = pi[] + lambda_c[]^-1 * E[][lambda_c[1] * lambda_U[1] * PI[1]]    (lambda__FIRM_PI[])
+ Constraints:
+    -Y[] + (sigma * Z[-1]^(-nu) + (LAMBDA[] * K[-1]^theta * N_d[]^(1 - theta))^(-nu))^(-nu^-1) = 0    (lambda__FIRM_1[])
+    S__lag_2[-1] - K[] + K[-1] * (1 - delta) = 0    (lambda__FIRM_2[])
+    -X[] + psi * (S[-1] + S__lag_1[-1] + S__lag_2[-1] + S[]) = 0    (lambda__FIRM_3[])
+    Z[-1] - pi[] - X[] + Y[] - Z[] - N_d[] * W[] = 0    (lambda__FIRM_4[])
+    S[-1] - S__lag_1[] = 0    (lambda__FIRM_S__lag_1[])
+    S__lag_1[-1] - S__lag_2[] = 0    (lambda__FIRM_S__lag_2[])
+ First order conditions:
+    -lambda__FIRM_PI[] + lambda_c[-1]^-1 * lambda_c[] * lambda_U[] = 0    (PI[])
+    -lambda__FIRM_2[] + E[][lambda__FIRM_PI[1] * (lambda__FIRM_2[1] * (1 - delta) + theta * lambda__FIRM_1[1] * LAMBDA[1] * K[]^(-1 + theta) * N_d[1]^(1 - theta) * (sigma * Z[]^(-nu) + (LAMBDA[1] * K[]^theta * N_d[1]^(1 - theta))^(-nu))^(-1 - nu^-1) * (LAMBDA[1] * K[]^theta * N_d[1]^(1 - theta))^(-1 - nu))] = 0    (K[])
+    -lambda__FIRM_4[] * W[] + lambda__FIRM_1[] * LAMBDA[] * (1 - theta) * K[-1]^theta * N_d[]^(-theta) * (sigma * Z[-1]^(-nu) + (LAMBDA[] * K[-1]^theta * N_d[]^(1 - theta))^(-nu))^(-1 - nu^-1) * (LAMBDA[] * K[-1]^theta * N_d[]^(1 - theta))^(-1 - nu) = 0    (N_d[])
+    -lambda__FIRM_4[] + E[][lambda__FIRM_PI[1] * (lambda__FIRM_4[1] + sigma * lambda__FIRM_1[1] * Z[]^(-1 - nu) * (sigma * Z[]^(-nu) + (LAMBDA[1] * K[]^theta * N_d[1]^(1 - theta))^(-nu))^(-1 - nu^-1))] = 0    (Z[])
+    -lambda__FIRM_1[] + lambda__FIRM_4[] = 0    (Y[])
+    psi * lambda__FIRM_3[] + E[][lambda__FIRM_PI[1] * (lambda__FIRM_S__lag_1[1] + psi * lambda__FIRM_3[1])] = 0    (S[])
+    -lambda__FIRM_3[] - lambda__FIRM_4[] = 0    (X[])
+    1 - lambda__FIRM_4[] = 0    (pi[])
+    -lambda__FIRM_S__lag_1[] + E[][lambda__FIRM_PI[1] * (lambda__FIRM_S__lag_2[1] + psi * lambda__FIRM_3[1])] = 0    (S__lag_1[])
+    -lambda__FIRM_S__lag_2[] + E[][lambda__FIRM_PI[1] * (lambda__FIRM_2[1] + psi * lambda__FIRM_3[1])] = 0    (S__lag_2[])
+ First order conditions after reduction:
+    -lambda__FIRM_PI[] + lambda_c[-1]^-1 * lambda_c[] * lambda_U[] = 0    (PI[])
+    -lambda__FIRM_2[] + E[][lambda__FIRM_PI[1] * (lambda__FIRM_2[1] * (1 - delta) + theta * LAMBDA[1] * K[]^(-1 + theta) * N_d[1]^(1 - theta) * (sigma * Z[]^(-nu) + (LAMBDA[1] * K[]^theta * N_d[1]^(1 - theta))^(-nu))^(-1 - nu^-1) * (LAMBDA[1] * K[]^theta * N_d[1]^(1 - theta))^(-1 - nu))] = 0    (K[])
+    -W[] + LAMBDA[] * (1 - theta) * K[-1]^theta * N_d[]^(-theta) * (sigma * Z[-1]^(-nu) + (LAMBDA[] * K[-1]^theta * N_d[]^(1 - theta))^(-nu))^(-1 - nu^-1) * (LAMBDA[] * K[-1]^theta * N_d[]^(1 - theta))^(-1 - nu) = 0    (N_d[])
+    -1 + E[][lambda__FIRM_PI[1] * (1 + sigma * Z[]^(-1 - nu) * (sigma * Z[]^(-nu) + (LAMBDA[1] * K[]^theta * N_d[1]^(1 - theta))^(-nu))^(-1 - nu^-1))] = 0    (Z[])
+    -psi + E[][lambda__FIRM_PI[1] * (-psi + lambda__FIRM_S__lag_1[1])] = 0    (S[])
+    -lambda__FIRM_S__lag_1[] + E[][lambda__FIRM_PI[1] * (-psi + lambda__FIRM_S__lag_2[1])] = 0    (S__lag_1[])
+    -lambda__FIRM_S__lag_2[] + E[][lambda__FIRM_PI[1] * (-psi + lambda__FIRM_2[1])] = 0    (S__lag_2[])
+
+Block: EQUILIBRIUM
+ Identities:
+    N[] - N_d[] = 0
+
+Block: EXOG
+ Identities:
+    1 + epsilon_LAMBDA[] - LAMBDA[] + phi_a * (-1 + LAMBDA[-1]) + phi_b * (-1 + LAMBDA[-1]) = 0
+
+Variables (18):
+    a[], lambda__FIRM_2[], lambda__FIRM_S__lag_1[], lambda__FIRM_S__lag_2[], pi[], C[], K[], L[], LAMBDA[], N[], PI[], S[], S__lag_1[], S__lag_2[], U[], W[], Y[], Z[]
+
+Shocks (1):
+    epsilon_LAMBDA[]
+
+Parameters (12):
+    alpha, beta, delta, eta, gamma, mu, nu, phi_a, phi_b, psi, sigma, theta
+
+Free parameters (12):
+    alpha, beta, delta, eta, gamma, mu, nu, phi_a, phi_b, psi, sigma, theta
+
+Equations (18):
+ (1)  -1 + beta * C[]^(1 - mu) * L[]^(-1 + mu) * (C[]^mu * L[]^(1 - mu))^(1 - gamma) * E[][(1 + sigma * Z[]^(-1 - nu) * (sigma * Z[]^(-nu) + (LAMBDA[1] * K[]^theta * N[1]^(1 - theta))^(-nu))^(-1 - nu^-1)) * C[1]^(-1 + mu) * L[1]^(1 - mu) * (C[1]^mu * L[1]^(1 - mu))^(-1 + gamma)] = 0
+ (2)  -psi + beta * C[]^(1 - mu) * L[]^(-1 + mu) * (C[]^mu * L[]^(1 - mu))^(1 - gamma) * E[][(-psi + lambda__FIRM_S__lag_1[1]) * C[1]^(-1 + mu) * L[1]^(1 - mu) * (C[1]^mu * L[1]^(1 - mu))^(-1 + gamma)] = 0
+ (3)  S[-1] - S__lag_1[] = 0
+ (4)  S__lag_1[-1] - S__lag_2[] = 0
+ (5)  -lambda__FIRM_2[] + beta * C[]^(1 - mu) * L[]^(-1 + mu) * (C[]^mu * L[]^(1 - mu))^(1 - gamma) * E[][(lambda__FIRM_2[1] * (1 - delta) + theta * LAMBDA[1] * K[]^(-1 + theta) * N[1]^(1 - theta) * (sigma * Z[]^(-nu) + (LAMBDA[1] * K[]^theta * N[1]^(1 - theta))^(-nu))^(-1 - nu^-1) * (LAMBDA[1] * K[]^theta * N[1]^(1 - theta))^(-1 - nu)) * C[1]^(-1 + mu) * L[1]^(1 - mu) * (C[1]^mu * L[1]^(1 - mu))^(-1 + gamma)] = 0
+ (6)  -lambda__FIRM_S__lag_1[] + beta * C[]^(1 - mu) * L[]^(-1 + mu) * (C[]^mu * L[]^(1 - mu))^(1 - gamma) * E[][(-psi + lambda__FIRM_S__lag_2[1]) * C[1]^(-1 + mu) * L[1]^(1 - mu) * (C[1]^mu * L[1]^(1 - mu))^(-1 + gamma)] = 0
+ (7)  -lambda__FIRM_S__lag_2[] + beta * C[]^(1 - mu) * L[]^(-1 + mu) * (C[]^mu * L[]^(1 - mu))^(1 - gamma) * E[][(-psi + lambda__FIRM_2[1]) * C[1]^(-1 + mu) * L[1]^(1 - mu) * (C[1]^mu * L[1]^(1 - mu))^(-1 + gamma)] = 0
+ (8)  -W[] + LAMBDA[] * (1 - theta) * K[-1]^theta * N[]^(-theta) * (sigma * Z[-1]^(-nu) + (LAMBDA[] * K[-1]^theta * N[]^(1 - theta))^(-nu))^(-1 - nu^-1) * (LAMBDA[] * K[-1]^theta * N[]^(1 - theta))^(-1 - nu) = 0
+ (9)  -Y[] + (sigma * Z[-1]^(-nu) + (LAMBDA[] * K[-1]^theta * N[]^(1 - theta))^(-nu))^(-nu^-1) = 0
+ (10)  S__lag_2[-1] - K[] + K[-1] * (1 - delta) = 0
+ (11)  -a[] + N[] + a[-1] * (1 - eta) = 0
+ (12)  -pi[] + PI[] - beta * (C[]^(-1 + mu))^-1 * (L[]^(1 - mu))^-1 * ((C[]^mu * L[]^(1 - mu))^(-1 + gamma))^-1 * E[][PI[1] * C[1]^(-1 + mu) * L[1]^(1 - mu) * (C[1]^mu * L[1]^(1 - mu))^(-1 + gamma)] = 0
+ (13)  pi[] - C[] + N[] * W[] = 0
+ (14)  U[] - beta * E[][U[1]] - gamma^-1 * (C[]^mu * L[]^(1 - mu))^gamma = 0
+ (15)  beta * ((1 - eta) * (-mu * E[][W[1] * C[1]^(-1 + mu) * L[1]^(1 - mu) * (C[1]^mu * L[1]^(1 - mu))^(-1 + gamma)] + alpha * (1 - mu) * E[][C[1]^mu * L[1]^(-mu) * (C[1]^mu * L[1]^(1 - mu))^(-1 + gamma)]) - eta * (1 - alpha) * (1 - mu) * E[][C[1]^mu * L[1]^(-mu) * (C[1]^mu * L[1]^(1 - mu))^(-1 + gamma)]) - alpha * (1 - mu) * C[]^mu * L[]^(-mu) * (C[]^mu * L[]^(1 - mu))^(-1 + gamma) + mu * W[] * C[]^(-1 + mu) * L[]^(1 - mu) * (C[]^mu * L[]^(1 - mu))^(-1 + gamma) = 0
+ (16)  1 - L[] - alpha * N[] - eta * a[-1] * (1 - alpha) = 0
+ (17)  1 + epsilon_LAMBDA[] - LAMBDA[] + phi_a * (-1 + LAMBDA[-1]) + phi_b * (-1 + LAMBDA[-1]) = 0
+ (18)  Z[-1] - pi[] + Y[] - Z[] - psi * (S[-1] + S__lag_1[-1] + S__lag_2[-1] + S[]) - N[] * W[] = 0
+
+Steady state equations (18):
+ (1)  -1 + beta * (1 + sigma * Z[ss]^(-1 - nu) * (sigma * Z[ss]^(-nu) + (LAMBDA[ss] * K[ss]^theta * N[ss]^(1 - theta))^(-nu))^(-1 - nu^-1)) * C[ss]^(-1 + mu) * C[ss]^(1 - mu) * L[ss]^(-1 + mu) * L[ss]^(1 - mu) = 0
+ (2)  -psi + beta * (-psi + lambda__FIRM_S__lag_1[ss]) * C[ss]^(-1 + mu) * C[ss]^(1 - mu) * L[ss]^(-1 + mu) * L[ss]^(1 - mu) = 0
+ (3)  -lambda__FIRM_2[ss] + beta * (lambda__FIRM_2[ss] * (1 - delta) + theta * LAMBDA[ss] * K[ss]^(-1 + theta) * N[ss]^(1 - theta) * (sigma * Z[ss]^(-nu) + (LAMBDA[ss] * K[ss]^theta * N[ss]^(1 - theta))^(-nu))^(-1 - nu^-1) * (LAMBDA[ss] * K[ss]^theta * N[ss]^(1 - theta))^(-1 - nu)) * C[ss]^(-1 + mu) * C[ss]^(1 - mu) * L[ss]^(-1 + mu) * L[ss]^(1 - mu) = 0
+ (4)  -lambda__FIRM_S__lag_1[ss] + beta * (-psi + lambda__FIRM_S__lag_2[ss]) * C[ss]^(-1 + mu) * C[ss]^(1 - mu) * L[ss]^(-1 + mu) * L[ss]^(1 - mu) = 0
+ (5)  -lambda__FIRM_S__lag_2[ss] + beta * (-psi + lambda__FIRM_2[ss]) * C[ss]^(-1 + mu) * C[ss]^(1 - mu) * L[ss]^(-1 + mu) * L[ss]^(1 - mu) = 0
+ (6)  S[ss] - S__lag_1[ss] = 0
+ (7)  S__lag_1[ss] - S__lag_2[ss] = 0
+ (8)  -W[ss] + LAMBDA[ss] * (1 - theta) * K[ss]^theta * N[ss]^(-theta) * (sigma * Z[ss]^(-nu) + (LAMBDA[ss] * K[ss]^theta * N[ss]^(1 - theta))^(-nu))^(-1 - nu^-1) * (LAMBDA[ss] * K[ss]^theta * N[ss]^(1 - theta))^(-1 - nu) = 0
+ (9)  -Y[ss] + (sigma * Z[ss]^(-nu) + (LAMBDA[ss] * K[ss]^theta * N[ss]^(1 - theta))^(-nu))^(-nu^-1) = 0
+ (10)  -a[ss] + N[ss] + a[ss] * (1 - eta) = 0
+ (11)  -pi[ss] + PI[ss] - beta * PI[ss] * 1 * L[ss]^(-1 + mu) * L[ss]^(1 - mu) = 0
+ (12)  pi[ss] - C[ss] + N[ss] * W[ss] = 0
+ (13)  -K[ss] + S__lag_2[ss] + K[ss] * (1 - delta) = 0
+ (14)  U[ss] - beta * U[ss] - gamma^-1 * (C[ss]^mu * L[ss]^(1 - mu))^gamma = 0
+ (15)  beta * ((1 - eta) * (alpha * (1 - mu) * C[ss]^mu * L[ss]^(-mu) * (C[ss]^mu * L[ss]^(1 - mu))^(-1 + gamma) - mu * W[ss] * C[ss]^(-1 + mu) * L[ss]^(1 - mu) * (C[ss]^mu * L[ss]^(1 - mu))^(-1 + gamma)) - eta * (1 - alpha) * (1 - mu) * C[ss]^mu * L[ss]^(-mu) * (C[ss]^mu * L[ss]^(1 - mu))^(-1 + gamma)) - alpha * (1 - mu) * C[ss]^mu * L[ss]^(-mu) * (C[ss]^mu * L[ss]^(1 - mu))^(-1 + gamma) + mu * W[ss] * C[ss]^(-1 + mu) * L[ss]^(1 - mu) * (C[ss]^mu * L[ss]^(1 - mu))^(-1 + gamma) = 0
+ (16)  1 - L[ss] - alpha * N[ss] - eta * a[ss] * (1 - alpha) = 0
+ (17)  1 - LAMBDA[ss] + phi_a * (-1 + LAMBDA[ss]) + phi_b * (-1 + LAMBDA[ss]) = 0
+ (18)  -pi[ss] + Y[ss] - psi * (2 * S[ss] + S__lag_1[ss] + S__lag_2[ss]) - N[ss] * W[ss] = 0
+
+Parameter settings (12):
+ (1)  alpha = 1
+ (2)  beta = 0.99
+ (3)  delta = 0.025
+ (4)  eta = 0.5
+ (5)  gamma = -1
+ (6)  mu = 0.34
+ (7)  nu = 3
+ (8)  phi_a = 0.906
+ (9)  phi_b = 0.088
+ (10)  psi = 0.25
+ (11)  sigma = 0.01
+ (12)  theta = 0.36
+

@@ -20,7 +20,9 @@ language and solution framework </title>
 <div class="navit"><a href="index.html">Home</a></div>
 <div class="navit">Features</div>
 <div class="navit"><a href="doc.html">Documentation &amp; FAQ</a></div>
-<div class="navit"><a href="download.html">Download!</a></div>
+<div class="navit"><a href="download.html">Download <span class="fixedI">gEcon</span>!</a></div>
+<div class="navit"><a href="ext_iosam.html"><span class="fixedI">gEcon.iosam</span></a></div>
+<div class="navit"><a href="ext_estim.html"><span class="fixedI">gEcon.estimation</span></a></div>
 <div class="navit"><a href="models.html">Sample models</a></div>
 <div class="navitlst"><a href="links.html">Links</a></div>
 <div class="clear"></div>
@@ -37,15 +39,14 @@ suited for writing economic dynamic optimisation problems.
 <span class="fixedI">gEcon</span> model file consists of blocks describing agents
 optimization problems, exogenous shocks and market clearing conditions.
 Within each optimisation block, the user specifies objective, control variables
-and constraints of&nbsp;a&nbsp;particular agent. Blocks can be also created  for
-defining market clearing conditions and behaviour of exogenous variables.
-Blocks can be &ldquo;templated&rdquo;, which means that problems of similar agents can
-be written and solved only once.
+and constraints of&nbsp;a&nbsp;particular agent. Blocks can be&nbsp;also created  for
+declaring market clearing conditions and behaviour of exogenous variables.
+Blocks can be&nbsp;&ldquo;templated&rdquo;, which means that problems of&nbsp;similar agents can
+be&nbsp;written and&nbsp;solved only once.
 </p>
 
 <p>
-The parameters of models can be set either in a <span class="fixedII">.gcn</span> file or&nbsp;
-by&nbsp;using R interface later on. Parameters can be&nbsp;also calibrated based on&nbsp;the&nbsp;user-supplied steady-state relationships between variables.
+The parameters of models can be&nbsp;set either in&nbsp;a&nbsp;<span class="fixedII">.gcn</span> file or&nbsp;by&nbsp;using R interface later on. Parameters can be&nbsp;also calibrated based on&nbsp;the&nbsp;user-supplied steady-state relationships between variables.
 </p>
 
 <h2>Deriving model equations</h2>
@@ -70,26 +71,25 @@ by solution to&nbsp;other agents' problems &mdash; actual equations are inserted
 
 <h2>R class <span class="fixedII">gecon_model</span></h2>
 <p>
-<span class="fixedI">gEcon</span> has user-friendly interface written in R.
+<span class="fixedI">gEcon</span> has a user-friendly interface written in R.
 A model file written by the shared library is read from R environment and
-an&nbsp;object <span class="fixedII">gecon_model</span> class  is created. The user can
+an&nbsp;object of <span class="fixedII">gecon_model</span> class  is created. The user can
 solve and analyze models by using facilities implemented in <span class="fixedII">gEcon</span>:
 <ul>
 <li> calibration utilities,
-<li> steady state and perturbation solvers,
+<li> steady&ndash;state and perturbation solvers,
 <li> tools for IRFs and statistics computations.
 </ul>
-<span class="fixedI">gEcon</span> interface is interactive. It allows users to
-change settings and parameters &ldquo;on the fly&rdquo; without the need to recompute the whole model.
+<span class="fixedI">gEcon</span> interface is interactive. It allows users to&nbsp;change settings and parameters &ldquo;on the fly&rdquo; without the&nbsp;need to&nbsp;recompute the whole model.
 Moreover, <span class="fixedI">gEcon</span> is equipped with a set of tools for&nbsp;analysing model
-specification, which can be useful in&nbsp;debugging.
+specification, which can be useful in&nbsp;debugging the&nbsp;model.
 </p>
 
 <h2>Model documentation and diagnostics</h2>
 
 <p>
-<span class="fixedI">gEcon</span> reduces time required for documenting the model
-and time spent on debugging through the following features:
+<span class="fixedI">gEcon</span> reduces time required for documenting the&nbsp;model
+and time spent on debugging it through the&nbsp;following features:
 <ul>
 <li> automatically created <span class="fixedII">LaTeX</span> documentation,
 <li> automatically created text logfiles,
@@ -105,6 +105,13 @@ parameters.
 <li> <span class="fixedII">gensys</span> for solving the first order perturbation.
 </ul>
 
+<h2>Extensions &mdash; model calibration and estimation</h2>
+<ul>
+<li> <a href="ext_iosam.html"><span class="fixedI">gEcon.iosam</span></a> package supports calibration
+of&nbsp;large-scale CGE and DSGE models using Input-Output Tables and&nbsp; Social
+Accounting Matrices.
+<li> <a href="ext_estim.html"><span class="fixedI">gEcon.estimation</span></a> package allows for Bayesian estimation of&nbsp;models written in <span class="fixedI">gEcon</span>.
+</ul>
 
 
 </div>

@@ -1,0 +1,93 @@
+Generated on 2016-10-09 23:51:01 by gEcon ver. 1.0.0 (2016-10-09)
+http://gecon.r-forge.r-project.org/
+
+Model name: epstein_zin
+
+Block: CONSUMER
+ Controls:
+    K_s[], C[], I[]
+ Objective:
+    U[] = beta * q__CONSUMER_1[]^((1 - theta_EZ)^-1) + (-1 + C[]^(1 - eta)) * (1 - eta)^-1    (lambda__CONSUMER_U[])
+ Constraints:
+    pi[] - C[] - I[] + K_s[-1] * r[] + L_s[] * W[] = 0    (lambda__CONSUMER_1[])
+    I[] - K_s[] + K_s[-1] * (1 - delta) = 0    (lambda__CONSUMER_2[])
+    q__CONSUMER_1[] - E[][U[1]^(1 - theta_EZ)] = 0    (auxiliary)
+ Identities:
+    1 - L_s[] = 0
+ First order conditions:
+    -lambda__CONSUMER_U[] + beta * q__CONSUMER_1[-1]^(-1 + (1 - theta_EZ)^-1) * U[]^(-theta_EZ) = 0    (U[])
+    -lambda__CONSUMER_2[] + E[][lambda__CONSUMER_U[1] * (lambda__CONSUMER_1[1] * r[1] + lambda__CONSUMER_2[1] * (1 - delta))] = 0    (K_s[])
+    -lambda__CONSUMER_1[] + C[]^(-eta) = 0    (C[])
+    -lambda__CONSUMER_1[] + lambda__CONSUMER_2[] = 0    (I[])
+
+Block: FIRM
+ Controls:
+    K_d[], L_d[], Y[]
+ Objective:
+    pi[] = Y[] - L_d[] * W[] - r[] * K_d[]
+ Constraints:
+    -Y[] + Z[] * K_d[]^alpha * L_d[]^(1 - alpha) = 0    (lambda__FIRM_1[])
+ First order conditions:
+    -r[] + alpha * lambda__FIRM_1[] * Z[] * K_d[]^(-1 + alpha) * L_d[]^(1 - alpha) = 0    (K_d[])
+    -W[] + lambda__FIRM_1[] * Z[] * (1 - alpha) * K_d[]^alpha * L_d[]^(-alpha) = 0    (L_d[])
+    1 - lambda__FIRM_1[] = 0    (Y[])
+ First order conditions after reduction:
+    -r[] + alpha * Z[] * K_d[]^(-1 + alpha) * L_d[]^(1 - alpha) = 0    (K_d[])
+    -W[] + Z[] * (1 - alpha) * K_d[]^alpha * L_d[]^(-alpha) = 0    (L_d[])
+
+Block: EQUILIBRIUM
+ Identities:
+    K_s[-1] - K_d[] = 0
+    -L_d[] + L_s[] = 0
+
+Block: EXOG
+ Identities:
+    -Z[] + exp(epsilon_Z[] + phi * log(Z[-1])) = 0
+
+Variables (9):
+    q__CONSUMER_1[], r[], C[], I[], K_s[], U[], W[], Y[], Z[]
+
+Shocks (1):
+    epsilon_Z[]
+
+Parameters (6):
+    alpha, beta, delta, eta, phi, theta_EZ
+
+Free parameters (5):
+    beta, delta, eta, phi, theta_EZ
+
+Calibrated parameters (1):
+    alpha
+
+Equations (9):
+ (1)  q__CONSUMER_1[] - E[][U[1]^(1 - theta_EZ)] = 0
+ (2)  -r[] + alpha * Z[] * 1^(1 - alpha) * K_s[-1]^(-1 + alpha) = 0
+ (3)  -W[] + Z[] * (1 - alpha) * 1^(-alpha) * K_s[-1]^alpha = 0
+ (4)  -Y[] + Z[] * 1^(1 - alpha) * K_s[-1]^alpha = 0
+ (5)  -Z[] + exp(epsilon_Z[] + phi * log(Z[-1])) = 0
+ (6)  beta * q__CONSUMER_1[]^(-1 + (1 - theta_EZ)^-1) * E[][(r[1] * C[1]^(-eta) + (1 - delta) * C[1]^(-eta)) * U[1]^(-theta_EZ)] - C[]^(-eta) = 0
+ (7)  -C[] - I[] + Y[] = 0
+ (8)  I[] - K_s[] + K_s[-1] * (1 - delta) = 0
+ (9)  U[] - beta * q__CONSUMER_1[]^((1 - theta_EZ)^-1) - (-1 + C[]^(1 - eta)) * (1 - eta)^-1 = 0
+
+Steady state equations (9):
+ (1)  q__CONSUMER_1[ss] - U[ss]^(1 - theta_EZ) = 0
+ (2)  -r[ss] + alpha * Z[ss] * 1^(1 - alpha) * K_s[ss]^(-1 + alpha) = 0
+ (3)  -W[ss] + Z[ss] * (1 - alpha) * 1^(-alpha) * K_s[ss]^alpha = 0
+ (4)  -Y[ss] + Z[ss] * 1^(1 - alpha) * K_s[ss]^alpha = 0
+ (5)  -Z[ss] + exp(phi * log(Z[ss])) = 0
+ (6)  beta * (r[ss] * C[ss]^(-eta) + (1 - delta) * C[ss]^(-eta)) * q__CONSUMER_1[ss]^(-1 + (1 - theta_EZ)^-1) * U[ss]^(-theta_EZ) - C[ss]^(-eta) = 0
+ (7)  -C[ss] - I[ss] + Y[ss] = 0
+ (8)  I[ss] - K_s[ss] + K_s[ss] * (1 - delta) = 0
+ (9)  U[ss] - beta * q__CONSUMER_1[ss]^((1 - theta_EZ)^-1) - (-1 + C[ss]^(1 - eta)) * (1 - eta)^-1 = 0
+
+Calibrating equations (1):
+ (1)  -0.36 * Y[ss] + r[ss] * K_s[ss] = 0
+
+Parameter settings (5):
+ (1)  beta = 0.99
+ (2)  delta = 0.025
+ (3)  eta = 2
+ (4)  phi = 0.95
+ (5)  theta_EZ = 0.05
+

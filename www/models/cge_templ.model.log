@@ -1,0 +1,94 @@
+Generated on 2016-10-09 23:50:37 by gEcon ver. 1.0.0 (2016-10-09)
+http://gecon.r-forge.r-project.org/
+
+Model name: cge_templ
+
+Index sets (2):
+    HH = { '1', '2' }
+    SEC = { 'A', 'B', 'C' }
+
+Block: <h::HH> HOUSEHOLD
+ Controls:
+    <s::SEC> D<h,s>
+ Objective:
+    U<h> = (SUM<s::SEC> alpha<h,s> * D<h,s>^(omega^-1 * (-1 + omega)))^(omega * (-1 + omega)^-1)
+ Constraints:
+    L<h> + phi<h> * (SUM<s::SEC> pi<s>) + p_k * K<h> - SUM<s::SEC> p<s> * D<h,s> = 0    (lambda__HOUSEHOLD_1<h>)
+ Identities:
+    <hi::HH> par_k<hi> - K<hi> = 0
+    <hi::HH> par_l<hi> - L<hi> = 0
+ First order conditions:
+    <s::SEC> -lambda__HOUSEHOLD_1<h> * p<s> + alpha<h,s> * D<h,s>^(-1 + omega^-1 * (-1 + omega)) * (SUM<s::SEC> alpha<h,s> * D<h,s>^(omega^-1 * (-1 + omega)))^(-1 + omega * (-1 + omega)^-1) = 0    (<s::SEC> D<h,s>)
+
+Block: <s::SEC> FIRM
+ Controls:
+    Y<s>, K<s>, L<s>, <si::SEC> X<s,si>
+ Objective:
+    pi<s> = -L<s> - p_k * K<s> + p<s> * Y<s> - SUM<si::SEC> p<si> * X<s,si>
+ Constraints:
+    -Y<s> + gamma<s> * K<s>^beta_k<s> * L<s>^beta_l<s> * (PROD<si::SEC> X<s,si>^beta_x<s,si>) = 0    (lambda__FIRM_1<s>)
+ First order conditions:
+    -lambda__FIRM_1<s> + p<s> = 0    (Y<s>)
+    -p_k + beta_k<s> * gamma<s> * lambda__FIRM_1<s> * K<s>^(-1 + beta_k<s>) * L<s>^beta_l<s> * (PROD<si::SEC> X<s,si>^beta_x<s,si>) = 0    (K<s>)
+    -1 + beta_l<s> * gamma<s> * lambda__FIRM_1<s> * K<s>^beta_k<s> * L<s>^(-1 + beta_l<s>) * (PROD<si::SEC> X<s,si>^beta_x<s,si>) = 0    (L<s>)
+    <si::SEC> -p<si> + beta_x<s,si> * gamma<s> * lambda__FIRM_1<s> * X<s,si>^-1 * K<s>^beta_k<s> * L<s>^beta_l<s> * (PROD<si_::SEC> X<s,si_>^beta_x<s,si_>) = 0    (<si::SEC> X<s,si>)
+ First order conditions after reduction:
+    -p_k + beta_k<s> * gamma<s> * p<s> * K<s>^(-1 + beta_k<s>) * L<s>^beta_l<s> * (PROD<si::SEC> X<s,si>^beta_x<s,si>) = 0    (K<s>)
+    -1 + beta_l<s> * gamma<s> * p<s> * K<s>^beta_k<s> * L<s>^(-1 + beta_l<s>) * (PROD<si::SEC> X<s,si>^beta_x<s,si>) = 0    (L<s>)
+    <si::SEC> -p<si> + beta_x<s,si> * gamma<s> * p<s> * X<s,si>^-1 * K<s>^beta_k<s> * L<s>^beta_l<s> * (PROD<si_::SEC> X<s,si_>^beta_x<s,si_>) = 0    (<si::SEC> X<s,si>)
+
+Block: EQUILIBRIUM
+ Identities:
+    <s::SEC> -Y<s> + SUM<h::HH> D<h,s> + SUM<si::SEC> X<si,s> = 0
+    -SUM<h::HH> L<h> + SUM<s::SEC> L<s> = 0
+
+Variables (39):
+    p_k, lambda__HOUSEHOLD_1<'1'>, lambda__HOUSEHOLD_1<'2'>, p<'A'>, p<'B'>, p<'C'>, pi<'A'>, pi<'B'>, pi<'C'>, D<'1','A'>, D<'1','B'>, D<'1','C'>, D<'2','A'>, D<'2','B'>, D<'2','C'>, K<'1'>, K<'2'>, K<'A'>, K<'B'>, K<'C'>, L<'1'>, L<'2'>, L<'A'>, L<'B'>, L<'C'>, U<'1'>, U<'2'>, X<'A','A'>, X<'A','B'>, X<'A','C'>, X<'B','A'>, X<'B','B'>, X<'B','C'>, X<'C','A'>, X<'C','B'>, X<'C','C'>, Y<'A'>, Y<'B'>, Y<'C'>
+
+Parameters (31):
+    omega, alpha<'1','A'>, alpha<'1','B'>, alpha<'1','C'>, alpha<'2','A'>, alpha<'2','B'>, alpha<'2','C'>, beta_k<'A'>, beta_k<'B'>, beta_k<'C'>, beta_l<'A'>, beta_l<'B'>, beta_l<'C'>, beta_x<'A','A'>, beta_x<'A','B'>, beta_x<'A','C'>, beta_x<'B','A'>, beta_x<'B','B'>, beta_x<'B','C'>, beta_x<'C','A'>, beta_x<'C','B'>, beta_x<'C','C'>, gamma<'A'>, gamma<'B'>, gamma<'C'>, par_k<'1'>, par_k<'2'>, par_l<'1'>, par_l<'2'>, phi<'1'>, phi<'2'>
+
+Free parameters (31):
+    omega, alpha<'1','A'>, alpha<'1','B'>, alpha<'1','C'>, alpha<'2','A'>, alpha<'2','B'>, alpha<'2','C'>, beta_k<'A'>, beta_k<'B'>, beta_k<'C'>, beta_l<'A'>, beta_l<'B'>, beta_l<'C'>, beta_x<'A','A'>, beta_x<'A','B'>, beta_x<'A','C'>, beta_x<'B','A'>, beta_x<'B','B'>, beta_x<'B','C'>, beta_x<'C','A'>, beta_x<'C','B'>, beta_x<'C','C'>, gamma<'A'>, gamma<'B'>, gamma<'C'>, par_k<'1'>, par_k<'2'>, par_l<'1'>, par_l<'2'>, phi<'1'>, phi<'2'>
+
+Equations (39):
+ (1)  -1 + beta_l<'A'> * gamma<'A'> * p<'A'> * K<'A'>^beta_k<'A'> * L<'A'>^(-1 + beta_l<'A'>) * X<'A','A'>^beta_x<'A','A'> * X<'A','B'>^beta_x<'A','B'> * X<'A','C'>^beta_x<'A','C'> = 0
+ (2)  -1 + beta_l<'B'> * gamma<'B'> * p<'B'> * K<'B'>^beta_k<'B'> * L<'B'>^(-1 + beta_l<'B'>) * X<'B','A'>^beta_x<'B','A'> * X<'B','B'>^beta_x<'B','B'> * X<'B','C'>^beta_x<'B','C'> = 0
+ (3)  -1 + beta_l<'C'> * gamma<'C'> * p<'C'> * K<'C'>^beta_k<'C'> * L<'C'>^(-1 + beta_l<'C'>) * X<'C','A'>^beta_x<'C','A'> * X<'C','B'>^beta_x<'C','B'> * X<'C','C'>^beta_x<'C','C'> = 0
+ (4)  par_k<'1'> - K<'1'> = 0
+ (5)  par_k<'2'> - K<'2'> = 0
+ (6)  par_l<'1'> - L<'1'> = 0
+ (7)  par_l<'2'> - L<'2'> = 0
+ (8)  -p_k + beta_k<'A'> * gamma<'A'> * p<'A'> * K<'A'>^(-1 + beta_k<'A'>) * L<'A'>^beta_l<'A'> * X<'A','A'>^beta_x<'A','A'> * X<'A','B'>^beta_x<'A','B'> * X<'A','C'>^beta_x<'A','C'> = 0
+ (9)  -p_k + beta_k<'B'> * gamma<'B'> * p<'B'> * K<'B'>^(-1 + beta_k<'B'>) * L<'B'>^beta_l<'B'> * X<'B','A'>^beta_x<'B','A'> * X<'B','B'>^beta_x<'B','B'> * X<'B','C'>^beta_x<'B','C'> = 0
+ (10)  -p_k + beta_k<'C'> * gamma<'C'> * p<'C'> * K<'C'>^(-1 + beta_k<'C'>) * L<'C'>^beta_l<'C'> * X<'C','A'>^beta_x<'C','A'> * X<'C','B'>^beta_x<'C','B'> * X<'C','C'>^beta_x<'C','C'> = 0
+ (11)  -p<'A'> + beta_x<'A','A'> * gamma<'A'> * p<'A'> * X<'A','A'>^-1 * K<'A'>^beta_k<'A'> * L<'A'>^beta_l<'A'> * X<'A','A'>^beta_x<'A','A'> * X<'A','B'>^beta_x<'A','B'> * X<'A','C'>^beta_x<'A','C'> = 0
+ (12)  -p<'A'> + beta_x<'B','A'> * gamma<'B'> * p<'B'> * X<'B','A'>^-1 * K<'B'>^beta_k<'B'> * L<'B'>^beta_l<'B'> * X<'B','A'>^beta_x<'B','A'> * X<'B','B'>^beta_x<'B','B'> * X<'B','C'>^beta_x<'B','C'> = 0
+ (13)  -p<'A'> + beta_x<'C','A'> * gamma<'C'> * p<'C'> * X<'C','A'>^-1 * K<'C'>^beta_k<'C'> * L<'C'>^beta_l<'C'> * X<'C','A'>^beta_x<'C','A'> * X<'C','B'>^beta_x<'C','B'> * X<'C','C'>^beta_x<'C','C'> = 0
+ (14)  -p<'B'> + beta_x<'A','B'> * gamma<'A'> * p<'A'> * X<'A','B'>^-1 * K<'A'>^beta_k<'A'> * L<'A'>^beta_l<'A'> * X<'A','A'>^beta_x<'A','A'> * X<'A','B'>^beta_x<'A','B'> * X<'A','C'>^beta_x<'A','C'> = 0
+ (15)  -p<'B'> + beta_x<'B','B'> * gamma<'B'> * p<'B'> * X<'B','B'>^-1 * K<'B'>^beta_k<'B'> * L<'B'>^beta_l<'B'> * X<'B','A'>^beta_x<'B','A'> * X<'B','B'>^beta_x<'B','B'> * X<'B','C'>^beta_x<'B','C'> = 0
+ (16)  -p<'B'> + beta_x<'C','B'> * gamma<'C'> * p<'C'> * X<'C','B'>^-1 * K<'C'>^beta_k<'C'> * L<'C'>^beta_l<'C'> * X<'C','A'>^beta_x<'C','A'> * X<'C','B'>^beta_x<'C','B'> * X<'C','C'>^beta_x<'C','C'> = 0
+ (17)  -p<'C'> + beta_x<'A','C'> * gamma<'A'> * p<'A'> * X<'A','C'>^-1 * K<'A'>^beta_k<'A'> * L<'A'>^beta_l<'A'> * X<'A','A'>^beta_x<'A','A'> * X<'A','B'>^beta_x<'A','B'> * X<'A','C'>^beta_x<'A','C'> = 0
+ (18)  -p<'C'> + beta_x<'B','C'> * gamma<'B'> * p<'B'> * X<'B','C'>^-1 * K<'B'>^beta_k<'B'> * L<'B'>^beta_l<'B'> * X<'B','A'>^beta_x<'B','A'> * X<'B','B'>^beta_x<'B','B'> * X<'B','C'>^beta_x<'B','C'> = 0
+ (19)  -p<'C'> + beta_x<'C','C'> * gamma<'C'> * p<'C'> * X<'C','C'>^-1 * K<'C'>^beta_k<'C'> * L<'C'>^beta_l<'C'> * X<'C','A'>^beta_x<'C','A'> * X<'C','B'>^beta_x<'C','B'> * X<'C','C'>^beta_x<'C','C'> = 0
+ (20)  U<'1'> - (alpha<'1','A'> * D<'1','A'>^(omega^-1 * (-1 + omega)) + alpha<'1','B'> * D<'1','B'>^(omega^-1 * (-1 + omega)) + alpha<'1','C'> * D<'1','C'>^(omega^-1 * (-1 + omega)))^(omega * (-1 + omega)^-1) = 0
+ (21)  U<'2'> - (alpha<'2','A'> * D<'2','A'>^(omega^-1 * (-1 + omega)) + alpha<'2','B'> * D<'2','B'>^(omega^-1 * (-1 + omega)) + alpha<'2','C'> * D<'2','C'>^(omega^-1 * (-1 + omega)))^(omega * (-1 + omega)^-1) = 0
+ (22)  -Y<'A'> + gamma<'A'> * K<'A'>^beta_k<'A'> * L<'A'>^beta_l<'A'> * X<'A','A'>^beta_x<'A','A'> * X<'A','B'>^beta_x<'A','B'> * X<'A','C'>^beta_x<'A','C'> = 0
+ (23)  -Y<'B'> + gamma<'B'> * K<'B'>^beta_k<'B'> * L<'B'>^beta_l<'B'> * X<'B','A'>^beta_x<'B','A'> * X<'B','B'>^beta_x<'B','B'> * X<'B','C'>^beta_x<'B','C'> = 0
+ (24)  -Y<'C'> + gamma<'C'> * K<'C'>^beta_k<'C'> * L<'C'>^beta_l<'C'> * X<'C','A'>^beta_x<'C','A'> * X<'C','B'>^beta_x<'C','B'> * X<'C','C'>^beta_x<'C','C'> = 0
+ (25)  -lambda__HOUSEHOLD_1<'1'> * p<'A'> + alpha<'1','A'> * D<'1','A'>^(-1 + omega^-1 * (-1 + omega)) * (alpha<'1','A'> * D<'1','A'>^(omega^-1 * (-1 + omega)) + alpha<'1','B'> * D<'1','B'>^(omega^-1 * (-1 + omega)) + alpha<'1','C'> * D<'1','C'>^(omega^-1 * (-1 + omega)))^(-1 + omega * (-1 + omega)^-1) = 0
+ (26)  -lambda__HOUSEHOLD_1<'1'> * p<'B'> + alpha<'1','B'> * D<'1','B'>^(-1 + omega^-1 * (-1 + omega)) * (alpha<'1','A'> * D<'1','A'>^(omega^-1 * (-1 + omega)) + alpha<'1','B'> * D<'1','B'>^(omega^-1 * (-1 + omega)) + alpha<'1','C'> * D<'1','C'>^(omega^-1 * (-1 + omega)))^(-1 + omega * (-1 + omega)^-1) = 0
+ (27)  -lambda__HOUSEHOLD_1<'1'> * p<'C'> + alpha<'1','C'> * D<'1','C'>^(-1 + omega^-1 * (-1 + omega)) * (alpha<'1','A'> * D<'1','A'>^(omega^-1 * (-1 + omega)) + alpha<'1','B'> * D<'1','B'>^(omega^-1 * (-1 + omega)) + alpha<'1','C'> * D<'1','C'>^(omega^-1 * (-1 + omega)))^(-1 + omega * (-1 + omega)^-1) = 0
+ (28)  -lambda__HOUSEHOLD_1<'2'> * p<'A'> + alpha<'2','A'> * D<'2','A'>^(-1 + omega^-1 * (-1 + omega)) * (alpha<'2','A'> * D<'2','A'>^(omega^-1 * (-1 + omega)) + alpha<'2','B'> * D<'2','B'>^(omega^-1 * (-1 + omega)) + alpha<'2','C'> * D<'2','C'>^(omega^-1 * (-1 + omega)))^(-1 + omega * (-1 + omega)^-1) = 0
+ (29)  -lambda__HOUSEHOLD_1<'2'> * p<'B'> + alpha<'2','B'> * D<'2','B'>^(-1 + omega^-1 * (-1 + omega)) * (alpha<'2','A'> * D<'2','A'>^(omega^-1 * (-1 + omega)) + alpha<'2','B'> * D<'2','B'>^(omega^-1 * (-1 + omega)) + alpha<'2','C'> * D<'2','C'>^(omega^-1 * (-1 + omega)))^(-1 + omega * (-1 + omega)^-1) = 0
+ (30)  -lambda__HOUSEHOLD_1<'2'> * p<'C'> + alpha<'2','C'> * D<'2','C'>^(-1 + omega^-1 * (-1 + omega)) * (alpha<'2','A'> * D<'2','A'>^(omega^-1 * (-1 + omega)) + alpha<'2','B'> * D<'2','B'>^(omega^-1 * (-1 + omega)) + alpha<'2','C'> * D<'2','C'>^(omega^-1 * (-1 + omega)))^(-1 + omega * (-1 + omega)^-1) = 0
+ (31)  -L<'1'> - L<'2'> + L<'A'> + L<'B'> + L<'C'> = 0
+ (32)  D<'1','A'> + D<'2','A'> + X<'A','A'> + X<'B','A'> + X<'C','A'> - Y<'A'> = 0
+ (33)  D<'1','B'> + D<'2','B'> + X<'A','B'> + X<'B','B'> + X<'C','B'> - Y<'B'> = 0
+ (34)  D<'1','C'> + D<'2','C'> + X<'A','C'> + X<'B','C'> + X<'C','C'> - Y<'C'> = 0
+ (35)  L<'1'> + phi<'1'> * (pi<'A'> + pi<'B'> + pi<'C'>) + p_k * K<'1'> - p<'A'> * D<'1','A'> - p<'B'> * D<'1','B'> - p<'C'> * D<'1','C'> = 0
+ (36)  L<'2'> + phi<'2'> * (pi<'A'> + pi<'B'> + pi<'C'>) + p_k * K<'2'> - p<'A'> * D<'2','A'> - p<'B'> * D<'2','B'> - p<'C'> * D<'2','C'> = 0
+ (37)  pi<'A'> + L<'A'> + p_k * K<'A'> + p<'A'> * X<'A','A'> - p<'A'> * Y<'A'> + p<'B'> * X<'A','B'> + p<'C'> * X<'A','C'> = 0
+ (38)  pi<'B'> + L<'B'> + p_k * K<'B'> + p<'A'> * X<'B','A'> + p<'B'> * X<'B','B'> - p<'B'> * Y<'B'> + p<'C'> * X<'B','C'> = 0
+ (39)  pi<'C'> + L<'C'> + p_k * K<'C'> + p<'A'> * X<'C','A'> + p<'B'> * X<'C','B'> + p<'C'> * X<'C','C'> - p<'C'> * Y<'C'> = 0
+

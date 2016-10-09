@@ -1,0 +1,73 @@
+# ############################################################################
+# (c) Chancellery of the Prime Minister 2012-2015                            #
+#                                                                            #
+# Authors: Marta Retkiewicz                                                  #
+# ############################################################################
+# Simple CGE model
+# ############################################################################
+
+
+options
+{
+    output logfile = TRUE;
+    output LaTeX = TRUE;
+    output LaTeX landscape = TRUE;
+};
+
+indexsets
+{
+    SEC = { 'A', 'B', 'C' };
+    HH = { '1', '2' };
+};
+
+block <h::HH> HOUSEHOLD
+{
+    definitions
+    {
+        u<h>[] = (SUM<s::SEC>(alpha<h, s> * D<h, s>[]^((omega - 1)/omega)))^(omega/(omega - 1));
+    };
+    controls
+    {
+        <s::SEC>D<h, s>[]; # Household h demand for good s
+    };
+    objective
+    {
+        U<h>[] = u<h>[];
+    };
+    constraints
+    {
+        SUM<s::SEC>(D<h, s>[] * p<s>[]) = K<h>[] * p_k[] + L<h>[]
+            + SUM<s::SEC>(pi<s>[]) * phi<h>;
+              # phi - household h share in firms' profits
+    };
+    identities
+    {
+        <hi::HH>K<hi>[] = par_k<hi>;
+        <hi::HH>L<hi>[] = par_l<hi>;
+    };
+};
+
+block <s::SEC> FIRM
+{
+    controls
+    {
+        Y<s>[], K<s>[], L<s>[], <si::SEC>X<s, si>[];
+    };
+    objective
+    {
+        pi<s>[] = Y<s>[] * p<s>[] - (K<s>[] * p_k[] + L<s>[] + SUM<si::SEC>(X<s, si>[] * p<si>[]));
+    };
+    constraints
+    {
+        Y<s>[] = gamma<s> * K<s>[]^beta_k<s> * L<s>[]^beta_l<s> * PROD<si::SEC>(X<s, si>[]^beta_x<s, si>);
+    };
+};
+
+block EQUILIBRIUM
+{
+    identities
+    {
+        <s::SEC>Y<s>[] = SUM<h::HH>D<h, s>[] + SUM<si::SEC>(X<si, s>[]);
+        SUM<h::HH>L<h>[] = SUM<s::SEC>(L<s>[]);
+    };
+};

@@ -22,7 +22,9 @@ language and solution framework </title>
 <div class="navit"><a href="index.html">Home</a></div>
 <div class="navit"><a href="feat.html">Features</a></div>
 <div class="navit"><a href="doc.html">Documentation &amp; FAQ</a></div>
-<div class="navit"><a href="download.html">Download!</a></div>
+<div class="navit"><a href="download.html">Download <span class="fixedI">gEcon</span>!</a></div>
+<div class="navit"><a href="ext_iosam.html"><span class="fixedI">gEcon.iosam</span></a></div>
+<div class="navit"><a href="ext_estim.html"><span class="fixedI">gEcon.estimation</span></a></div>
 <div class="navit">Sample models</div>
 <div class="navitlst"><a href="links.html">Links</a></div>
 <div class="clear"></div>
@@ -38,169 +40,194 @@ language and solution framework </title>
 <h2>Sample models</h2>
 
 <p>
-Sample models are distributed under the same licence as <span class="fixedI">gEcon</span> package. Licence terms
-can be found
-<a href="files/gEcon_licence.txt">here</a>.
+The following examples are intended to help users get started using <span class="fixedI">gEcon</span> package. The majority of these models has been
+written for testing purposes 
+during <span class="fixedI">gEcon</span> development and
+their results have been compared to&nbsp;those obtained in&nbsp;other&nbsp;software.
 </p>
 
 <p>
-In order to run those models save them (<span class="fixedII">.gcn</span> files) on disk, load <span class="fixedI">gEcon</span>
+In order to run these models, save them (<span class="fixedII">.gcn</span> files 
+with accompanying <span class="fixedII">.R</span> scripts) on&nbsp;disk, load <span class="fixedI">gEcon</span>
 package under R, and run the accompanying R scripts (in the same directory, after setting R working directory there).
 </p>
 
+<p>
+For information about the language and the R interface please refer to the Users' guide, which can be found under the&nbsp;<a href="doc.html">documentation</a> tab.
+</p>
 
 <p>
-For information about the language and the R interface please refer to the Users' guide, which can be found under the <a href="doc.html">documentation</a> tab.
+Unless otherwise stated, the models are distributed under the same licence as <span class="fixedI">gEcon</span> package, which can be found <a href="files/gEcon_licence.txt">here</a>.
 </p>
+
+
 
 <h3>Static / CGE models</h3>
 
 <table style="width:100%">
   <tr>
     <th>Model</th>
-    <th>Model code (<span class="fixedII">.gcn</span>)</th>
-    <th>R script</th>
-    <th>Documentation</th>
-  </tr>
-  <tr>
+    <th>Model code (<span class="fixedII">.gcn</span>)<br>and R script</th>
+    <th>Documentation (<span class="fixedII">.pdf</span>)<br>and model logfile</th>
   </tr>
   <tr>
     <td>Static pure exchange</td>
-    <td><a href="models/pure_exchange/pure_exchange.gcn" download><b>pure_exchange.gcn</b></a></td>
-    <td><a href="models/pure_exchange/pure_exchange.R" download><b>pure_exchange.R</b></a></td>
-    <td><a href="models/pure_exchange/pure_exchange.pdf"><b>pure_exchange.pdf</b></a></td>
+    <td><a href="models/pure_exchange.gcn" download><b>pure_exchange.gcn</b></a><br>
+        <a href="models/pure_exchange.R" download><b>pure_exchange.R</b></a></td>
+    <td><a href="models/pure_exchange.pdf"><b>pure_exchange.pdf</b></a><br>
+        <a href="models/pure_exchange.model.log" download><b>pure_exchange.model.log</b></a></td>
   </tr>
   <tr>
     <td>Static pure exchange using templates</td>
-    <td><a href="models/pure_exchange_t/pure_exchange_t.gcn" download><b>pure_exchange_t.gcn</b></a></td>
-    <td><a href="models/pure_exchange_t/pure_exchange_t.R" download><b>pure_exchange_t.R</b></a></td>
-    <td><a href="models/pure_exchange_t/pure_exchange_t.pdf"><b>pure_exchange_t.pdf</b></a></td>
+    <td><a href="models/pure_exchange_t.gcn" download><b>pure_exchange_t.gcn</b></a><br>
+        <a href="models/pure_exchange_t.R" download><b>pure_exchange_t.R</b></a></td>
+    <td><a href="models/pure_exchange_t.pdf"><b>pure_exchange_t.pdf</b></a><br>
+        <a href="models/pure_exchange_t.model.log" download><b>pure_exchange_t.model.log</b></a></td>
   </tr>
   <tr>
     <td>Basic CGE using templates</td>
-    <td><a href="models/cge_templ/cge_templ.gcn" download><b>cge_templ.gcn</b></a></td>
-    <td><a href="models/cge_templ/cge_templ.R" download><b>cge_templ.R</b></a></td>
-    <td><a href="models/cge_templ/cge_templ.pdf"><b>cge_templ.pdf</b></a></td>
+    <td><a href="models/cge_templ.gcn" download><b>cge_templ.gcn</b></a><br>
+        <a href="models/cge_templ.R" download><b>cge_templ.R</b></a></td>
+    <td><a href="models/cge_templ.pdf"><b>cge_templ.pdf</b></a><br>
+        <a href="models/cge_templ.model.log" download><b>cge_templ.model.log</b></a></td>
   </tr>
   <tr>
-    <td>Basic CGE with government using templates</td>
-    <td><a href="models/cge_gov_templ/cge_gov_templ.gcn" download><b>cge_gov_templ.gcn</b></a></td>
-    <td><a href="models/cge_gov_templ/cge_gov_templ.R" download><b>cge_gov_templ.R</b></a></td>
-    <td><a href="models/cge_gov_templ/cge_gov_templ.pdf"><b>cge_gov_templ.pdf</b></a></td>
+    <td>Basic CGE with government</td>
+    <td><a href="models/cge_gov_templ.gcn" download><b>cge_gov_templ.gcn</b></a><br>
+        <a href="models/cge_gov_templ.R" download><b>cge_gov_templ.R</b></a></td>
+    <td><a href="models/cge_gov_templ.pdf"><b>cge_gov_templ.pdf</b></a><br>
+        <a href="models/cge_gov_templ.model.log" download><b>cge_gov_templ.model.log</b></a></td>
   </tr>
   <tr>
     <td>Basic CGE with calibration (Leontief technology)</td>
-    <td><a href="models/cge_calibration/cge.gcn" download><b>cge.gcn</b></a></td>
-    <td><a href="models/cge_calibration/cge.R" download><b>cge.R</b></a></td>
-    <td><a href="models/cge_calibration/cge.pdf"><b>cge.pdf</b></a></td>
+    <td><a href="models/cge_calibration.gcn" download><b>cge_calibration.gcn</b></a><br>
+        <a href="models/cge_calibration.R" download><b>cge_calibration.R</b></a></td>
+    <td><a href="models/cge_calibration.pdf"><b>cge_calibration.pdf</b></a><br>
+        <a href="models/cge_calibration.model.log" download><b>cge_calibration.model.log</b></a></td>
   </tr>
   <tr>
     <td>Basic CGE with calibration (Cobb-Douglas technology)</td>
-    <td><a href="models/cge_calibration_cd/cge_cd.gcn" download><b>cge_cd.gcn</b></a></td>
-    <td><a href="models/cge_calibration_cd/cge_cd.R" download><b>cge_cd.R</b></a></td>
-    <td><a href="models/cge_calibration_cd/cge_cd.pdf"><b>cge_cd.pdf</b></a></td>
+    <td><a href="models/cge_calibration_cd.gcn" download><b>cge_calibration_cd.gcn</b></a><br>
+        <a href="models/cge_calibration_cd.R" download><b>cge_calibration_cd.R</b></a></td>
+    <td><a href="models/cge_calibration_cd.pdf"><b>cge_calibration_cd.pdf</b></a><br>
+        <a href="models/cge_calibration_cd.model.log" download><b>cge_calibration_cd.model.log</b></a></td>
+  </tr>
+  <tr>
+    <td>Simple CGE model calibration using <span class="fixedI">gEcon.iosam</span> package (<a href="files/gEcon.iosam_licence.txt">licence</a>)</td>
+    <td><a href="models/cge_calibr_iosam.gcn" download><b>cge_calibr_iosam.gcn</b></a><br>
+        <a href="models/cge_calibr_iosam.R" download><b>cge_calibr_iosam.R</b></a></td>
+    <td><a href="models/cge_calibr_iosam.pdf"><b>cge_calibr_iosam.pdf</b></a><br>
+        <a href="models/cge_calibr_iosam.model.log" download><b>cge_calibr_iosam.model.log</b></a></td>
   </tr>
 </table>
 
 
 <h3>RBC / DSGE models</h3>
 
-<table>
+<table style="width:100%">
   <tr>
     <th>Model</th>
-    <th>Model code (<span class="fixedII">.gcn</span>)</th>
-    <th>R script</th>
-    <th>Documentation</th>
+    <th>Model code (<span class="fixedII">.gcn</span>)<br>and R script</th>
+    <th>Documentation (<span class="fixedII">.pdf</span>)<br>and model logfile</th>
   </tr>
   <tr>
     <td>Basic RBC model</td>
-    <td><a href="models/rbc/rbc.gcn" download><b>rbc.gcn</b></a></td>
-    <td><a href="models/rbc/rbc.R" download><b>rbc.R</b></a></td>
-    <td><a href="models/rbc/rbc.pdf"><b>rbc.pdf</b></a></td>
+    <td><a href="models/rbc.gcn" download><b>rbc.gcn</b></a><br>
+        <a href="models/rbc.R" download><b>rbc.R</b></a></td>
+    <td><a href="models/rbc.pdf"><b>rbc.pdf</b></a><br>
+        <a href="models/rbc.model.log" download><b>rbc.model.log</b></a></td>
   </tr>
   <tr>
     <td>RBC with installation costs (<font color="red">the&nbsp;model from&nbsp;the&nbsp;Users' guide</font>)</td>
-    <td><a href="models/rbc_ic/rbc_ic.gcn" download><b>rbc_ic.gcn</b></a></td>
-    <td><a href="models/rbc_ic/rbc_ic.R" download><b>rbc_ic.R</b></a></td>
-    <td><a href="models/rbc_ic/rbc_ic.pdf"><b>rbc_ic.pdf</b></a></td>
+    <td><a href="models/rbc_ic.gcn" download><b>rbc_ic.gcn</b></a><br>
+        <a href="models/rbc_ic.R" download><b>rbc_ic.R</b></a></td>
+    <td><a href="models/rbc_ic.pdf"><b>rbc_ic.pdf</b></a><br>
+        <a href="models/rbc_ic.model.log" download><b>rbc_ic.model.log</b></a></td>
   </tr>
   <tr>
     <td>RBC with capacity utilization</td>
-    <td><a href="models/rbc_cu/rbc_cu.gcn" download><b>rbc_cu.gcn</b></a></td>
-    <td><a href="models/rbc_cu/rbc_cu.R" download><b>rbc_cu.R</b></a></td>
-    <td><a href="models/rbc_cu/rbc_cu.pdf"><b>rbc_cu.pdf</b></a></td>
+    <td><a href="models/rbc_cu.gcn" download><b>rbc_cu.gcn</b></a><br>
+        <a href="models/rbc_cu.R" download><b>rbc_cu.R</b></a></td>
+    <td><a href="models/rbc_cu.pdf"><b>rbc_cu.pdf</b></a><br>
+        <a href="models/rbc_cu.model.log" download><b>rbc_cu.model.log</b></a></td>
   </tr>
   <tr>
     <td>RBC with habit formation</td>
-    <td><a href="models/rbc_hf/rbc_hf.gcn" download><b>rbc_hf.gcn</b></a></td>
-    <td><a href="models/rbc_hf/rbc_hf.R" download><b>rbc_hf.R</b></a></td>
-    <td><a href="models/rbc_hf/rbc_hf.pdf"><b>rbc_hf.pdf</b></a></td>
+    <td><a href="models/rbc_hf.gcn" download><b>rbc_hf.gcn</b></a><br>
+        <a href="models/rbc_hf.R" download><b>rbc_hf.R</b></a></td>
+    <td><a href="models/rbc_hf.pdf"><b>rbc_hf.pdf</b></a><br>
+        <a href="models/rbc_hf.model.log" download><b>rbc_hf.model.log</b></a></td>
   </tr>
   <tr>
     <td>RBC with monopolistic competition</td>
-    <td><a href="models/rbc_mc/rbc_mc.gcn" download><b>rbc_mc.gcn</b></a></td>
-    <td><a href="models/rbc_mc/rbc_mc.R" download><b>rbc_mc.R</b></a></td>
-    <td><a href="models/rbc_mc/rbc_mc.pdf"><b>rbc_mc.pdf</b></a></td>
+    <td><a href="models/rbc_mc.gcn" download><b>rbc_mc.gcn</b></a><br>
+        <a href="models/rbc_mc.R" download><b>rbc_mc.R</b></a></td>
+    <td><a href="models/rbc_mc.pdf"><b>rbc_mc.pdf</b></a><br>
+        <a href="models/rbc_mc.model.log" download><b>rbc_mc.model.log</b></a></td>
   </tr>
   <tr>
     <td>RBC with two sectors</td>
-    <td><a href="models/rbc_ts/rbc_ts.gcn" download><b>rbc_ts.gcn</b></a></td>
-    <td><a href="models/rbc_ts/rbc_ts.R" download><b>rbc_ts.R</b></a></td>
-    <td><a href="models/rbc_ts/rbc_ts.pdf"><b>rbc_ts.pdf</b></a></td>
+    <td><a href="models/rbc_ts.gcn" download><b>rbc_ts.gcn</b></a><br>
+        <a href="models/rbc_ts.R" download><b>rbc_ts.R</b></a></td>
+    <td><a href="models/rbc_ts.pdf"><b>rbc_ts.pdf</b></a><br>
+        <a href="models/rbc_ts.model.log" download><b>rbc_ts.model.log</b></a></td>
   </tr>
   <tr>
-    <td>Home production (based on Benhabib J., Rogerson&nbsp;R., and Wright R. (1991))</td>
-    <td><a href="models/home_production/home_production.gcn" download><b>home_production.gcn</b></a></td>
-    <td><a href="models/home_production/home_production.R" download><b>home_production.R</b></a></td>
-    <td><a href="models/home_production/home_production.pdf"><b>home_production.pdf</b></a></td>
+    <td>Home production (based on Benhabib&nbsp;J., Rogerson&nbsp;R., and Wright R.&nbsp;(1991))</td>
+    <td><a href="models/home_production.gcn" download><b>home_production.gcn</b></a><br>
+        <a href="models/home_production.R" download><b>home_production.R</b></a></td>
+    <td><a href="models/home_production.pdf"><b>home_production.pdf</b></a><br>
+        <a href="models/home_production.model.log" download><b>home_production.model.log</b></a></td>
   </tr>
   <tr>
-    <td>Home production (based on Benhabib J., Rogerson&nbsp;R., and Wright R. (1991)) using templates</td>
-    <td><a href="models/home_prod_templ/home_prod_templ.gcn" download><b>home_prod_templ.gcn</b></a></td>
-    <td><a href="models/home_prod_templ/home_prod_templ.R" download><b>home_prod_templ.R</b></a></td>
-    <td><a href="models/home_prod_templ/home_prod_templ.pdf"><b>home_prod_templ.pdf</b></a></td>
+    <td>Home production (based on Benhabib&nbsp;J., Rogerson&nbsp;R., and Wright&nbsp;R. (1991)) using templates</td>
+    <td><a href="models/home_prod_templ.gcn" download><b>home_prod_templ.gcn</b></a><br>
+        <a href="models/home_prod_templ.R" download><b>home_prod_templ.R</b></a></td>
+    <td><a href="models/home_prod_templ.pdf"><b>home_prod_templ.pdf</b></a><br>
+        <a href="models/home_prod_templ.model.log" download><b>home_prod_templ.model.log</b></a></td>
   </tr>
   <tr>
     <td>Stochastic growth with Epstein-Zin preferences</td>
-    <td><a href="models/epstein_zin/epstein_zin.gcn" download><b>epstein_zin.gcn</b></a></td>
-    <td><a href="models/epstein_zin/epstein_zin.R" download><b>epstein_zin.R</b></a></td>
-    <td><a href="models/epstein_zin/epstein_zin.pdf"><b>epstein_zin.pdf</b></a></td>
+    <td><a href="models/epstein_zin.gcn" download><b>epstein_zin.gcn</b></a><br>
+        <a href="models/epstein_zin.R" download><b>epstein_zin.R</b></a></td>
+    <td><a href="models/epstein_zin.pdf"><b>epstein_zin.pdf</b></a><br>
+        <a href="models/epstein_zin.model.log" download><b>epstein_zin.model.log</b></a></td>
   </tr>
   <tr>
     <td>Time-to-build model</td>
-    <td><a href="models/ttb/ttb.gcn" download><b>ttb.gcn</b></a></td>
-    <td><a href="models/ttb/ttb.R" download><b>ttb.R</b></a></td>
-    <td><a href="models/ttb/ttb.pdf"><b>ttb.pdf</b></a></td>
+    <td><a href="models/ttb.gcn" download><b>ttb.gcn</b></a><br>
+        <a href="models/ttb.R" download><b>ttb.R</b></a></td>
+    <td><a href="models/ttb.pdf"><b>ttb.pdf</b></a><br>
+        <a href="models/ttb.model.log" download><b>ttb.model.log</b></a></td>
   </tr>
   <tr>
     <td>Two countries with risk sharing</td>
-    <td><a href="models/tc_rs/tc_rs.gcn" download><b>tc_rs.gcn</b></a></td>
-    <td><a href="models/tc_rs/tc_rs.R" download><b>tc_rs.R</b></a></td>
-    <td><a href="models/tc_rs/tc_rs.pdf"><b>tc_rs.pdf</b></a></td>
+    <td><a href="models/tc_rs.gcn" download><b>tc_rs.gcn</b></a><br>
+        <a href="models/tc_rs.R" download><b>tc_rs.R</b></a></td>
+    <td><a href="models/tc_rs.pdf"><b>tc_rs.pdf</b></a><br>
+        <a href="models/tc_rs.model.log" download><b>tc_rs.model.log</b></a></td>
   </tr>
   <tr>
     <td>Two countries with risk sharing using templates</td>
-    <td><a href="models/tc_rs_templ/tc_rs_templ.gcn" download><b>tc_rs_templ.gcn</b></a></td>
-    <td><a href="models/tc_rs_templ/tc_rs_templ.R" download><b>tc_rs_templ.R</b></a></td>
-    <td><a href="models/tc_rs_templ/tc_rs_templ.pdf"><b>tc_rs_templ.pdf</b></a></td>
+    <td><a href="models/tc_rs_templ.gcn" download><b>tc_rs_templ.gcn</b></a><br>
+        <a href="models/tc_rs_templ.R" download><b>tc_rs_templ.R</b></a></td>
+    <td><a href="models/tc_rs_templ.pdf"><b>tc_rs_templ.pdf</b></a><br>
+        <a href="models/tc_rs_templ.model.log" download><b>tc_rs_templ.model.log</b></a></td>
   </tr>
   <tr>
     <td>Smets-Wouters '03 model (<font color="red">the&nbsp;model from&nbsp;the&nbsp;<a href="http://ideas.repec.org/p/pra/mprapa/64440.html">paper</a></font>)</td>
-    <td><a href="models/SW_03/SW_03.gcn" download><b>SW_03.gcn</b></a></td>
-    <td><a href="models/SW_03/SW_03.R" download><b>SW_03.R</b></a></td>
-    <td><a href="models/SW_03/SW_03.pdf"><b>SW_03.pdf</b></a></td>
+    <td><a href="models/SW_03.gcn" download><b>SW_03.gcn</b></a><br>
+        <a href="models/SW_03.R" download><b>SW_03.R</b></a></td>
+    <td><a href="models/SW_03.pdf"><b>SW_03.pdf</b></a><br>
+        <a href="models/SW_03.model.log" download><b>SW_03.model.log</b></a></td>
   </tr>
 </table>
 
 
 
-
-
-
-
 <h3>Download all models</h3>
 
-<a href="models/models.tar.gz">All models (<b>models.tar.gz</b> [3.3 MB])</a>
+<a href="models/models.tar.gz">All models (<b>models.tar.gz</b>)</a>
 
 
 </div>

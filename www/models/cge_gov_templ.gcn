@@ -1,0 +1,98 @@
+# ############################################################################
+# (c) Chancellery of the Prime Minister 2012-2015                            #
+#                                                                            #
+# Authors: Marta Retkiewicz                                                  #
+# ############################################################################
+# Simple CGE model with government
+# ############################################################################
+
+
+options
+{
+    output logfile = TRUE;
+    output LaTeX = TRUE;
+    output LaTeX landscape = TRUE;
+};
+
+indexsets
+{
+    SEC = { 'A', 'B', 'C' };
+};
+
+block CONSUMER
+{
+    definitions
+    {
+        u[] = (SUM<s::SEC>(alpha<s> * D<s>[]^((omega - 1)/omega)))^(omega/(omega - 1));
+    };
+    controls
+    {
+        <s::SEC>D<s>[];
+    };
+    objective
+    {
+        U[] = u[];
+    };
+    constraints
+    {
+        (1 - tau_h) * H_inc[] = SUM<s::SEC>(D<s>[] * p<s>[] - pi<s>[]);
+    };
+    identities
+    {
+        H_inc[] = K[] * p_k[] + L[] + TR[];
+        K[] = par_k;
+        L[] = par_l;
+    };
+};
+
+block <s::SEC> FIRM
+{
+    controls
+    {
+        Y<s>[], K<s>[], L<s>[], <si::SEC>X<si, s>[], VA<s>[], CI<s>[], Tpi<s>[];
+    };
+    objective
+    {
+        pi<s>[] = Tpi<s>[] * (1 - tau);
+    };
+    constraints
+    {
+        # Three-level nested CES production function with value added VA and intermediate inputs CI
+        Y<s>[] = (beta_va<s> * VA<s>[]^((gamma<s> - 1)/gamma<s>)
+                    + beta_ci<s> * CI<s>[]^((gamma<s> - 1)/gamma<s>))^(gamma<s>/(gamma<s> - 1));
+        VA<s>[] = (beta_k<s> * K<s>[]^((gamma<s> - 1)/gamma<s>)
+                    + beta_l<s> * L<s>[]^((gamma<s> - 1)/gamma<s>))^(gamma<s>/(gamma<s> - 1));
+        CI<s>[] = (SUM<si::SEC>(chi<si, s> * X<si, s>[]^((gamma<s> - 1)/gamma<s>)))^(gamma<s>/(gamma<s> - 1));
+        
+        Tpi<s>[] = (Y<s>[] * p<s>[] - (K<s>[] * p_k[] * (1 + t_k) + L<s>[] * (1 + t_l))
+                    - (SUM<si::SEC>(X<si, s>[] * p<si>[])));
+    };
+};
+ 
+block GOVERNMENT
+{
+    identities
+    {
+        G_inc[] = TR[];
+        G_inc[] = T_hh[] + T_firms[] + T_lk[];
+        T_hh[] = tau_h * H_inc[];
+        T_firms[] = tau * (SUM<s::SEC>(Tpi<s>[]));
+        T_lk[] = t_k * p_k[] * (SUM<s::SEC>(K<s>[])) + t_l * (SUM<si::SEC>(L<si>[]));
+    };
+    calibration
+    {
+        tau_h = 0;
+        tau = 0;
+        t_k = 0;
+        t_l = 0;
+    };
+};
+
+block EQUILIBRIUM
+{
+    identities
+    {
+        <s::SEC>Y<s>[] = D<s>[] + SUM<si::SEC>(X<s, si>[]);
+        K[] = SUM<s::SEC>(K<s>[]);
+    };
+};

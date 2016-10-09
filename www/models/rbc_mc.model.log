@@ -1,0 +1,121 @@
+Generated on 2016-10-09 23:50:48 by gEcon ver. 1.0.0 (2016-10-09)
+http://gecon.r-forge.r-project.org/
+
+Model name: rbc_mc
+
+Block: CONSUMER
+ Controls:
+    C[], L_s[]
+ Objective:
+    U[] = beta * E[][U[1]] + (1 - eta)^-1 * (C[]^mu * (1 - L_s[])^(1 - mu))^(1 - eta)    (lambda_U[])
+ Constraints:
+    pi[] + pi_ps[] + L_s[] * W[] - C[] * P_FIN[] = 0    (lambda_c[])
+ First order conditions:
+    beta - lambda_U[] = 0    (U[])
+    -lambda_c[] * P_FIN[] + mu * C[]^(-1 + mu) * (1 - L_s[])^(1 - mu) * (C[]^mu * (1 - L_s[])^(1 - mu))^(-eta) = 0    (C[])
+    lambda_c[] * W[] + (-1 + mu) * C[]^mu * (1 - L_s[])^(-mu) * (C[]^mu * (1 - L_s[])^(1 - mu))^(-eta) = 0    (L_s[])
+
+Block: INTERMEDIATE_FIRM
+ Controls:
+    K[], L_d[], Y[], I[], pi[]
+ Objective:
+    PI[] = pi[] + lambda_c[]^-1 * E[][lambda_c[1] * lambda_U[1] * PI[1]]    (lambda__INTERMEDIATE_FIRM_PI[])
+ Constraints:
+    -pi[] - I[] - L_d[] * W[] + P[] * Y[] = 0    (lambda__INTERMEDIATE_FIRM_1[])
+    -Y[] + K[-1]^alpha * (L_d[] * Z[])^(1 - alpha) = 0    (lambda__INTERMEDIATE_FIRM_2[])
+    I[] - K[] + K[-1] * (1 - delta) = 0    (lambda__INTERMEDIATE_FIRM_3[])
+ First order conditions:
+    -lambda__INTERMEDIATE_FIRM_PI[] + lambda_c[-1]^-1 * lambda_c[] * lambda_U[] = 0    (PI[])
+    -lambda__INTERMEDIATE_FIRM_3[] + E[][lambda__INTERMEDIATE_FIRM_PI[1] * (lambda__INTERMEDIATE_FIRM_3[1] * (1 - delta) + alpha * lambda__INTERMEDIATE_FIRM_2[1] * K[]^(-1 + alpha) * (L_d[1] * Z[1])^(1 - alpha))] = 0    (K[])
+    -lambda__INTERMEDIATE_FIRM_1[] * W[] + lambda__INTERMEDIATE_FIRM_2[] * Z[] * (1 - alpha) * K[-1]^alpha * (L_d[] * Z[])^(-alpha) = 0    (L_d[])
+    -lambda__INTERMEDIATE_FIRM_2[] + lambda__INTERMEDIATE_FIRM_1[] * P[] = 0    (Y[])
+    -lambda__INTERMEDIATE_FIRM_1[] + lambda__INTERMEDIATE_FIRM_3[] = 0    (I[])
+    1 - lambda__INTERMEDIATE_FIRM_1[] = 0    (pi[])
+ First order conditions after reduction:
+    -lambda__INTERMEDIATE_FIRM_PI[] + lambda_c[-1]^-1 * lambda_c[] * lambda_U[] = 0    (PI[])
+    -1 + E[][lambda__INTERMEDIATE_FIRM_PI[1] * (1 - delta + alpha * lambda__INTERMEDIATE_FIRM_2[1] * K[]^(-1 + alpha) * (L_d[1] * Z[1])^(1 - alpha))] = 0    (K[])
+    -W[] + lambda__INTERMEDIATE_FIRM_2[] * Z[] * (1 - alpha) * K[-1]^alpha * (L_d[] * Z[])^(-alpha) = 0    (L_d[])
+    -lambda__INTERMEDIATE_FIRM_2[] + P[] = 0    (Y[])
+
+Block: PRICE_SETTING
+ Controls:
+    pi_ps[], Y_MON[], P_MON[]
+ Objective:
+    PI_PS[] = pi_ps[]
+ Constraints:
+    -pi_ps[] + Y_MON[] * (-P[] + P_MON[]) = 0    (lambda__PRICE_SETTING_1[])
+    -Y_MON[] + Y_FIN[] * (P_FIN[]^-1 * P_MON[])^(-rho) = 0    (lambda__PRICE_SETTING_2[])
+ First order conditions:
+    1 - lambda__PRICE_SETTING_1[] = 0    (pi_ps[])
+    -lambda__PRICE_SETTING_2[] + lambda__PRICE_SETTING_1[] * (-P[] + P_MON[]) = 0    (Y_MON[])
+    lambda__PRICE_SETTING_1[] * Y_MON[] - rho * lambda__PRICE_SETTING_2[] * P_FIN[]^-1 * Y_FIN[] * (P_FIN[]^-1 * P_MON[])^(-1 - rho) = 0    (P_MON[])
+ First order conditions after reduction:
+    Y_MON[] - rho * P_FIN[]^-1 * Y_FIN[] * (-P[] + P_MON[]) * (P_FIN[]^-1 * P_MON[])^(-1 - rho) = 0    (P_MON[])
+
+Block: FINAL_FIRM
+ Identities:
+    Y_MON[] - Y_FIN[] = 0
+
+Block: EQUILIBRIUM
+ Identities:
+    -L_d[] + L_s[] = 0
+    1 - P_FIN[] = 0
+    Y[] - Y_MON[] = 0
+
+Block: EXOG
+ Identities:
+    -Z[] + exp(epsilon_Z[] + phi * log(Z[-1])) = 0
+
+Variables (14):
+    pi[], pi_ps[], C[], I[], K[], L_s[], P[], P_MON[], PI[], PI_PS[], U[], W[], Y[], Z[]
+
+Shocks (1):
+    epsilon_Z[]
+
+Parameters (7):
+    alpha, beta, delta, eta, mu, phi, rho
+
+Free parameters (7):
+    alpha, beta, delta, eta, mu, phi, rho
+
+Equations (14):
+ (1)  -1 + beta * (C[]^(-1 + mu))^-1 * ((1 - L_s[])^(1 - mu))^-1 * ((C[]^mu * (1 - L_s[])^(1 - mu))^(-eta))^-1 * E[][(1 - delta + alpha * P[1] * K[]^(-1 + alpha) * (L_s[1] * Z[1])^(1 - alpha)) * C[1]^(-1 + mu) * (1 - L_s[1])^(1 - mu) * (C[1]^mu * (1 - L_s[1])^(1 - mu))^(-eta)] = 0
+ (2)  -pi_ps[] + PI_PS[] = 0
+ (3)  -pi_ps[] + Y[] * (-P[] + P_MON[]) = 0
+ (4)  -W[] + P[] * Z[] * (1 - alpha) * K[-1]^alpha * (L_s[] * Z[])^(-alpha) = 0
+ (5)  -Y[] + Y[] * P_MON[]^(-rho) = 0
+ (6)  -Y[] + K[-1]^alpha * (L_s[] * Z[])^(1 - alpha) = 0
+ (7)  Y[] - rho * Y[] * (-P[] + P_MON[]) * P_MON[]^(-1 - rho) = 0
+ (8)  -Z[] + exp(epsilon_Z[] + phi * log(Z[-1])) = 0
+ (9)  (-1 + mu) * C[]^mu * (1 - L_s[])^(-mu) * (C[]^mu * (1 - L_s[])^(1 - mu))^(-eta) + mu * W[] * C[]^(-1 + mu) * (1 - L_s[])^(1 - mu) * (C[]^mu * (1 - L_s[])^(1 - mu))^(-eta) = 0
+ (10)  -pi[] + PI[] - beta * (C[]^(-1 + mu))^-1 * ((1 - L_s[])^(1 - mu))^-1 * ((C[]^mu * (1 - L_s[])^(1 - mu))^(-eta))^-1 * E[][PI[1] * C[1]^(-1 + mu) * (1 - L_s[1])^(1 - mu) * (C[1]^mu * (1 - L_s[1])^(1 - mu))^(-eta)] = 0
+ (11)  I[] - K[] + K[-1] * (1 - delta) = 0
+ (12)  U[] - beta * E[][U[1]] - (1 - eta)^-1 * (C[]^mu * (1 - L_s[])^(1 - mu))^(1 - eta) = 0
+ (13)  -pi[] - I[] - L_s[] * W[] + P[] * Y[] = 0
+ (14)  pi[] + pi_ps[] - C[] + L_s[] * W[] = 0
+
+Steady state equations (14):
+ (1)  -1 + beta * (1 - delta + alpha * P[ss] * K[ss]^(-1 + alpha) * (L_s[ss] * Z[ss])^(1 - alpha)) * C[ss]^(-1 + mu) * C[ss]^(1 - mu) * (1 - L_s[ss])^(-1 + mu) * (1 - L_s[ss])^(1 - mu) = 0
+ (2)  -pi_ps[ss] + PI_PS[ss] = 0
+ (3)  -pi_ps[ss] + Y[ss] * (-P[ss] + P_MON[ss]) = 0
+ (4)  -W[ss] + P[ss] * Z[ss] * (1 - alpha) * K[ss]^alpha * (L_s[ss] * Z[ss])^(-alpha) = 0
+ (5)  -Y[ss] + Y[ss] * P_MON[ss]^(-rho) = 0
+ (6)  -Y[ss] + K[ss]^alpha * (L_s[ss] * Z[ss])^(1 - alpha) = 0
+ (7)  Y[ss] - rho * Y[ss] * (-P[ss] + P_MON[ss]) * P_MON[ss]^(-1 - rho) = 0
+ (8)  -Z[ss] + exp(phi * log(Z[ss])) = 0
+ (9)  (-1 + mu) * C[ss]^mu * (1 - L_s[ss])^(-mu) * (C[ss]^mu * (1 - L_s[ss])^(1 - mu))^(-eta) + mu * W[ss] * C[ss]^(-1 + mu) * (1 - L_s[ss])^(1 - mu) * (C[ss]^mu * (1 - L_s[ss])^(1 - mu))^(-eta) = 0
+ (10)  -pi[ss] + PI[ss] - beta * PI[ss] * 1 * (1 - L_s[ss])^(-1 + mu) * (1 - L_s[ss])^(1 - mu) = 0
+ (11)  I[ss] - K[ss] + K[ss] * (1 - delta) = 0
+ (12)  U[ss] - beta * U[ss] - (1 - eta)^-1 * (C[ss]^mu * (1 - L_s[ss])^(1 - mu))^(1 - eta) = 0
+ (13)  -pi[ss] - I[ss] - L_s[ss] * W[ss] + P[ss] * Y[ss] = 0
+ (14)  pi[ss] + pi_ps[ss] - C[ss] + L_s[ss] * W[ss] = 0
+
+Parameter settings (7):
+ (1)  alpha = 0.33
+ (2)  beta = 0.99
+ (3)  delta = 0.025
+ (4)  eta = 2
+ (5)  mu = 0.3
+ (6)  phi = 0.95
+ (7)  rho = 11
+

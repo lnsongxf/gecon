@@ -1,0 +1,59 @@
+Generated on 2016-10-09 23:50:37 by gEcon ver. 1.0.0 (2016-10-09)
+http://gecon.r-forge.r-project.org/
+
+Model name: pure_exchange
+
+Block: AGENT_A
+ Controls:
+    C_A1, C_A2
+ Objective:
+    U_A = log(C_A1) + psi_A * log(C_A2)
+ Constraints:
+    e_A1 * p_1 + e_A2 * p_2 - p_1 * C_A1 - p_2 * C_A2 = 0    (lambda__AGENT_A_1)
+ Identities:
+    e_A1_calibr - e_A1 = 0
+    e_A2_calibr - e_A2 = 0
+ First order conditions:
+    C_A1^-1 - lambda__AGENT_A_1 * p_1 = 0    (C_A1)
+    psi_A * C_A2^-1 - lambda__AGENT_A_1 * p_2 = 0    (C_A2)
+
+Block: AGENT_B
+ Controls:
+    C_B1, C_B2
+ Objective:
+    U_B = log(C_B1) + psi_B * log(C_B2)
+ Constraints:
+    e_B1 * p_1 + e_B2 * p_2 - p_1 * C_B1 - p_2 * C_B2 = 0    (lambda__AGENT_B_1)
+ Identities:
+    e_B1_calibr - e_B1 = 0
+    e_B2_calibr - e_B2 = 0
+ First order conditions:
+    C_B1^-1 - lambda__AGENT_B_1 * p_1 = 0    (C_B1)
+    psi_B * C_B2^-1 - lambda__AGENT_B_1 * p_2 = 0    (C_B2)
+
+Block: EQUILIBRIUM
+ Identities:
+    1 - p_1 = 0
+    e_B1 + e_A1 - C_A1 - C_B1 = 0
+
+Variables (6):
+    p_2, C_A2, C_B1, C_B2, U_A, U_B
+
+Parameters (6):
+    e_A1_calibr, e_A2_calibr, e_B1_calibr, e_B2_calibr, psi_A, psi_B
+
+Free parameters (6):
+    e_A1_calibr, e_A2_calibr, e_B1_calibr, e_B2_calibr, psi_A, psi_B
+
+Equations (6):
+ (1)  psi_A * C_A2^-1 - p_2 * (e_A1_calibr + e_B1_calibr - C_B1)^-1 = 0
+ (2)  psi_B * C_B2^-1 - p_2 * C_B1^-1 = 0
+ (3)  U_A - log(e_A1_calibr + e_B1_calibr - C_B1) - psi_A * log(C_A2) = 0
+ (4)  U_B - log(C_B1) - psi_B * log(C_B2) = 0
+ (5)  -e_B1_calibr + C_B1 + e_A2_calibr * p_2 - p_2 * C_A2 = 0
+ (6)  e_B1_calibr - C_B1 + e_B2_calibr * p_2 - p_2 * C_B2 = 0
+
+Parameter settings (2):
+ (1)  psi_A = 1.72
+ (2)  psi_B = 2.22
+

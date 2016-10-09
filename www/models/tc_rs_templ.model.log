@@ -1,0 +1,114 @@
+Generated on 2016-10-09 23:51:10 by gEcon ver. 1.0.0 (2016-10-09)
+http://gecon.r-forge.r-project.org/
+
+Model name: tc_rs_templ
+
+Index sets (1):
+    COUNTRY = { 'F', 'H' }
+
+Block: <c::COUNTRY> CONSUMER
+ Controls:
+    K<c>[], C<c>[], H<c>[], I<c>[]
+ Objective:
+    U<c>[] = beta * E[][U<c>[1]] + (1 - eta)^-1 * (C<c>[]^mu * (1 - H<c>[])^(1 - mu))^(1 - eta)
+ Constraints:
+    pi<c>[] - C<c>[] - I<c>[] - T<c>[] + TR<c>[] + K<c>[-1] * r<c>[] + H<c>[] * W<c>[] - psi<c> * K<c>[-1] * (-delta<c> + K<c>[-1]^-1 * I<c>[])^2 = 0    (lambda_c<c>[])
+    I<c>[] - K<c>[] + K<c>[-1] * (1 - delta<c>) = 0    (lambda__CONSUMER_2<c>[])
+ First order conditions:
+    -lambda__CONSUMER_2<c>[] + beta * ((1 - delta<c>) * E[][lambda__CONSUMER_2<c>[1]] + E[][lambda_c<c>[1] * (r<c>[1] - psi<c> * (-delta<c> + K<c>[]^-1 * I<c>[1])^2 + 2 * psi<c> * K<c>[]^-1 * I<c>[1] * (-delta<c> + K<c>[]^-1 * I<c>[1]))]) = 0    (K<c>[])
+    -lambda_c<c>[] + mu * C<c>[]^(-1 + mu) * (1 - H<c>[])^(1 - mu) * (C<c>[]^mu * (1 - H<c>[])^(1 - mu))^(-eta) = 0    (C<c>[])
+    lambda_c<c>[] * W<c>[] + (-1 + mu) * C<c>[]^mu * (1 - H<c>[])^(-mu) * (C<c>[]^mu * (1 - H<c>[])^(1 - mu))^(-eta) = 0    (H<c>[])
+    lambda__CONSUMER_2<c>[] + lambda_c<c>[] * (-1 - 2 * psi<c> * (-delta<c> + K<c>[-1]^-1 * I<c>[])) = 0    (I<c>[])
+
+Block: <c::COUNTRY> FIRM
+ Controls:
+    K_d<c>[], H_d<c>[], Y<c>[], pi<c>[]
+ Objective:
+    PI<c>[] = pi<c>[]
+ Constraints:
+    -Y<c>[] + Z<c>[] * H_d<c>[]^(1 - alpha<c>) * K_d<c>[]^alpha<c> = 0    (lambda__FIRM_1<c>[])
+    -pi<c>[] + Y<c>[] - r<c>[] * K_d<c>[] - H_d<c>[] * W<c>[] = 0    (lambda__FIRM_2<c>[])
+ First order conditions:
+    -lambda__FIRM_2<c>[] * r<c>[] + alpha<c> * lambda__FIRM_1<c>[] * Z<c>[] * H_d<c>[]^(1 - alpha<c>) * K_d<c>[]^(-1 + alpha<c>) = 0    (K_d<c>[])
+    -lambda__FIRM_2<c>[] * W<c>[] + lambda__FIRM_1<c>[] * Z<c>[] * (1 - alpha<c>) * H_d<c>[]^(-alpha<c>) * K_d<c>[]^alpha<c> = 0    (H_d<c>[])
+    -lambda__FIRM_1<c>[] + lambda__FIRM_2<c>[] = 0    (Y<c>[])
+    1 - lambda__FIRM_2<c>[] = 0    (pi<c>[])
+ First order conditions after reduction:
+    -r<c>[] + alpha<c> * Z<c>[] * H_d<c>[]^(1 - alpha<c>) * K_d<c>[]^(-1 + alpha<c>) = 0    (K_d<c>[])
+    -W<c>[] + Z<c>[] * (1 - alpha<c>) * H_d<c>[]^(-alpha<c>) * K_d<c>[]^alpha<c> = 0    (H_d<c>[])
+
+Block: EQUILIBRIUM
+ Identities:
+    -SUM<c::COUNTRY> TR<c>[] = 0
+    <c::COUNTRY> K<c>[-1] - K_d<c>[] = 0
+    <c::COUNTRY> H<c>[] - H_d<c>[] = 0
+    <c::COUNTRY> G_d<c>[] - T<c>[] = 0
+    lambda_c<'F'>[] - lambda_c<'H'>[] = 0
+
+Block: EXOG
+ Identities:
+    <c::COUNTRY> epsilon_G<c>[] - G_d<c>[] + phi_G<c> * G_d<c>[-1] = 0
+    <c::COUNTRY> -Z<c>[] + exp(epsilon_Z<c>[] + phi_Z<c> * log(Z<c>[-1])) = 0
+
+Variables (23):
+    lambda_c<'F'>[], lambda_c<'H'>[], r<'F'>[], r<'H'>[], C<'F'>[], C<'H'>[], G_d<'F'>[], G_d<'H'>[], H<'F'>[], H<'H'>[], I<'F'>[], I<'H'>[], K<'F'>[], K<'H'>[], TR<'H'>[], U<'F'>[], U<'H'>[], W<'F'>[], W<'H'>[], Y<'F'>[], Y<'H'>[], Z<'F'>[], Z<'H'>[]
+
+Shocks (4):
+    epsilon_Z<'F'>[], epsilon_Z<'H'>[], epsilon_G<'F'>[], epsilon_G<'H'>[]
+
+Parameters (13):
+    beta, eta, mu, alpha<'F'>, alpha<'H'>, delta<'F'>, delta<'H'>, phi_G<'F'>, phi_G<'H'>, phi_Z<'F'>, phi_Z<'H'>, psi<'F'>, psi<'H'>
+
+Free parameters (13):
+    beta, eta, mu, alpha<'F'>, alpha<'H'>, delta<'F'>, delta<'H'>, phi_G<'F'>, phi_G<'H'>, phi_Z<'F'>, phi_Z<'H'>, psi<'F'>, psi<'H'>
+
+Equations (23):
+ (1)  -lambda_c<'F'>[] + mu * C<'F'>[]^(-1 + mu) * (1 - H<'F'>[])^(1 - mu) * (C<'F'>[]^mu * (1 - H<'F'>[])^(1 - mu))^(-eta) = 0
+ (2)  lambda_c<'F'>[] - lambda_c<'H'>[] = 0
+ (3)  -lambda_c<'H'>[] + mu * C<'H'>[]^(-1 + mu) * (1 - H<'H'>[])^(1 - mu) * (C<'H'>[]^mu * (1 - H<'H'>[])^(1 - mu))^(-eta) = 0
+ (4)  -r<'F'>[] + alpha<'F'> * Z<'F'>[] * K<'F'>[-1]^(-1 + alpha<'F'>) * H<'F'>[]^(1 - alpha<'F'>) = 0
+ (5)  -r<'H'>[] + alpha<'H'> * Z<'H'>[] * K<'H'>[-1]^(-1 + alpha<'H'>) * H<'H'>[]^(1 - alpha<'H'>) = 0
+ (6)  -W<'F'>[] + Z<'F'>[] * (1 - alpha<'F'>) * K<'F'>[-1]^alpha<'F'> * H<'F'>[]^(-alpha<'F'>) = 0
+ (7)  -W<'H'>[] + Z<'H'>[] * (1 - alpha<'H'>) * K<'H'>[-1]^alpha<'H'> * H<'H'>[]^(-alpha<'H'>) = 0
+ (8)  -Y<'F'>[] + Z<'F'>[] * K<'F'>[-1]^alpha<'F'> * H<'F'>[]^(1 - alpha<'F'>) = 0
+ (9)  -Y<'H'>[] + Z<'H'>[] * K<'H'>[-1]^alpha<'H'> * H<'H'>[]^(1 - alpha<'H'>) = 0
+ (10)  -Z<'F'>[] + exp(epsilon_Z<'F'>[] + phi_Z<'F'> * log(Z<'F'>[-1])) = 0
+ (11)  -Z<'H'>[] + exp(epsilon_Z<'H'>[] + phi_Z<'H'> * log(Z<'H'>[-1])) = 0
+ (12)  beta * (-(1 - delta<'F'>) * E[][lambda_c<'F'>[1] * (-1 - 2 * psi<'F'> * (-delta<'F'> + K<'F'>[]^-1 * I<'F'>[1]))] + E[][lambda_c<'F'>[1] * (r<'F'>[1] - psi<'F'> * (-delta<'F'> + K<'F'>[]^-1 * I<'F'>[1])^2 + 2 * psi<'F'> * K<'F'>[]^-1 * I<'F'>[1] * (-delta<'F'> + K<'F'>[]^-1 * I<'F'>[1]))]) + lambda_c<'F'>[] * (-1 - 2 * psi<'F'> * (-delta<'F'> + K<'F'>[-1]^-1 * I<'F'>[])) = 0
+ (13)  beta * (-(1 - delta<'H'>) * E[][lambda_c<'H'>[1] * (-1 - 2 * psi<'H'> * (-delta<'H'> + K<'H'>[]^-1 * I<'H'>[1]))] + E[][lambda_c<'H'>[1] * (r<'H'>[1] - psi<'H'> * (-delta<'H'> + K<'H'>[]^-1 * I<'H'>[1])^2 + 2 * psi<'H'> * K<'H'>[]^-1 * I<'H'>[1] * (-delta<'H'> + K<'H'>[]^-1 * I<'H'>[1]))]) + lambda_c<'H'>[] * (-1 - 2 * psi<'H'> * (-delta<'H'> + K<'H'>[-1]^-1 * I<'H'>[])) = 0
+ (14)  lambda_c<'F'>[] * W<'F'>[] + (-1 + mu) * C<'F'>[]^mu * (1 - H<'F'>[])^(-mu) * (C<'F'>[]^mu * (1 - H<'F'>[])^(1 - mu))^(-eta) = 0
+ (15)  lambda_c<'H'>[] * W<'H'>[] + (-1 + mu) * C<'H'>[]^mu * (1 - H<'H'>[])^(-mu) * (C<'H'>[]^mu * (1 - H<'H'>[])^(1 - mu))^(-eta) = 0
+ (16)  epsilon_G<'F'>[] - G_d<'F'>[] + phi_G<'F'> * G_d<'F'>[-1] = 0
+ (17)  epsilon_G<'H'>[] - G_d<'H'>[] + phi_G<'H'> * G_d<'H'>[-1] = 0
+ (18)  I<'F'>[] - K<'F'>[] + K<'F'>[-1] * (1 - delta<'F'>) = 0
+ (19)  I<'H'>[] - K<'H'>[] + K<'H'>[-1] * (1 - delta<'H'>) = 0
+ (20)  U<'F'>[] - beta * E[][U<'F'>[1]] - (1 - eta)^-1 * (C<'F'>[]^mu * (1 - H<'F'>[])^(1 - mu))^(1 - eta) = 0
+ (21)  U<'H'>[] - beta * E[][U<'H'>[1]] - (1 - eta)^-1 * (C<'H'>[]^mu * (1 - H<'H'>[])^(1 - mu))^(1 - eta) = 0
+ (22)  -C<'F'>[] - G_d<'F'>[] - I<'F'>[] - TR<'H'>[] + Y<'F'>[] - psi<'F'> * K<'F'>[-1] * (-delta<'F'> + K<'F'>[-1]^-1 * I<'F'>[])^2 = 0
+ (23)  -C<'H'>[] - G_d<'H'>[] - I<'H'>[] + TR<'H'>[] + Y<'H'>[] - psi<'H'> * K<'H'>[-1] * (-delta<'H'> + K<'H'>[-1]^-1 * I<'H'>[])^2 = 0
+
+Steady state equations (23):
+ (1)  -lambda_c<'F'>[ss] + mu * C<'F'>[ss]^(-1 + mu) * (1 - H<'F'>[ss])^(1 - mu) * (C<'F'>[ss]^mu * (1 - H<'F'>[ss])^(1 - mu))^(-eta) = 0
+ (2)  lambda_c<'F'>[ss] - lambda_c<'H'>[ss] = 0
+ (3)  -lambda_c<'H'>[ss] + mu * C<'H'>[ss]^(-1 + mu) * (1 - H<'H'>[ss])^(1 - mu) * (C<'H'>[ss]^mu * (1 - H<'H'>[ss])^(1 - mu))^(-eta) = 0
+ (4)  -r<'F'>[ss] + alpha<'F'> * Z<'F'>[ss] * H<'F'>[ss]^(1 - alpha<'F'>) * K<'F'>[ss]^(-1 + alpha<'F'>) = 0
+ (5)  -r<'H'>[ss] + alpha<'H'> * Z<'H'>[ss] * H<'H'>[ss]^(1 - alpha<'H'>) * K<'H'>[ss]^(-1 + alpha<'H'>) = 0
+ (6)  -G_d<'F'>[ss] + phi_G<'F'> * G_d<'F'>[ss] = 0
+ (7)  -G_d<'H'>[ss] + phi_G<'H'> * G_d<'H'>[ss] = 0
+ (8)  -W<'F'>[ss] + Z<'F'>[ss] * (1 - alpha<'F'>) * H<'F'>[ss]^(-alpha<'F'>) * K<'F'>[ss]^alpha<'F'> = 0
+ (9)  -W<'H'>[ss] + Z<'H'>[ss] * (1 - alpha<'H'>) * H<'H'>[ss]^(-alpha<'H'>) * K<'H'>[ss]^alpha<'H'> = 0
+ (10)  -Y<'F'>[ss] + Z<'F'>[ss] * H<'F'>[ss]^(1 - alpha<'F'>) * K<'F'>[ss]^alpha<'F'> = 0
+ (11)  -Y<'H'>[ss] + Z<'H'>[ss] * H<'H'>[ss]^(1 - alpha<'H'>) * K<'H'>[ss]^alpha<'H'> = 0
+ (12)  -Z<'F'>[ss] + exp(phi_Z<'F'> * log(Z<'F'>[ss])) = 0
+ (13)  -Z<'H'>[ss] + exp(phi_Z<'H'> * log(Z<'H'>[ss])) = 0
+ (14)  beta * (lambda_c<'F'>[ss] * (r<'F'>[ss] - psi<'F'> * (-delta<'F'> + I<'F'>[ss] * K<'F'>[ss]^-1)^2 + 2 * psi<'F'> * I<'F'>[ss] * K<'F'>[ss]^-1 * (-delta<'F'> + I<'F'>[ss] * K<'F'>[ss]^-1)) - lambda_c<'F'>[ss] * (-1 - 2 * psi<'F'> * (-delta<'F'> + I<'F'>[ss] * K<'F'>[ss]^-1)) * (1 - delta<'F'>)) + lambda_c<'F'>[ss] * (-1 - 2 * psi<'F'> * (-delta<'F'> + I<'F'>[ss] * K<'F'>[ss]^-1)) = 0
+ (15)  beta * (lambda_c<'H'>[ss] * (r<'H'>[ss] - psi<'H'> * (-delta<'H'> + I<'H'>[ss] * K<'H'>[ss]^-1)^2 + 2 * psi<'H'> * I<'H'>[ss] * K<'H'>[ss]^-1 * (-delta<'H'> + I<'H'>[ss] * K<'H'>[ss]^-1)) - lambda_c<'H'>[ss] * (-1 - 2 * psi<'H'> * (-delta<'H'> + I<'H'>[ss] * K<'H'>[ss]^-1)) * (1 - delta<'H'>)) + lambda_c<'H'>[ss] * (-1 - 2 * psi<'H'> * (-delta<'H'> + I<'H'>[ss] * K<'H'>[ss]^-1)) = 0
+ (16)  lambda_c<'F'>[ss] * W<'F'>[ss] + (-1 + mu) * C<'F'>[ss]^mu * (1 - H<'F'>[ss])^(-mu) * (C<'F'>[ss]^mu * (1 - H<'F'>[ss])^(1 - mu))^(-eta) = 0
+ (17)  lambda_c<'H'>[ss] * W<'H'>[ss] + (-1 + mu) * C<'H'>[ss]^mu * (1 - H<'H'>[ss])^(-mu) * (C<'H'>[ss]^mu * (1 - H<'H'>[ss])^(1 - mu))^(-eta) = 0
+ (18)  I<'F'>[ss] - K<'F'>[ss] + K<'F'>[ss] * (1 - delta<'F'>) = 0
+ (19)  I<'H'>[ss] - K<'H'>[ss] + K<'H'>[ss] * (1 - delta<'H'>) = 0
+ (20)  U<'F'>[ss] - beta * U<'F'>[ss] - (1 - eta)^-1 * (C<'F'>[ss]^mu * (1 - H<'F'>[ss])^(1 - mu))^(1 - eta) = 0
+ (21)  U<'H'>[ss] - beta * U<'H'>[ss] - (1 - eta)^-1 * (C<'H'>[ss]^mu * (1 - H<'H'>[ss])^(1 - mu))^(1 - eta) = 0
+ (22)  -C<'F'>[ss] - G_d<'F'>[ss] - I<'F'>[ss] - TR<'H'>[ss] + Y<'F'>[ss] - psi<'F'> * K<'F'>[ss] * (-delta<'F'> + I<'F'>[ss] * K<'F'>[ss]^-1)^2 = 0
+ (23)  -C<'H'>[ss] - G_d<'H'>[ss] - I<'H'>[ss] + TR<'H'>[ss] + Y<'H'>[ss] - psi<'H'> * K<'H'>[ss] * (-delta<'H'> + I<'H'>[ss] * K<'H'>[ss]^-1)^2 = 0
+

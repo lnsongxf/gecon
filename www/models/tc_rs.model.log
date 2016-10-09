@@ -1,0 +1,156 @@
+Generated on 2016-10-09 23:51:05 by gEcon ver. 1.0.0 (2016-10-09)
+http://gecon.r-forge.r-project.org/
+
+Model name: tc_rs
+
+Block: CONSUMER
+ Controls:
+    K[], C[], H[], I[]
+ Objective:
+    U[] = beta * E[][U[1]] + (1 - eta)^-1 * (C[]^mu * (1 - H[])^(1 - mu))^(1 - eta)
+ Constraints:
+    pi[] - C[] - I[] - T[] + TR[] + K[-1] * r[] + H[] * W[] - psi * K[-1] * (-delta + K[-1]^-1 * I[])^2 = 0    (lambda_c[])
+    I[] - K[] + K[-1] * (1 - delta) = 0    (lambda__CONSUMER_2[])
+ First order conditions:
+    -lambda__CONSUMER_2[] + beta * ((1 - delta) * E[][lambda__CONSUMER_2[1]] + E[][lambda_c[1] * (r[1] - psi * (-delta + K[]^-1 * I[1])^2 + 2 * psi * K[]^-1 * I[1] * (-delta + K[]^-1 * I[1]))]) = 0    (K[])
+    -lambda_c[] + mu * C[]^(-1 + mu) * (1 - H[])^(1 - mu) * (C[]^mu * (1 - H[])^(1 - mu))^(-eta) = 0    (C[])
+    lambda_c[] * W[] + (-1 + mu) * C[]^mu * (1 - H[])^(-mu) * (C[]^mu * (1 - H[])^(1 - mu))^(-eta) = 0    (H[])
+    lambda__CONSUMER_2[] + lambda_c[] * (-1 - 2 * psi * (-delta + K[-1]^-1 * I[])) = 0    (I[])
+
+Block: FIRM
+ Controls:
+    K_d[], H_d[], Y[], pi[]
+ Objective:
+    PI[] = pi[]
+ Constraints:
+    -Y[] + Z[] * H_d[]^(1 - alpha) * K_d[]^alpha = 0    (lambda__FIRM_1[])
+    -pi[] + Y[] - r[] * K_d[] - H_d[] * W[] = 0    (lambda__FIRM_2[])
+ First order conditions:
+    -lambda__FIRM_2[] * r[] + alpha * lambda__FIRM_1[] * Z[] * H_d[]^(1 - alpha) * K_d[]^(-1 + alpha) = 0    (K_d[])
+    -lambda__FIRM_2[] * W[] + lambda__FIRM_1[] * Z[] * (1 - alpha) * H_d[]^(-alpha) * K_d[]^alpha = 0    (H_d[])
+    -lambda__FIRM_1[] + lambda__FIRM_2[] = 0    (Y[])
+    1 - lambda__FIRM_2[] = 0    (pi[])
+ First order conditions after reduction:
+    -r[] + alpha * Z[] * H_d[]^(1 - alpha) * K_d[]^(-1 + alpha) = 0    (K_d[])
+    -W[] + Z[] * (1 - alpha) * H_d[]^(-alpha) * K_d[]^alpha = 0    (H_d[])
+
+Block: CONSUMER_ast
+ Controls:
+    K_ast[], C_ast[], H_ast[], I_ast[]
+ Objective:
+    U_ast[] = beta * E[][U_ast[1]] + (1 - eta)^-1 * (C_ast[]^mu * (1 - H_ast[])^(1 - mu))^(1 - eta)
+ Constraints:
+    pi_ast[] - C_ast[] - I_ast[] - T_ast[] - TR[] + K_ast[-1] * r_ast[] + H_ast[] * W_ast[] - psi * K_ast[-1] * (-delta + K_ast[-1]^-1 * I_ast[])^2 = 0    (lambda_c_ast[])
+    I_ast[] - K_ast[] + K_ast[-1] * (1 - delta) = 0    (lambda__CONSUMER_ast_2[])
+ First order conditions:
+    -lambda__CONSUMER_ast_2[] + beta * ((1 - delta) * E[][lambda__CONSUMER_ast_2[1]] + E[][lambda_c_ast[1] * (r_ast[1] - psi * (-delta + K_ast[]^-1 * I_ast[1])^2 + 2 * psi * K_ast[]^-1 * I_ast[1] * (-delta + K_ast[]^-1 * I_ast[1]))]) = 0    (K_ast[])
+    -lambda_c_ast[] + mu * C_ast[]^(-1 + mu) * (1 - H_ast[])^(1 - mu) * (C_ast[]^mu * (1 - H_ast[])^(1 - mu))^(-eta) = 0    (C_ast[])
+    lambda_c_ast[] * W_ast[] + (-1 + mu) * C_ast[]^mu * (1 - H_ast[])^(-mu) * (C_ast[]^mu * (1 - H_ast[])^(1 - mu))^(-eta) = 0    (H_ast[])
+    lambda__CONSUMER_ast_2[] + lambda_c_ast[] * (-1 - 2 * psi * (-delta + K_ast[-1]^-1 * I_ast[])) = 0    (I_ast[])
+
+Block: FIRM_ast
+ Controls:
+    K_d_ast[], H_d_ast[], Y_ast[], pi_ast[]
+ Objective:
+    PI_ast[] = pi_ast[]
+ Constraints:
+    -Y_ast[] + Z_ast[] * H_d_ast[]^(1 - alpha) * K_d_ast[]^alpha = 0    (lambda__FIRM_ast_1[])
+    -pi_ast[] + Y_ast[] - r_ast[] * K_d_ast[] - H_d_ast[] * W_ast[] = 0    (lambda__FIRM_ast_2[])
+ First order conditions:
+    -lambda__FIRM_ast_2[] * r_ast[] + alpha * lambda__FIRM_ast_1[] * Z_ast[] * H_d_ast[]^(1 - alpha) * K_d_ast[]^(-1 + alpha) = 0    (K_d_ast[])
+    -lambda__FIRM_ast_2[] * W_ast[] + lambda__FIRM_ast_1[] * Z_ast[] * (1 - alpha) * H_d_ast[]^(-alpha) * K_d_ast[]^alpha = 0    (H_d_ast[])
+    -lambda__FIRM_ast_1[] + lambda__FIRM_ast_2[] = 0    (Y_ast[])
+    1 - lambda__FIRM_ast_2[] = 0    (pi_ast[])
+ First order conditions after reduction:
+    -r_ast[] + alpha * Z_ast[] * H_d_ast[]^(1 - alpha) * K_d_ast[]^(-1 + alpha) = 0    (K_d_ast[])
+    -W_ast[] + Z_ast[] * (1 - alpha) * H_d_ast[]^(-alpha) * K_d_ast[]^alpha = 0    (H_d_ast[])
+
+Block: EQUILIBRIUM
+ Identities:
+    K[-1] - K_d[] = 0
+    H[] - H_d[] = 0
+    G_d[] - T[] = 0
+    K_ast[-1] - K_d_ast[] = 0
+    -H_d_ast[] + H_ast[] = 0
+    G_d_ast[] - T_ast[] = 0
+    -lambda_c[] + lambda_c_ast[] = 0
+
+Block: EXOG
+ Identities:
+    epsilon_G[] - G_d[] + phi_G * G_d[-1] = 0
+    -Z[] + exp(epsilon_Z[] + phi_Z * log(Z[-1])) = 0
+    epsilon_G_ast[] - G_d_ast[] + phi_G * G_d_ast[-1] = 0
+    -Z_ast[] + exp(epsilon_Z_ast[] + phi_Z * log(Z_ast[-1])) = 0
+
+Variables (23):
+    lambda_c[], lambda_c_ast[], r[], r_ast[], C[], C_ast[], G_d[], G_d_ast[], H[], H_ast[], I[], I_ast[], K[], K_ast[], TR[], U[], U_ast[], W[], W_ast[], Y[], Y_ast[], Z[], Z_ast[]
+
+Shocks (4):
+    epsilon_Z[], epsilon_G[], epsilon_G_ast[], epsilon_Z_ast[]
+
+Parameters (8):
+    alpha, beta, delta, eta, mu, phi_G, phi_Z, psi
+
+Free parameters (8):
+    alpha, beta, delta, eta, mu, phi_G, phi_Z, psi
+
+Equations (23):
+ (1)  -lambda_c[] + lambda_c_ast[] = 0
+ (2)  -lambda_c[] + mu * C[]^(-1 + mu) * (1 - H[])^(1 - mu) * (C[]^mu * (1 - H[])^(1 - mu))^(-eta) = 0
+ (3)  -lambda_c_ast[] + mu * C_ast[]^(-1 + mu) * (1 - H_ast[])^(1 - mu) * (C_ast[]^mu * (1 - H_ast[])^(1 - mu))^(-eta) = 0
+ (4)  -r[] + alpha * Z[] * K[-1]^(-1 + alpha) * H[]^(1 - alpha) = 0
+ (5)  -r_ast[] + alpha * Z_ast[] * K_ast[-1]^(-1 + alpha) * H_ast[]^(1 - alpha) = 0
+ (6)  -W[] + Z[] * (1 - alpha) * K[-1]^alpha * H[]^(-alpha) = 0
+ (7)  -W_ast[] + Z_ast[] * (1 - alpha) * K_ast[-1]^alpha * H_ast[]^(-alpha) = 0
+ (8)  -Y[] + Z[] * K[-1]^alpha * H[]^(1 - alpha) = 0
+ (9)  -Y_ast[] + Z_ast[] * K_ast[-1]^alpha * H_ast[]^(1 - alpha) = 0
+ (10)  -Z[] + exp(epsilon_Z[] + phi_Z * log(Z[-1])) = 0
+ (11)  -Z_ast[] + exp(epsilon_Z_ast[] + phi_Z * log(Z_ast[-1])) = 0
+ (12)  beta * (-(1 - delta) * E[][lambda_c[1] * (-1 - 2 * psi * (-delta + K[]^-1 * I[1]))] + E[][lambda_c[1] * (r[1] - psi * (-delta + K[]^-1 * I[1])^2 + 2 * psi * K[]^-1 * I[1] * (-delta + K[]^-1 * I[1]))]) + lambda_c[] * (-1 - 2 * psi * (-delta + K[-1]^-1 * I[])) = 0
+ (13)  beta * (-(1 - delta) * E[][lambda_c_ast[1] * (-1 - 2 * psi * (-delta + K_ast[]^-1 * I_ast[1]))] + E[][lambda_c_ast[1] * (r_ast[1] - psi * (-delta + K_ast[]^-1 * I_ast[1])^2 + 2 * psi * K_ast[]^-1 * I_ast[1] * (-delta + K_ast[]^-1 * I_ast[1]))]) + lambda_c_ast[] * (-1 - 2 * psi * (-delta + K_ast[-1]^-1 * I_ast[])) = 0
+ (14)  lambda_c[] * W[] + (-1 + mu) * C[]^mu * (1 - H[])^(-mu) * (C[]^mu * (1 - H[])^(1 - mu))^(-eta) = 0
+ (15)  lambda_c_ast[] * W_ast[] + (-1 + mu) * C_ast[]^mu * (1 - H_ast[])^(-mu) * (C_ast[]^mu * (1 - H_ast[])^(1 - mu))^(-eta) = 0
+ (16)  epsilon_G[] - G_d[] + phi_G * G_d[-1] = 0
+ (17)  epsilon_G_ast[] - G_d_ast[] + phi_G * G_d_ast[-1] = 0
+ (18)  I[] - K[] + K[-1] * (1 - delta) = 0
+ (19)  I_ast[] - K_ast[] + K_ast[-1] * (1 - delta) = 0
+ (20)  U[] - beta * E[][U[1]] - (1 - eta)^-1 * (C[]^mu * (1 - H[])^(1 - mu))^(1 - eta) = 0
+ (21)  U_ast[] - beta * E[][U_ast[1]] - (1 - eta)^-1 * (C_ast[]^mu * (1 - H_ast[])^(1 - mu))^(1 - eta) = 0
+ (22)  -C[] - G_d[] - I[] + TR[] + Y[] - psi * K[-1] * (-delta + K[-1]^-1 * I[])^2 = 0
+ (23)  -C_ast[] - G_d_ast[] - I_ast[] - TR[] + Y_ast[] - psi * K_ast[-1] * (-delta + K_ast[-1]^-1 * I_ast[])^2 = 0
+
+Steady state equations (23):
+ (1)  -lambda_c[ss] + lambda_c_ast[ss] = 0
+ (2)  -lambda_c[ss] + mu * C[ss]^(-1 + mu) * (1 - H[ss])^(1 - mu) * (C[ss]^mu * (1 - H[ss])^(1 - mu))^(-eta) = 0
+ (3)  -lambda_c_ast[ss] + mu * C_ast[ss]^(-1 + mu) * (1 - H_ast[ss])^(1 - mu) * (C_ast[ss]^mu * (1 - H_ast[ss])^(1 - mu))^(-eta) = 0
+ (4)  -r[ss] + alpha * Z[ss] * H[ss]^(1 - alpha) * K[ss]^(-1 + alpha) = 0
+ (5)  -r_ast[ss] + alpha * Z_ast[ss] * H_ast[ss]^(1 - alpha) * K_ast[ss]^(-1 + alpha) = 0
+ (6)  -G_d[ss] + phi_G * G_d[ss] = 0
+ (7)  -G_d_ast[ss] + phi_G * G_d_ast[ss] = 0
+ (8)  -W[ss] + Z[ss] * (1 - alpha) * H[ss]^(-alpha) * K[ss]^alpha = 0
+ (9)  -W_ast[ss] + Z_ast[ss] * (1 - alpha) * H_ast[ss]^(-alpha) * K_ast[ss]^alpha = 0
+ (10)  -Y[ss] + Z[ss] * H[ss]^(1 - alpha) * K[ss]^alpha = 0
+ (11)  -Y_ast[ss] + Z_ast[ss] * H_ast[ss]^(1 - alpha) * K_ast[ss]^alpha = 0
+ (12)  -Z[ss] + exp(phi_Z * log(Z[ss])) = 0
+ (13)  -Z_ast[ss] + exp(phi_Z * log(Z_ast[ss])) = 0
+ (14)  beta * (lambda_c[ss] * (r[ss] - psi * (-delta + I[ss] * K[ss]^-1)^2 + 2 * psi * I[ss] * K[ss]^-1 * (-delta + I[ss] * K[ss]^-1)) - lambda_c[ss] * (-1 - 2 * psi * (-delta + I[ss] * K[ss]^-1)) * (1 - delta)) + lambda_c[ss] * (-1 - 2 * psi * (-delta + I[ss] * K[ss]^-1)) = 0
+ (15)  beta * (lambda_c_ast[ss] * (r_ast[ss] - psi * (-delta + I_ast[ss] * K_ast[ss]^-1)^2 + 2 * psi * I_ast[ss] * K_ast[ss]^-1 * (-delta + I_ast[ss] * K_ast[ss]^-1)) - lambda_c_ast[ss] * (-1 - 2 * psi * (-delta + I_ast[ss] * K_ast[ss]^-1)) * (1 - delta)) + lambda_c_ast[ss] * (-1 - 2 * psi * (-delta + I_ast[ss] * K_ast[ss]^-1)) = 0
+ (16)  lambda_c[ss] * W[ss] + (-1 + mu) * C[ss]^mu * (1 - H[ss])^(-mu) * (C[ss]^mu * (1 - H[ss])^(1 - mu))^(-eta) = 0
+ (17)  lambda_c_ast[ss] * W_ast[ss] + (-1 + mu) * C_ast[ss]^mu * (1 - H_ast[ss])^(-mu) * (C_ast[ss]^mu * (1 - H_ast[ss])^(1 - mu))^(-eta) = 0
+ (18)  I[ss] - K[ss] + K[ss] * (1 - delta) = 0
+ (19)  I_ast[ss] - K_ast[ss] + K_ast[ss] * (1 - delta) = 0
+ (20)  U[ss] - beta * U[ss] - (1 - eta)^-1 * (C[ss]^mu * (1 - H[ss])^(1 - mu))^(1 - eta) = 0
+ (21)  U_ast[ss] - beta * U_ast[ss] - (1 - eta)^-1 * (C_ast[ss]^mu * (1 - H_ast[ss])^(1 - mu))^(1 - eta) = 0
+ (22)  -C[ss] - G_d[ss] - I[ss] + TR[ss] + Y[ss] - psi * K[ss] * (-delta + I[ss] * K[ss]^-1)^2 = 0
+ (23)  -C_ast[ss] - G_d_ast[ss] - I_ast[ss] - TR[ss] + Y_ast[ss] - psi * K_ast[ss] * (-delta + I_ast[ss] * K_ast[ss]^-1)^2 = 0
+
+Parameter settings (8):
+ (1)  alpha = 0.4
+ (2)  beta = 0.99
+ (3)  delta = 0.025
+ (4)  eta = 2
+ (5)  mu = 0.3
+ (6)  phi_G = 0.95
+ (7)  phi_Z = 0.95
+ (8)  psi = 0.8
+

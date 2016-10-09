@@ -23,7 +23,7 @@ a:hover {
 #content {
     margin: 10px auto 10px auto;
     padding: 0px;
-    width: 730px;
+    width: 880px;
 /*     border-bottom: 3px solid #208068; */
 /*     border-bottom: 3px solid #155D5D; */
     border-bottom: 3px solid #239A9A;
@@ -111,7 +111,7 @@ a:hover {
 
 
 #main {
-    width: 700px;
+    width: 850px;
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 15px;

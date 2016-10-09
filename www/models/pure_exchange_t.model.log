@@ -1,0 +1,56 @@
+Generated on 2016-10-09 23:50:37 by gEcon ver. 1.0.0 (2016-10-09)
+http://gecon.r-forge.r-project.org/
+
+Model name: pure_exchange_t
+
+Index sets (2):
+    agents = { 'A', 'B' }
+    goods = { '1', '2', '3' }
+
+Block: <a::agents> AGENTS
+ Controls:
+    <g::goods> C<a,g>
+ Objective:
+    U<a> = PROD<g::goods> C<a,g>^alpha<a,g>
+ Constraints:
+    SUM<g::goods> e<a,g> * p<g> - SUM<g::goods> p<g> * C<a,g> = 0    (lambda__AGENTS_1<a>)
+ Identities:
+    <g::goods> e_calibr<a,g> - e<a,g> = 0
+ First order conditions:
+    <g::goods> -lambda__AGENTS_1<a> * p<g> + alpha<a,g> * C<a,g>^-1 * (PROD<g_::goods> C<a,g_>^alpha<a,g_>) = 0    (<g::goods> C<a,g>)
+
+Block: EQUILIBRIUM
+ Identities:
+    1 - p<'1'> = 0
+    <g::goods\'1'> SUM<a::agents> e<a,g> - SUM<a::agents> C<a,g> = 0
+
+Variables (19):
+    e<'A','1'>, e<'A','2'>, e<'A','3'>, e<'B','1'>, e<'B','2'>, e<'B','3'>, lambda__AGENTS_1<'A'>, lambda__AGENTS_1<'B'>, p<'1'>, p<'2'>, p<'3'>, C<'A','1'>, C<'A','2'>, C<'A','3'>, C<'B','1'>, C<'B','2'>, C<'B','3'>, U<'A'>, U<'B'>
+
+Parameters (12):
+    alpha<'A','1'>, alpha<'A','2'>, alpha<'A','3'>, alpha<'B','1'>, alpha<'B','2'>, alpha<'B','3'>, e_calibr<'A','1'>, e_calibr<'A','2'>, e_calibr<'A','3'>, e_calibr<'B','1'>, e_calibr<'B','2'>, e_calibr<'B','3'>
+
+Free parameters (12):
+    alpha<'A','1'>, alpha<'A','2'>, alpha<'A','3'>, alpha<'B','1'>, alpha<'B','2'>, alpha<'B','3'>, e_calibr<'A','1'>, e_calibr<'A','2'>, e_calibr<'A','3'>, e_calibr<'B','1'>, e_calibr<'B','2'>, e_calibr<'B','3'>
+
+Equations (19):
+ (1)  1 - p<'1'> = 0
+ (2)  e_calibr<'A','1'> - e<'A','1'> = 0
+ (3)  e_calibr<'A','2'> - e<'A','2'> = 0
+ (4)  e_calibr<'A','3'> - e<'A','3'> = 0
+ (5)  e_calibr<'B','1'> - e<'B','1'> = 0
+ (6)  e_calibr<'B','2'> - e<'B','2'> = 0
+ (7)  e_calibr<'B','3'> - e<'B','3'> = 0
+ (8)  U<'A'> - C<'A','1'>^alpha<'A','1'> * C<'A','2'>^alpha<'A','2'> * C<'A','3'>^alpha<'A','3'> = 0
+ (9)  U<'B'> - C<'B','1'>^alpha<'B','1'> * C<'B','2'>^alpha<'B','2'> * C<'B','3'>^alpha<'B','3'> = 0
+ (10)  -lambda__AGENTS_1<'A'> * p<'1'> + alpha<'A','1'> * C<'A','1'>^-1 * C<'A','1'>^alpha<'A','1'> * C<'A','2'>^alpha<'A','2'> * C<'A','3'>^alpha<'A','3'> = 0
+ (11)  -lambda__AGENTS_1<'A'> * p<'2'> + alpha<'A','2'> * C<'A','2'>^-1 * C<'A','1'>^alpha<'A','1'> * C<'A','2'>^alpha<'A','2'> * C<'A','3'>^alpha<'A','3'> = 0
+ (12)  -lambda__AGENTS_1<'A'> * p<'3'> + alpha<'A','3'> * C<'A','3'>^-1 * C<'A','1'>^alpha<'A','1'> * C<'A','2'>^alpha<'A','2'> * C<'A','3'>^alpha<'A','3'> = 0
+ (13)  -lambda__AGENTS_1<'B'> * p<'1'> + alpha<'B','1'> * C<'B','1'>^-1 * C<'B','1'>^alpha<'B','1'> * C<'B','2'>^alpha<'B','2'> * C<'B','3'>^alpha<'B','3'> = 0
+ (14)  -lambda__AGENTS_1<'B'> * p<'2'> + alpha<'B','2'> * C<'B','2'>^-1 * C<'B','1'>^alpha<'B','1'> * C<'B','2'>^alpha<'B','2'> * C<'B','3'>^alpha<'B','3'> = 0
+ (15)  -lambda__AGENTS_1<'B'> * p<'3'> + alpha<'B','3'> * C<'B','3'>^-1 * C<'B','1'>^alpha<'B','1'> * C<'B','2'>^alpha<'B','2'> * C<'B','3'>^alpha<'B','3'> = 0
+ (16)  e<'A','2'> + e<'B','2'> - C<'A','2'> - C<'B','2'> = 0
+ (17)  e<'A','3'> + e<'B','3'> - C<'A','3'> - C<'B','3'> = 0
+ (18)  e<'A','1'> * p<'1'> + e<'A','2'> * p<'2'> + e<'A','3'> * p<'3'> - p<'1'> * C<'A','1'> - p<'2'> * C<'A','2'> - p<'3'> * C<'A','3'> = 0
+ (19)  e<'B','1'> * p<'1'> + e<'B','2'> * p<'2'> + e<'B','3'> * p<'3'> - p<'1'> * C<'B','1'> - p<'2'> * C<'B','2'> - p<'3'> * C<'B','3'> = 0
+

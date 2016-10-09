@@ -1,0 +1,100 @@
+Information about parameters
+-------------------------------
+0.9: par_info(model, par_names = NULL, all_parameters = FALSE)
+1.0: par_info(model, parameters = NULL, all = FALSE)
+
+Initial values of calibrated parameters
+-------------------------------
+0.9: initval_calibr_par(model, calibr_par)
+1.0: initval_calibr_par(model, calibr_par, warnings = TRUE)
+
+Parameters' values
+-------------------------------
+0.9: get_par_values(model, par_names, to_tex)
+1.0: get_par_values(model, parameters = NULL, to_tex = FALSE, silent = FALSE)
+
+Information about variables
+-------------------------------
+0.9: var_info(model, var_names = NULL, all_variables = FALSE)
+1.0: var_info(model, variables = NULL, all = FALSE)
+
+Initial values of variables
+-------------------------------
+0.9: initval_var(model, init_var)
+1.0: initval_var(model, init_var, warnings = TRUE)
+
+Variables' steady-state (equilibrium) values
+-------------------------------
+0.9: get_ss_values(model, var_names = NULL, to_tex = FALSE, silent = FALSE)
+1.0: get_ss_values(model, variables = NULL, to_tex = FALSE, silent = FALSE)
+
+
+Information about shocks
+-------------------------------
+0.9: shock_info(model, shock_names = NULL, all_shocks = FALSE)
+1.0: shock_info(model, shocks = NULL, all = FALSE)
+
+
+Setting shock covariance matrix
+-------------------------------
+0.9: set_shock_cov_mat(model, shock_matrix, shock_order = NULL)
+1.0: set_shock_cov_mat(model, cov_matrix, shock_order = NULL)
+
+
+Computing model statistics
+-------------------------------
+0.9: compute_moments(model, ngrid = (64 * 16),
+                     filter = TRUE, sim = FALSE,
+                     nrun = 100000, lambda = 1600,
+                     ref_var = NULL, n_leadlags = 6)
+1.0: compute_model_stats(model, n_leadlags = 5, ref_var = NULL,
+                         lambda = 1600, ngrid = 64 * 16,
+                         sim = FALSE, sim_length = 1e5)
+
+
+Retrieving model statistics
+-------------------------------
+0.9: get_moments(model,
+                 var_names = model@variables,
+                 relative_to = FALSE,
+                 moments = TRUE,
+                 correlations = TRUE,
+                 autocorrelations = TRUE,
+                 var_dec = TRUE,
+                 to_tex = FALSE)
+1.0: get_model_stats(model,
+                     variables = NULL,
+                     basic_stats = TRUE,
+                     corr = TRUE,
+                     autocorr = TRUE,
+                     var_dec = TRUE,
+                     to_tex = FALSE,
+                     silent = FALSE)
+
+Computing IRFs
+-------------------------------
+0.9: compute_irf(model, shock_list = NULL, var_list = NULL,
+                 path_length = 40, cholesky = TRUE)
+1.0: compute_irf(model, variables = NULL, shocks = NULL,
+                 sim_length = 40, cholesky = TRUE)
+
+
+Simulating the model (with user supplied shocks)
+-------------------------------
+0.9: simulate_model(model, shock_list = NULL, var_list = NULL, shock_m = NULL,
+                    periods = NULL, path_length = 40,
+                    sim_type = NULL, model_name = NULL)
+1.0: simulate_model(model, variables = NULL, shocks = NULL, 
+                    shock_path, sim_length = 40)
+
+
+Simulating the model (random paths)
+-------------------------------
+0.9: random_path(model, shock_list = NULL, var_list = NULL, path_length = 100)
+1.0: random_path(model, variables = NULL, sim_length = 40)
+
+                 
+Plotting simulation results
+-------------------------------
+0.9: plot_simulation(sim_obj, to_tex = NULL, to_eps = NULL)
+1.0: plot_simulation(sim_obj, to_eps = FALSE)
