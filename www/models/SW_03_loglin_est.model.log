@@ -1,0 +1,139 @@
+Generated on 2016-11-06 10:27:56 by gEcon ver. 1.0.0 (2016-10-09)
+http://gecon.r-forge.r-project.org/
+
+Model name: SW_03_loglin_est
+
+Block: SW
+ Identities:
+    epsilon_b[] - C[] + (1 + h)^-1 * E[][C[1]] + h * C[-1] * (1 + h)^-1 - sigma_c^-1 * (1 - h) * (1 + h)^-1 * (R[] - E[][pi[1]]) = 0
+    -epsilon_I[] - I[] + I[-1] * (1 + beta)^-1 + beta * (1 + beta)^-1 * E[][I[1]] + varphi^-1 * Q[] * (1 + beta)^-1 = 0
+    -Q[] - R[] + r_k_bar * (1 + r_k_bar - tau)^-1 * E[][r_k[1]] + (1 - tau) * (1 + r_k_bar - tau)^-1 * E[][Q[1]] + E[][pi[1]] = 0
+    -K[] + tau * I[] + K[-1] * (1 - tau) = 0
+    eta_p[] - pi[] + beta * (1 + beta * gamma_p)^-1 * E[][pi[1]] + gamma_p * pi[-1] * (1 + beta * gamma_p)^-1 + xi_p^-1 * (1 - xi_p) * (1 + beta * gamma_p)^-1 * (1 - beta * xi_p) * (-epsilon_a[] + alpha * r_k[] + W[] * (1 - alpha)) = 0
+    -eta_w[] - W[] + W[-1] * (1 + beta)^-1 + beta * (1 + beta)^-1 * E[][pi[1]] + beta * (1 + beta)^-1 * E[][W[1]] + gamma_w * pi[-1] * (1 + beta)^-1 - pi[] * (1 + beta)^-1 * (1 + beta * gamma_w) - xi_w^-1 * (1 + beta)^-1 * (1 - xi_w) * (1 - beta * xi_w) * (1 + lambda_w^-1 * sigma_l * (1 + lambda_w))^-1 * (-epsilon_L[] + W[] - sigma_l * L[] - sigma_c * (1 - h)^-1 * (C[] - h * C[-1])) = 0
+    K[-1] - L[] - W[] + r_k[] * (1 + psi^-1) = 0
+    epsilon_G[] - Y[] + C[] * (1 - g_Y - k_Y * tau) + k_Y * tau * I[] + k_Y * psi^-1 * r_k_bar * r_k[] = 0
+    -Y[] + phi * epsilon_a[] + alpha * phi * K[-1] + phi * L[] * (1 - alpha) + alpha * phi * psi * r_k[] = 0
+    eta_R[] - R[] + r_Delta_pi * (-pi[-1] + pi[]) + r_Delta_Y * (-Y[-1] + Y_P[-1] + Y[] - Y_P[]) + rho * R[-1] + (1 - rho) * (pi_bar[] + r_pi * (pi[-1] - pi_bar[]) + r_Y * (Y[] - Y_P[])) = 0
+    epsilon_b[] - C_f[] + (1 + h)^-1 * E[][C_f[1]] + h * C_f[-1] * (1 + h)^-1 - sigma_c^-1 * (1 - h) * (1 + h)^-1 * (R_f[] - E[][pi_f[1]]) = 0
+    -epsilon_I[] - I_f[] + I_f[-1] * (1 + beta)^-1 + beta * (1 + beta)^-1 * E[][I_f[1]] + varphi^-1 * Q_f[] * (1 + beta)^-1 = 0
+    -Q_f[] - R_f[] + r_k_bar * (1 + r_k_bar - tau)^-1 * E[][r_k_f[1]] + (1 - tau) * (1 + r_k_bar - tau)^-1 * E[][Q_f[1]] + E[][pi_f[1]] = 0
+    -K_f[] + tau * I_f[] + K_f[-1] * (1 - tau) = 0
+    -pi_f[] = 0
+    K_f[-1] - w_f[] - L_f[] + r_k_f[] * (1 + psi^-1) = 0
+    epsilon_G[] - Y_P[] + C_f[] * (1 - g_Y - k_Y * tau) + k_Y * tau * I_f[] + k_Y * psi^-1 * r_k_bar * r_k_f[] = 0
+    -Y_P[] + phi * epsilon_a[] + alpha * phi * K_f[-1] + phi * L_f[] * (1 - alpha) + alpha * phi * psi^-1 * r_k_f[] = 0
+    -epsilon_L[] - w_f[] + sigma_l * L_f[] + sigma_c * (1 - h)^-1 * (C_f[] - h * C_f[-1]) = 0
+    -epsilon_a[] + alpha * r_k_f[] + w_f[] * (1 - alpha) = 0
+    Emp[-1] - 2 * Emp[] + xi_e^-1 * (1 - xi_e) * (1 - beta * xi_e) * (-Emp[] + L[]) + E[][Emp[1]] = 0
+
+Block: EXOG
+ Identities:
+    -epsilon_a[] + eta_a[] + rho_a * epsilon_a[-1] = 0
+    -epsilon_b[] + eta_b[] + rho_b * epsilon_b[-1] = 0
+    -epsilon_G[] + eta_G[] + rho_G * epsilon_G[-1] = 0
+    -epsilon_I[] + eta_I[] + rho_I * epsilon_I[-1] = 0
+    -epsilon_L[] + eta_L[] + rho_L * epsilon_L[-1] = 0
+    eta_pi[] - pi_bar[] + rho_pi_bar * pi_bar[-1] = 0
+
+Variables (27):
+    epsilon_b[], epsilon_L[], epsilon_I[], epsilon_a[], epsilon_G[], pi[], pi_bar[], pi_f[], r_k[], r_k_f[], w_f[], C[], C_f[], Emp[], I[], I_f[], K[], K_f[], L[], L_f[], Q[], Q_f[], R[], R_f[], W[], Y[], Y_P[]
+
+Shocks (9):
+    eta_b[], eta_L[], eta_I[], eta_w[], eta_a[], eta_p[], eta_G[], eta_R[], eta_pi[]
+
+Parameters (29):
+    alpha, beta, g_Y, gamma_w, gamma_p, h, k_Y, lambda_w, phi, psi, r_pi, r_Y, r_Delta_pi, r_k_bar, r_Delta_Y, rho_b, rho_L, rho_I, rho_a, rho_G, rho, rho_pi_bar, sigma_c, sigma_l, tau, varphi, xi_w, xi_p, xi_e
+
+Free parameters (29):
+    alpha, beta, g_Y, gamma_w, gamma_p, h, k_Y, lambda_w, phi, psi, r_pi, r_Y, r_Delta_pi, r_k_bar, r_Delta_Y, rho_b, rho_L, rho_I, rho_a, rho_G, rho, rho_pi_bar, sigma_c, sigma_l, tau, varphi, xi_w, xi_p, xi_e
+
+Equations (27):
+ (1)  -pi_f[] = 0
+ (2)  -epsilon_b[] + eta_b[] + rho_b * epsilon_b[-1] = 0
+ (3)  -epsilon_L[] + eta_L[] + rho_L * epsilon_L[-1] = 0
+ (4)  -epsilon_I[] + eta_I[] + rho_I * epsilon_I[-1] = 0
+ (5)  -epsilon_a[] + eta_a[] + rho_a * epsilon_a[-1] = 0
+ (6)  -epsilon_a[] + alpha * r_k_f[] + w_f[] * (1 - alpha) = 0
+ (7)  -epsilon_G[] + eta_G[] + rho_G * epsilon_G[-1] = 0
+ (8)  eta_pi[] - pi_bar[] + rho_pi_bar * pi_bar[-1] = 0
+ (9)  -K[] + tau * I[] + K[-1] * (1 - tau) = 0
+ (10)  -K_f[] + tau * I_f[] + K_f[-1] * (1 - tau) = 0
+ (11)  Emp[-1] - 2 * Emp[] + xi_e^-1 * (1 - xi_e) * (1 - beta * xi_e) * (-Emp[] + L[]) + E[][Emp[1]] = 0
+ (12)  K[-1] - L[] - W[] + r_k[] * (1 + psi^-1) = 0
+ (13)  K_f[-1] - w_f[] - L_f[] + r_k_f[] * (1 + psi^-1) = 0
+ (14)  -epsilon_L[] - w_f[] + sigma_l * L_f[] + sigma_c * (1 - h)^-1 * (C_f[] - h * C_f[-1]) = 0
+ (15)  epsilon_b[] - C[] + (1 + h)^-1 * E[][C[1]] + h * C[-1] * (1 + h)^-1 - sigma_c^-1 * (1 - h) * (1 + h)^-1 * (R[] - E[][pi[1]]) = 0
+ (16)  epsilon_b[] - C_f[] + (1 + h)^-1 * E[][C_f[1]] + h * C_f[-1] * (1 + h)^-1 - sigma_c^-1 * (1 - h) * (1 + h)^-1 * (R_f[] - E[][pi_f[1]]) = 0
+ (17)  -epsilon_I[] - I[] + I[-1] * (1 + beta)^-1 + beta * (1 + beta)^-1 * E[][I[1]] + varphi^-1 * Q[] * (1 + beta)^-1 = 0
+ (18)  -epsilon_I[] - I_f[] + I_f[-1] * (1 + beta)^-1 + beta * (1 + beta)^-1 * E[][I_f[1]] + varphi^-1 * Q_f[] * (1 + beta)^-1 = 0
+ (19)  epsilon_G[] - Y[] + C[] * (1 - g_Y - k_Y * tau) + k_Y * tau * I[] + k_Y * psi^-1 * r_k_bar * r_k[] = 0
+ (20)  epsilon_G[] - Y_P[] + C_f[] * (1 - g_Y - k_Y * tau) + k_Y * tau * I_f[] + k_Y * psi^-1 * r_k_bar * r_k_f[] = 0
+ (21)  eta_p[] - pi[] + beta * (1 + beta * gamma_p)^-1 * E[][pi[1]] + gamma_p * pi[-1] * (1 + beta * gamma_p)^-1 + xi_p^-1 * (1 - xi_p) * (1 + beta * gamma_p)^-1 * (1 - beta * xi_p) * (-epsilon_a[] + alpha * r_k[] + W[] * (1 - alpha)) = 0
+ (22)  -Q[] - R[] + r_k_bar * (1 + r_k_bar - tau)^-1 * E[][r_k[1]] + (1 - tau) * (1 + r_k_bar - tau)^-1 * E[][Q[1]] + E[][pi[1]] = 0
+ (23)  -Q_f[] - R_f[] + r_k_bar * (1 + r_k_bar - tau)^-1 * E[][r_k_f[1]] + (1 - tau) * (1 + r_k_bar - tau)^-1 * E[][Q_f[1]] + E[][pi_f[1]] = 0
+ (24)  -Y[] + phi * epsilon_a[] + alpha * phi * K[-1] + phi * L[] * (1 - alpha) + alpha * phi * psi * r_k[] = 0
+ (25)  -Y_P[] + phi * epsilon_a[] + alpha * phi * K_f[-1] + phi * L_f[] * (1 - alpha) + alpha * phi * psi^-1 * r_k_f[] = 0
+ (26)  eta_R[] - R[] + r_Delta_pi * (-pi[-1] + pi[]) + r_Delta_Y * (-Y[-1] + Y_P[-1] + Y[] - Y_P[]) + rho * R[-1] + (1 - rho) * (pi_bar[] + r_pi * (pi[-1] - pi_bar[]) + r_Y * (Y[] - Y_P[])) = 0
+ (27)  -eta_w[] - W[] + W[-1] * (1 + beta)^-1 + beta * (1 + beta)^-1 * E[][pi[1]] + beta * (1 + beta)^-1 * E[][W[1]] + gamma_w * pi[-1] * (1 + beta)^-1 - pi[] * (1 + beta)^-1 * (1 + beta * gamma_w) - xi_w^-1 * (1 + beta)^-1 * (1 - xi_w) * (1 - beta * xi_w) * (1 + lambda_w^-1 * sigma_l * (1 + lambda_w))^-1 * (-epsilon_L[] + W[] - sigma_l * L[] - sigma_c * (1 - h)^-1 * (C[] - h * C[-1])) = 0
+
+Steady state equations (27):
+ (1)  -pi_f[ss] = 0
+ (2)  -epsilon_b[ss] + rho_b * epsilon_b[ss] = 0
+ (3)  -epsilon_L[ss] + rho_L * epsilon_L[ss] = 0
+ (4)  -epsilon_I[ss] + rho_I * epsilon_I[ss] = 0
+ (5)  -epsilon_a[ss] + rho_a * epsilon_a[ss] = 0
+ (6)  -epsilon_G[ss] + rho_G * epsilon_G[ss] = 0
+ (7)  -pi_bar[ss] + rho_pi_bar * pi_bar[ss] = 0
+ (8)  -epsilon_a[ss] + alpha * r_k_f[ss] + w_f[ss] * (1 - alpha) = 0
+ (9)  -K[ss] + tau * I[ss] + K[ss] * (1 - tau) = 0
+ (10)  -K_f[ss] + tau * I_f[ss] + K_f[ss] * (1 - tau) = 0
+ (11)  -R[ss] + rho * R[ss] + (1 - rho) * (pi_bar[ss] + r_pi * (pi[ss] - pi_bar[ss]) + r_Y * (Y[ss] - Y_P[ss])) = 0
+ (12)  -epsilon_L[ss] - w_f[ss] + sigma_l * L_f[ss] + sigma_c * (1 - h)^-1 * (C_f[ss] - h * C_f[ss]) = 0
+ (13)  -pi[ss] + beta * pi[ss] * (1 + beta * gamma_p)^-1 + gamma_p * pi[ss] * (1 + beta * gamma_p)^-1 + xi_p^-1 * (1 - xi_p) * (1 + beta * gamma_p)^-1 * (1 - beta * xi_p) * (-epsilon_a[ss] + alpha * r_k[ss] + W[ss] * (1 - alpha)) = 0
+ (14)  -w_f[ss] + K_f[ss] - L_f[ss] + r_k_f[ss] * (1 + psi^-1) = 0
+ (15)  K[ss] - L[ss] - W[ss] + r_k[ss] * (1 + psi^-1) = 0
+ (16)  epsilon_b[ss] - C[ss] + C[ss] * (1 + h)^-1 + h * C[ss] * (1 + h)^-1 - sigma_c^-1 * (1 - h) * (1 + h)^-1 * (-pi[ss] + R[ss]) = 0
+ (17)  epsilon_b[ss] - C_f[ss] + C_f[ss] * (1 + h)^-1 + h * C_f[ss] * (1 + h)^-1 - sigma_c^-1 * (1 - h) * (1 + h)^-1 * (-pi_f[ss] + R_f[ss]) = 0
+ (18)  -epsilon_I[ss] - I[ss] + I[ss] * (1 + beta)^-1 + beta * I[ss] * (1 + beta)^-1 + varphi^-1 * Q[ss] * (1 + beta)^-1 = 0
+ (19)  -epsilon_I[ss] - I_f[ss] + I_f[ss] * (1 + beta)^-1 + beta * I_f[ss] * (1 + beta)^-1 + varphi^-1 * Q_f[ss] * (1 + beta)^-1 = 0
+ (20)  epsilon_G[ss] - Y[ss] + C[ss] * (1 - g_Y - k_Y * tau) + k_Y * tau * I[ss] + k_Y * psi^-1 * r_k_bar * r_k[ss] = 0
+ (21)  epsilon_G[ss] - Y_P[ss] + C_f[ss] * (1 - g_Y - k_Y * tau) + k_Y * tau * I_f[ss] + k_Y * psi^-1 * r_k_bar * r_k_f[ss] = 0
+ (22)  pi[ss] - Q[ss] - R[ss] + r_k_bar * r_k[ss] * (1 + r_k_bar - tau)^-1 + Q[ss] * (1 - tau) * (1 + r_k_bar - tau)^-1 = 0
+ (23)  pi_f[ss] - Q_f[ss] - R_f[ss] + r_k_bar * r_k_f[ss] * (1 + r_k_bar - tau)^-1 + Q_f[ss] * (1 - tau) * (1 + r_k_bar - tau)^-1 = 0
+ (24)  -Y[ss] + phi * epsilon_a[ss] + alpha * phi * K[ss] + phi * L[ss] * (1 - alpha) + alpha * phi * psi * r_k[ss] = 0
+ (25)  -Y_P[ss] + phi * epsilon_a[ss] + alpha * phi * K_f[ss] + phi * L_f[ss] * (1 - alpha) + alpha * phi * psi^-1 * r_k_f[ss] = 0
+ (26)  -W[ss] + W[ss] * (1 + beta)^-1 + beta * pi[ss] * (1 + beta)^-1 + beta * W[ss] * (1 + beta)^-1 + gamma_w * pi[ss] * (1 + beta)^-1 - pi[ss] * (1 + beta)^-1 * (1 + beta * gamma_w) - xi_w^-1 * (1 + beta)^-1 * (1 - xi_w) * (1 - beta * xi_w) * (1 + lambda_w^-1 * sigma_l * (1 + lambda_w))^-1 * (-epsilon_L[ss] + W[ss] - sigma_l * L[ss] - sigma_c * (1 - h)^-1 * (C[ss] - h * C[ss])) = 0
+ (27)  xi_e^-1 * (1 - xi_e) * (1 - beta * xi_e) * (-Emp[ss] + L[ss]) = 0
+
+Parameter settings (29):
+ (1)  alpha = 0.3
+ (2)  beta = 0.99
+ (3)  g_Y = 0.18
+ (4)  gamma_w = 0.763
+ (5)  gamma_p = 0.469
+ (6)  h = 0.573
+ (7)  k_Y = 8.8
+ (8)  lambda_w = 0.5
+ (9)  phi = 1.408
+ (10)  psi = 0.169
+ (11)  r_pi = 1.684
+ (12)  r_Y = 0.099
+ (13)  r_Delta_pi = 0.14
+ (14)  r_k_bar = 0.0351
+ (15)  r_Delta_Y = 0.159
+ (16)  rho_b = 0.855
+ (17)  rho_L = 0.889
+ (18)  rho_I = 0.927
+ (19)  rho_a = 0.823
+ (20)  rho_G = 0.949
+ (21)  rho = 0.961
+ (22)  rho_pi_bar = 0.924
+ (23)  sigma_c = 1.353
+ (24)  sigma_l = 2.4
+ (25)  tau = 0.025
+ (26)  varphi = 6.771
+ (27)  xi_w = 0.737
+ (28)  xi_p = 0.908
+ (29)  xi_e = 0.5
+
