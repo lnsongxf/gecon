@@ -1,0 +1,613 @@
+# ###################################################################
+# (c) Kancelaria Prezesa Rady Ministrów 2015-2017                   #
+# Treść licencji w pliku:                                           #
+# http://gecon.r-forge.r-project.org/files/DAS_licence.txt          #
+#                                                                   #
+# (c) Chancellery of the Prime Minister 2015-2017                   #
+# Licence terms can be found in the file:                           #
+# http://gecon.r-forge.r-project.org/files/DAS_licence.txt          #
+#                                                                   #
+# Author(s):    Marta Retkiewicz                                    #
+#                - first generic model                              #
+#               Rafał Głąbski                                       #
+#                - model development                                #
+#                - calibration                                      #
+#               Michał Opuchlik                                     #
+#                - calibration                                      #
+#                - model & scenarios testing                        #
+#               Maciej Zdrolik                                      #
+#                - model development                                #
+#                - calibration                                      #
+#                - model testing                                    #
+# ###################################################################
+# CGE model for fiscal policy analyses                              #
+# 10 types of HHDs & 11 sectors                                     #
+# Neoclassical labor market closure                                 #
+# ###################################################################
+
+options
+{
+    output logfile = TRUE;
+    output LaTeX = TRUE;
+    output LaTeX landscape = TRUE;
+    output LaTeX long = TRUE;
+};
+
+indexsets
+{
+    SEC = { 'A'..'K' };
+    HHD = { '1'..'10' };
+    ROW = { 'eu', 'neu' };
+};
+
+tryreduce
+{
+    <s::SEC>EXPORT_f<s>[], <s::SEC>IMPORT_a<s>[], <s::SEC>Y_HOME_a<s>[], <s::SEC>Y_f<s>[];
+};
+
+# ###################################################################
+#                       CONSUMER h PROBLEM                          #
+# ###################################################################
+
+block <h::HHD>CONSUMER
+{
+    ### VARIABLES
+
+    # U<h>[]                        Utility of household h
+    # DEM<h>[]                      Aggregate of the consumption of household h (consumption composite)
+    # LEIS<h>[]                     Units of household h leisure
+    # LL<h>[]                       Units of household h time endowment devoted either for working or being unemployed
+    # L<h>[]                        Units of labour of household h
+    # UNEMP<h>[]                    Units of time of being unemployed of household h
+    # D<s, h>[]                     Household h consumption of good s
+    # SAV<h>[]                      Household h savings
+    # INC<h>[]                      After-tax income of household h
+    # BTINC<h>[]                    Before-tax income of household h
+    # PIT_base<h>[]                 Amount of household h's income subject to PIT taxation
+    # p_cons<s>[]                   Final consumer price of good s
+    # TRAN<h>[]                     All transfers from household h
+    # THROW<h, r>[]                 Transfers from household h to the rest of the world r
+    # THBANK<h>[]                   Transfers from household h to the financial sector
+    # K<h>[]                        Capital owned by household h
+    # p_k[]                         Rental rate of capital (price of the capital)
+    # p_l[]                         Wage (price of the labour)
+    # TROWH<r, h>[]                 Transfers from the rest of the world r to household h
+    # TBANKH<h>[]                   Transfers from the financial sector to household h
+    # TFIRMH<h>[]                   Dividends to household h
+    # TGOVH<h>[]                    Transfers from the government to household h
+    # TINSTH<h>[]                   Sum of transfers to household h
+    # ex_rate<r>[]                  Exchange rate with region r
+
+    ### CALIBRATED PARAMETERS
+
+    # alpha_u<h>                    Share of demand in the utility CES function.
+    # alpha<s, h>                   Share of demand for good s in the consumption composite of household h
+    # omega                         Consumption composite CES function's elasticity of substitution (between goods)
+    # omega_u<h>                    Utility CES function's elasticity of substitution (between demand and leisure)
+    # pit_tax<h>                    PIT tax rate for household h
+    # owc<h>                        % of capital owned by household h (scaled) in total supply of capital in the economy
+    # owh_b<h>                      % of household's h transfers to the financial sector in total household h's income
+    # owh_r<h,r>                    % of household's h transfers to the rest of the world r in total household h's income
+    # sav<h>                        % of household's h savings in total household h's income
+    # theta_dem<h>                  Scaling parameter in the CES utility function for household h
+
+    ### FIXED PARAMETERS
+
+    # pit_free                      Parameter of PIT free amount based on PIT database
+    # cei                           Cost of earning income
+    # le<h>                         Scaled labour endowment of household h (value)
+    # scale<h>                      Scale of households
+
+    controls
+    {
+        <s::SEC>D<s, h>[], DEM<h>[], LL<h>[], LEIS<h>[], L<h>[], K<h>[],
+        BTINC<h>[], INC<h>[], PIT_base<h>[], SAV<h>[], THBANK<h>[], <r::ROW>THROW<h, r>[], TRAN<h>[];
+    };
+    objective
+    {
+        U<h>[] = (alpha_u<h> * (DEM<h>[])  ^ ((omega_u<h> - 1) / omega_u<h>) +
+                (1-alpha_u<h>) * (LEIS<h>[]) ^ ((omega_u<h> - 1) / omega_u<h>)  ) ^ (omega_u<h> / (omega_u<h> - 1));
+    };
+    constraints
+    {
+        ### labour & leisure ###
+        (LEIS<h>[] + LL<h>[]) * scale<h> = le<h>;
+        LL<h>[] = L<h>[] + UNEMP<h>[];
+
+        ### consumption composite ###
+        DEM<h>[] = theta_dem<h> * (SUM<s::SEC>(alpha<s, h> * D<s, h>[] ^ ((omega - 1) / omega))) ^ (omega / (omega - 1));
+
+        ### budget constraint ###
+        INC<h>[] = SUM<s::SEC>(D<s, h>[] * p_cons<s>[]) + SAV<h>[] + TRAN<h>[];
+        INC<h>[] = BTINC<h>[] - pit_tax<h> * PIT_base<h>[];
+        PIT_base<h>[] = BTINC<h>[] - pit_free - cei * L<h>[] * p_l[];
+        BTINC<h>[] = K<h>[] * p_k[] + L<h>[] * p_l[] + TINSTH<h>[];
+
+        ### constant capital ownership share ###
+        K<h>[] * scale<h> = owc<h> * k_total_data;
+
+        ### fixed savings & transfers share in expenditures ###
+        SAV<h>[] = sav<h> * INC<h>[];
+        THBANK<h>[] = owh_b<h> * INC<h>[];
+        <r::ROW>(ex_rate<r>[] * THROW<h, r>[])= owh_r<h,r> * INC<h>[];
+        TRAN<h>[] = SUM<r::ROW>(ex_rate<r>[] * THROW<h, r>[]) + THBANK<h>[];
+    };
+    identities
+    {
+        TINSTH<h>[] = TFIRMH<h>[] + SUM<r::ROW>(TROWH<r, h>[]) + TBANKH<h>[] + TGOVH<h>[];
+    };
+};
+# ###################################################################
+#                       PRODUCER s PROBLEM                          #
+# ###################################################################
+
+block <s::SEC>PRODUCTION_OF_GOODS
+{
+    ### VARIABLES
+
+    # Y<s>[]                    Units of production of the good s
+    # K<s>[]                    Capital used for production of the good s
+    # L<s>[]                    Labour units used in the production of the good s
+    # Y_VA<s>[]                 Value added in the production process of the good s
+    # Y_INT<s>[]                Value of all input products in the production of the good s
+    # p_int<si>[]               Price of good si used in the production of the good s
+    # X<si, s>[]                Demand for good si for the production of the good s
+    # pi<s>[]                   Profit of producer s
+    # p<s>[]                    Producer price of the good s
+
+
+    ### CALIBRATED PARAMETERS
+
+    # beta_x<si, s>             % of a good si in an intermediate production of good s
+    # tax_rate<s>               rate (%) of tax in the production for good s (production tax)
+    # k_tax                     rate (%) of tax on a capital used in production
+    # l_tax                     rate (%) of tax on a labour used in production
+    # sub_rate<s>               rate (%) of subsidy in the production of good s (subsidy for production)
+    # gamma_yva<s>              Total factor productivity (TFP) in the production of good s
+    # beta_k<s>                 Capital share in the production function of the good s
+    # beta_l<s>                 Labour share in the production function of the good s
+
+    controls
+    {
+        Y<s>[], K<s>[], L<s>[], Y_VA<s>[], Y_INT<s>[], <si::SEC>X<si, s>[];
+    };
+    objective
+    {
+        pi<s>[] = (Y<s>[] * p<s>[]) - ((K<s>[] * p_k[] * (1 + k_tax) + L<s>[] * p_l[] * (1 + l_tax)) + SUM<si::SEC>(X<si, s>[] * p_int<si>[])) * (1 + tax_rate<s> - sub_rate<s>);
+    };
+    constraints
+    {
+        # A two-level Leontief production function
+        Y<s>[] = Y_VA<s>[];
+        Y_VA<s>[] = Y_INT<s>[];
+        Y_VA<s>[] = gamma_yva<s> * K<s>[]^beta_k<s> * L<s>[]^beta_l<s>;
+        <si::SEC>X<si, s>[] = Y_INT<s>[] * beta_x<si, s>;
+    };
+};
+
+block TAXES_PRODUCER
+{
+    ### VARIABLES
+
+    # K_TAX[]                   Total value of tax from the using capital
+    # L_TAX[]                   Total value of tax from the labour
+    # TAX_s<s>[]                Total value of tax from the production of the good s
+    # SUB_s<s>[]                Total value of subsidy to the production of the good s
+
+    identities
+    {
+        <s::SEC>SUB_s<s>[] = ((K<s>[] * p_k[] * (1 + k_tax) + L<s>[] * p_l[] * (1 + l_tax)) + SUM<si::SEC>(X<si, s>[] * p_int<si>[])) * (sub_rate<s>);
+        <s::SEC>TAX_s<s>[] = ((K<s>[] * p_k[] * (1 + k_tax) + L<s>[] * p_l[] * (1 + l_tax)) + SUM<si::SEC>(X<si, s>[] * p_int<si>[])) * (tax_rate<s>);
+        L_TAX[] = p_l[] * l_tax * (SUM<s::SEC>(L<s>[]));
+        K_TAX[] = p_k[] * k_tax * (SUM<s::SEC>(K<s>[]));
+    };
+};
+
+# ###################################################################
+#                           PRODUCT                                 #
+# ###################################################################
+
+block <s::SEC>EXPORT_COMPOSITE
+{
+    ### VARIABLES
+
+    # EXPORT<s>[]               Aggregated export of good s
+    # EXP<r,s>[]                Export of the good s to rest of the world r (ROW)
+    # PI_EXP<s>[]               Profit of export good s
+    # p_exp<s>[]                World price of exported good s
+
+    ### CALIBRATED PARAMETERS
+
+    # p_for<r>                  Price index for region r (=1)
+    # theta_exp<s>              Scaling parameter in the export CET function of the good s
+    # alpha_exp<r,s>            Share of export to region r in the total export of the good s
+    # am_exp<r>                 Iceberg cost index of export (=1)
+    # sigma_exp<s>              CET function's elasticity of transformation (between regions)
+
+    controls
+    {
+        EXPORT<s>[], <r::ROW>EXP<r,s>[];
+    };
+    objective
+    {
+        PI_EXP<s>[]= p_exp<s>[] * EXPORT<s>[] - SUM<r::ROW>(p_for<r> * EXP<r,s>[]);
+    };
+    constraints
+    {
+        EXPORT<s>[] = theta_exp<s> * (SUM<r::ROW>( alpha_exp<r,s> * ((am_exp<r>) * EXP<r,s>[]) ^ ((sigma_exp<s>+1)/sigma_exp<s>) )) ^ (sigma_exp<s>/(sigma_exp<s>+1));
+    };
+};
+
+block <s::SEC>FINAL_PRODUCT_COMPOSITE
+{
+    ### VARIABLES
+
+    # EXPORT_f<s>[]             Total value export of the good s (equals the export composite)
+    # Y_HOME<s>[]               Domestic production of the good s
+    # Y_f<s>[]                  Aggregated final production of the good s (product composite)
+    # PI_Y<s>[]                 Profit of the product s
+    # p_home<s>[]               Price of domestic good s
+
+    ### CALIBRATED PARAMETERS
+
+    # theta_y<s>                Scaling parameter in the CET function for the good s
+    # alpha_prod_h<s>           Share of domestic in the total production composite of good s
+    # alpha_prod_e<s>           Share of export in the total production  composite of good s
+    # sigma_f_prod<s>           CET function's elasticity of transformation (between domestic sale and export)
+
+    controls
+    {
+        Y_f<s>[], Y_HOME<s>[], EXPORT_f<s>[];
+    };
+    objective
+    {
+        PI_Y<s>[] = p<s>[] * Y_f<s>[] - p_home<s>[] * Y_HOME<s>[] - p_exp<s>[] * EXPORT_f<s>[];
+    };
+    constraints
+    {
+        Y_f<s>[] = theta_y<s> * ( alpha_prod_h<s> * Y_HOME<s>[] ^ ((sigma_f_prod<s>+1)/sigma_f_prod<s>) + (alpha_prod_e<s>) * EXPORT_f<s>[] ^ ((sigma_f_prod<s>+1)/sigma_f_prod<s>) ) ^ (sigma_f_prod<s>/(sigma_f_prod<s>+1));
+    };
+};
+
+block <s::SEC>IMPORT_COMPOSITE
+{
+    ### VARIABLES
+
+    # IMPORT<s>[]               Total import composite of good s
+    # IMP<r,s>[]                Import of good s from region r (ROW)
+    # PI_IMP<s>[]               Profit of import good s
+    # p_imp<s>[]                Price of imported good s
+
+    ### CALIBRATED PARAMETERS
+
+    # theta_imp<s>              Scaling parameter in the import aggregate of good s
+    # alpha_imp<r,s>            Share of import from region r in the total import of good s
+    # am_imp<r>                 Iceberg cost index of import (=1)
+    # sigma_imp<s>              CES function's elasticity of substitution (between regions)
+
+    controls
+    {
+        IMPORT<s>[], <r::ROW>IMP<r,s>[];
+    };
+    objective
+    {
+        PI_IMP<s>[]= p_imp<s>[] * IMPORT<s>[] - SUM<r::ROW>( (1+im_tax<r,s>) * ex_rate<r>[] * p_for<r> * IMP<r,s>[]);
+    };
+    constraints
+    {
+        IMPORT<s>[] = theta_imp<s> * (SUM<r::ROW>( alpha_imp<r,s> * ((am_imp<r>) * IMP<r,s>[]) ^ ((sigma_imp<s>-1)/sigma_imp<s>) )) ^ (sigma_imp<s>/(sigma_imp<s>-1));
+    };
+};
+
+block <s::SEC>ARMINGTON_COMPOSITE
+{
+    ### VARIABLES
+
+    # IMPORT_a<s>[]             Total import of the good s
+    # ARM<s>[]                  Final good s sold on the domestic market (Armington good)
+    # Y_HOME_a                  Domestic production of the good s
+    # PI_ARM<s>[]               Profit of aggregated good s - Armington's composite
+    # p_arm<s>[]                Price of aggregated good s - Armington's composite
+
+    ### CALIBRATED PARAMETERS
+
+    # theta_arm<s>              Scaling parameter in Armington's composite
+    # alpha_arm_h<s>            Share of domestic good s in the total good s
+    # alpha_arm_i<s>            Share of imported good s in the total good s
+    # sigma_arm<s>              CES function's elasticity of substitution (between import and domestic production)
+
+    controls
+    {
+        ARM<s>[], Y_HOME_a<s>[], IMPORT_a<s>[];
+    };
+    objective
+    {
+        PI_ARM<s>[] = p_arm<s>[] * ARM<s>[] - p_home<s>[] * Y_HOME_a<s>[] - p_imp<s>[] * IMPORT_a<s>[];
+    };
+    constraints
+    {
+        ARM<s>[] = theta_arm<s> * ( alpha_arm_h<s> * Y_HOME_a<s>[] ^ ((sigma_arm<s>-1)/sigma_arm<s>) + (alpha_arm_i<s>) * IMPORT_a<s>[] ^ ((sigma_arm<s>-1)/sigma_arm<s>) ) ^ (sigma_arm<s>/(sigma_arm<s>-1));
+    };
+};
+
+block <s::SEC>SALES
+{
+    identities
+    {
+        TAX_p<s>[] = VAT<s>[] + EXCISE<s>[];
+        VAT<s>[] =  p_market<s>[] * (vat<s>) * (1 + excise<s>) * (( SUM<h::HHD>(D<s, h>[] * scale<h>) ) + D_GOV<s>[] + INV<s>[]);
+        EXCISE<s>[] = p_market<s>[] * excise<s> * (( SUM<h::HHD>(D<s, h>[] * scale<h>) ) + D_GOV<s>[] + INV<s>[] + SUM<si::SEC>X<s, si>[]);
+    };
+};
+
+# ###################################################################
+#                       FIRMS SECTOR                                #
+# ###################################################################
+
+block FIRM
+{
+    ### VARIABLES
+
+    # INC_FIRM[]                All income of the sector of firms
+    # TGOVFIRM[]                Transfers from the government to the sector of firms
+    # BTINC_FIRM[]              Before-tax income of the sector of firms
+    # PROFIT[]                  Sum of profits of the sector of firms from all sectors of producers
+    # K_FIRM[]                  Units of the capital owned by the sector of firms
+    # TBANKFIRM[]               Transfers from bank to the sector of firms
+    # TROWFIRM<r>[]             Transfers from the rest of the world r to the sector of firms
+    # KS[]                      Capital supply
+    # SAV_FIRM[]                Savings of the sector of firms
+    # TRAN_FIRM[]               All transfers from the sector of firms to ROW and bank
+    # TFIRMROW<r>[]             Transfers from the sector of firms to the rest of the world r
+    # TFIRMBANK[]               Transfers from firms to the bank
+
+    ### CALIBRATED PARAMETERS
+
+    # firm_tax                  rate (%) of CIT on the sector of firms (there are 2 different CIT rates, one on firms and one on banks)
+    # owc_f                     % of capital owned by the sector of firms
+    # owf<h>                    % of sector of firms owned by household h
+    # owf<r>                    % of sector of firms owned by rest of the world r
+    # owf_b                     % of sector of firms owned by banks
+
+    identities
+    {
+        # Firm's income = producers' profit + capital + transfers - tax
+        INC_FIRM[] = (1 - firm_tax) * BTINC_FIRM[];
+        BTINC_FIRM[] = PROFIT[] + K_FIRM[] * p_k[] + TBANKFIRM[] + SUM<r::ROW>(TROWFIRM<r>[]) + TGOVFIRM[];
+        PROFIT[] = SUM<s::SEC>(pi<s>[]);
+        K_FIRM[] = KS[] * owc_f;
+
+        # Firm's expenditures = savings + dividends + transfers
+        SAV_FIRM[] + TRAN_FIRM[] = INC_FIRM[];
+        TRAN_FIRM[] = SUM<r::ROW>(ex_rate<r>[] * TFIRMROW<r>[]) + TFIRMBANK[] + SUM<h::HHD>(TFIRMH<h>[] * scale<h>);
+        <h::HHD>TFIRMH<h>[] * scale<h> = owf<h> * INC_FIRM[];
+        <r::ROW>ex_rate<r>[] * TFIRMROW<r>[] = owf<r> * INC_FIRM[];
+        TFIRMBANK[] = owf_b * INC_FIRM[];
+    };
+};
+
+# ###################################################################
+#                       BANK SECTOR                                 #
+# ###################################################################
+
+block BANK
+{
+    ### VARIABLES
+
+    # INC_BANK[]                Bank income
+    # BTINC_BANK[]              Before-tax income of the bank
+    # K_BANK[]                  Units of capital owned by the bank
+    # TROWBANK<r>[]             Transfers from the rest of the world r to the bank
+    # TGOVBANK[]                Transfers from the government to the bank
+    # SAV_BANK[]                Savings of the bank
+    # TRAN_BANK[]               Transfers from the bank (all its expenses)
+    # TBANKROW<r>[]             Transfers from the bank to the rest of the world
+
+    ### CALIBRATED PARAMETERS
+
+    # bank_tax                  bank tax rate (%), CIT on banks
+    # owc_b                     % of the value of the capital owned by banks
+    # owb_h<h>                  % of the bank's money as liabilities to household h
+    # owb_r<r>                  % of the bank's money as liabilities to ROW r
+    # owb_f                     % of the bank's money as liabilities to firms' sector
+
+    identities
+    {
+        # Bank's income = capital + transfers - tax
+        INC_BANK[] = (1 - bank_tax) * BTINC_BANK[];
+        BTINC_BANK[] = K_BANK[] * p_k[] + SUM<h::HHD>(THBANK<h>[] * scale<h>) + TFIRMBANK[] + SUM<r::ROW>(TROWBANK<r>[]) + TGOVBANK[];
+        K_BANK[] = KS[] * owc_b;
+
+        # Bank's expenditures = savings + transfers
+        SAV_BANK[] + TRAN_BANK[]= INC_BANK[];
+        TRAN_BANK[] = TBANKFIRM[] + SUM<h::HHD>(TBANKH<h>[] * scale<h>) + SUM<r::ROW>(ex_rate<r>[] * TBANKROW<r>[]);
+
+        <h::HHD>(TBANKH<h>[]* scale<h>) = owb_h<h> * INC_BANK[];
+        <r::ROW>ex_rate<r>[] * TBANKROW<r>[] = owb_r<r> * INC_BANK[];
+        TBANKFIRM[] = owb_f * INC_BANK[];
+    };
+};
+
+# ###################################################################
+#                       GOVERNMENT SECTOR                           #
+# ###################################################################
+
+block GOVERNMENT
+{
+    ### VARIABLES
+
+    # INC_GOV[]                 Income of the government
+    # EXP_GOV[]                 Expenditures of the government
+    # STAX[]                    Sum of taxes from production of goods s (sum of TAX_s<s>[])
+    # SOCTAX[]                  Sum of taxes from value of labour and value of capital
+    # VAT[]                     Sum of VATs from products s
+    # EXCISE[]                  Sum of excises from products s
+    # IMTAX[]                   Sum of import taxes from imported products
+    # PIT[]                     Sum of PIT from households h (taxes on their incomes)
+    # CIT[]                     Sum of CIT from firms sector and bank sector
+    # FIRMTAX[]                 CIT from firms sector
+    # BANKTAX[]                 CIT from bank sector
+    # L_TAX[]                   Total value of tax on labour
+    # K_TAX[]                   Total value of tax on capital
+    # LS[]                      Total supply of labour in the economy (units)
+    # KS[]                      Total supply of capital in the economy (units)
+    # TROWGOV[]                 Transfers from the ROW (aggregate) to the government
+    # TGOVFIRM                  Transfers from the government to firms
+    # TROWGOV<r>[]              Transfers from the ROW r to the government
+    # DEM_GOV[]                 Government demand for goods (value)
+    # D_GOV<s>[]                Government demand for good s
+    # SAV_GOV[]                 Savings of the government - will go to the investment used by firms
+    # TRAN_GOV[]                Transfers from the government (sum of all transfers from gov, but not subsidies or savings)
+    # SUB[]                     Sum of all subsidies from the government (value)
+    # TGOVROW<r>[]              Transfers from the government to the ROW r
+
+    ### CALIBRATED PARAMETERS
+
+    # sub_p<s>                  % of subsidies for product s in total government's income
+    # k_tax                     The rate of taxation on capital
+    # l_tax                     The rate of taxation on labour
+
+    ### FIXED PARAMETERS
+    # dgov_data<s>              % of the government's demand for good s in total government's demand
+    # pit_tax_data<h>           PIT tax from household h
+    # tgovh_data_extra<h>       Extra transfers from government to household h (=0)
+    # tgovbank_data             Transfers from the government to the bank  SAM
+    # tgovfirm_data             Transfers from the government to firms in SAM
+    # tgovrow_data<r>           Transfers from the government to the ROW r in SAM
+    # tgovh_data<h>             Transfers from the government to the household h in SAM
+
+    identities
+    {
+        # Gov's income = taxes (social contribution, VAT, import duties, PIT and CIT) + transfers from RoW
+        INC_GOV[] = STAX[] + SOCTAX[] + VAT[] + EXCISE[] + IMTAX[] + PIT[] + CIT[] + TROWGOV[];
+        VAT[] = SUM<s::SEC>(VAT<s>[]);
+        EXCISE[] = SUM<s::SEC>(EXCISE<s>[]);
+        STAX[] = SUM<s::SEC>(TAX_s<s>[]);
+        SOCTAX[] = K_TAX[] + L_TAX[];
+        IMTAX[] = SUM<s::SEC>(SUM<r::ROW>(IMP<r,s>[] * ex_rate<r>[] * p_for<r> * im_tax<r,s>));
+        PIT[] = SUM<h::HHD>(pit_tax<h> * PIT_base<h>[] * scale<h>);
+        CIT[] = FIRMTAX[] + BANKTAX[];
+        FIRMTAX[] = firm_tax * BTINC_FIRM[];
+        BANKTAX[] = bank_tax * BTINC_BANK[];
+        TROWGOV[] = SUM<r::ROW>(TROWGOV<r>[]);
+
+        # Gov's demand for domestic goods = gov income - savings - transfers and subsidies
+        EXP_GOV[] = TRAN_GOV[] + SUB[] + DEM_GOV[];
+        DEM_GOV[] = SUM<s::SEC>(D_GOV<s>[] * p_cons<s>[]);
+        <s::SEC>D_GOV<s>[] * p_cons<s>[] = dgov_data<s>;
+        SUB[] = SUM<s::SEC>(SUB_p<s>[] + SUB_s<s>[]);
+        <s::SEC>SUB_p<s>[] = sub_p<s> * ARM<s>[];
+
+        TRAN_GOV[] = SUM<h::HHD>(TGOVH<h>[] * scale<h>) + SUM<r::ROW>(ex_rate<r>[] * TGOVROW<r>[]) + TGOVFIRM[] + TGOVBANK[];
+        <h::HHD>TGOVH<h>[] * scale<h> = tgovh_data<h>  + tgovh_data_extra<h>;
+        <r::ROW>ex_rate<r>[] * TGOVROW<r>[] = tgovrow_data<r>;
+        TGOVFIRM[] = tgovfirm_data;
+        TGOVBANK[] = tgovbank_data;
+
+        # Gov's deficit
+        INC_GOV[] = EXP_GOV[] + SAV_GOV[];
+    };
+};
+# ###################################################################
+#                       REST OF THE WORLD                           #
+# ###################################################################
+
+block <r::ROW>REST_OF_THE_WORLD
+{
+    ### VARIABLES
+
+    # INC_ROW<r>[]              Income of the rest of the world r
+    # IMPORT_ROW<r>[]           Value of imported goods from the rest of the world r
+    # EXPORT_ROW<r>[]           Value of exported goods to the rest of the world r
+    # TRAN<r>[]                 Sum of all transfers from the rest of the world r
+    # EXP_ROW<s, r>[]           Expenditures of the rest of the world r
+
+    ### CALIBRATED PARAMETERS
+
+    # t_rf<r>                   % of ROW r income used for transfers to firms' sector
+    # t_rg<r>                   % of ROW r income used for transfers to the government
+    # t_rh<r, h>                % of ROW r income used for transfers to household h (scaled)
+    # t_rb<r>                   % of ROW r income used for transfers to the bank
+
+    identities
+    {
+        INC_ROW<r>[] = IMPORT_ROW<r>[] + ex_rate<r>[] * (SUM<h::HHD>(THROW<h, r>[] * scale<h>)+ TFIRMROW<r>[] + TBANKROW<r>[]  + TGOVROW<r>[]) ;
+        IMPORT_ROW<r>[] = SUM<s::SEC>(ex_rate<r>[] * p_for<r> * IMP<r,s>[]);
+
+        EXP_ROW<r>[] = EXPORT_ROW<r>[] + TRAN<r>[];
+        EXPORT_ROW<r>[] = SUM<s::SEC>(p_for<r> * EXP<r,s>[]);
+        TRAN<r>[] = TROWFIRM<r>[] + TROWGOV<r>[] + SUM<h::HHD>(TROWH<r, h>[] * scale<h>) + TROWBANK<r>[];
+        TROWFIRM<r>[] = EXP_ROW<r>[] * t_rf<r>;
+        TROWGOV<r>[] = EXP_ROW<r>[] * t_rg<r>;
+        <h::HHD>TROWH<r, h>[] * scale<h> = EXP_ROW<r>[] * t_rh<r, h>;
+        TROWBANK<r>[] = EXP_ROW<r>[] * t_rb<r>;
+
+        INC_ROW<r>[] = EXP_ROW<r>[] + SAV<r>[];
+    };
+};
+
+# ###################################################################
+#                            INVESTMENT                             #
+# ###################################################################
+
+block CAPITAL
+{
+    ### VARIABLES
+
+    # SAV<r>[]                  Savings of the rest of the world r
+    # SAV_GOV[]                 Savings of the government
+    # SAV_BANK[]                Savings of the bank
+    # SAV_FIRM[]                Savings of the firm
+    # SAV[]                     Total savings
+    # INV<s>[]                  Investments of the sector s
+    # INV[]                     Total investments
+
+    ### CALIBRATED PARAMETERS
+
+    # inv<s>                    Share of investments in sector s in total investments
+
+    identities
+    {
+        # Savings and investments
+        SAV[] = SAV_FIRM[] + SUM<h::HHD>(SAV<h>[] * scale<h>) + SAV_BANK[] + SAV_GOV[] + SUM<r::ROW>(SAV<r>[]);
+        #SAV[] = INV[];
+        <s::SEC>p_cons<s>[] * INV<s>[] = inv<s> * INV[];
+    };
+};
+
+# ###################################################################
+#                         MARKET CLEARING                           #
+# ###################################################################
+
+block MARKET_CLEARING
+{
+    identities
+    {
+        # Goods markets clear
+        <s::SEC>ARM<s>[] = (SUM<h::HHD>(D<s, h>[] * scale<h>)) + D_GOV<s>[] + INV<s>[] + SUM<si::SEC>X<s, si>[];
+        <s::SEC>EXPORT_f<s>[] = EXPORT<s>[];
+        <s::SEC>IMPORT_a<s>[] = IMPORT<s>[];
+        <s::SEC>Y_HOME_a<s>[] = Y_HOME<s>[];
+        <s::SEC>Y_f<s>[] = Y<s>[];
+
+        # Numeraire
+        SUM<s::SEC>(p<s>[] * ARM<s>[]/(SUM<si::SEC>ARM<si>[]))= 1;
+
+        # Capital market clears
+        KS[] = SUM<s::SEC>K<s>[];
+        KS[] = k_total_data;
+
+        # Labour market clears - neoclassical closure
+        SUM<s::SEC>L<s>[] = SUM<h::HHD>(L<h>[] * scale<h>);
+        LS[] = SUM<h::HHD>(L<h>[] * scale<h>);
+        <h::HHD>UNEMP<h>[] = 0;
+
+        # Foreign trade closure
+        <r::ROW>ex_rate<r>[] = 1;
+
+        # Definition of final and intermediate good prices
+        <s::SEC>p_int<s>[] = (p_market<s>[]) * (1 + excise<s>);
+        <s::SEC>p_cons<s>[] = p_market<s>[] * (1 + vat<s>) * (1 + excise<s>);
+        <s::SEC>p_market<s>[] = p_arm<s>[] - sub_p<s>;
+    };
+};

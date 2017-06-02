@@ -1,4 +1,4 @@
-Generated on 2016-10-09 23:51:14 by gEcon ver. 1.0.0 (2016-10-09)
+Generated on 2017-06-02 20:30:47 by gEcon ver. 1.0.2 (2016-12-05)
 http://gecon.r-forge.r-project.org/
 
 Model name: SW_03
@@ -196,7 +196,7 @@ Block: EQUILIBRIUM_FLEXIBLE
     -Div_f[] + Y_f[] - r_k_f[] * K_d_f[] - L_d_f[] * W_f[] = 0
 
 Variables (54):
-    epsilon_G[], epsilon_b[], epsilon_L[], epsilon_I[], epsilon_a[], f_1[], f_2[], g_1[], g_2[], mc[], mc_f[], nu_w[], nu_p[], pi[], pi_star[], pi_obj[], q[], q_f[], r_k[], r_k_f[], w_star[], z[], z_f[], C[], C_f[], G[], G_f[], I[], I_f[], K[], K_f[], L[], L_s[], L_s_f[], L_f[], P_j_f[], Pi_ws_f[], Pi_ps_f[], Q[], Q_f[], R[], R_f[], T[], T_f[], U[], U_f[], W[], W_disutil_f[], W_i_f[], W_f[], Y[], Y_s[], Y_f[], Y_s_f[]
+    epsilon_G[], epsilon_b[], epsilon_L[], epsilon_I[], epsilon_a[], f_1[], f_2[], g_1[], g_2[], mc[], mc_f[], nu_w[], nu_p[], pi[], pi_star[], pi_obj[], q[], q_f[], r_k[], r_k_f[], w_star[], z[], z_f[], C[], C_f[], G[], G_f[], I[], I_f[], K[], K_f[], L[], L_s[], L_s_f[], L_f[], P_j_f[], Pi_ws_f[], Pi_ps_f[], Q[], Q_f[], R[], R_f[], T[], T_f[], U[], U_f[], W[], W_disutil_f[], W_i_f[], W_f[], Y[], Y_f[], Y_s[], Y_s_f[]
 
 Shocks (9):
     eta_b[], eta_L[], eta_I[], eta_w[], eta_a[], eta_p[], eta_G[], eta_R[], eta_pi[]
@@ -229,8 +229,8 @@ Equations (54):
  (16)  -Q_f[] + epsilon_b[]^-1 * q_f[] * (C_f[] - h * C_f[-1])^(sigma_c) = 0
  (17)  -W[] + epsilon_a[] * mc[] * (1 - alpha) * L[]^(-alpha) * (K[-1] * z[])^alpha = 0
  (18)  -W_f[] + epsilon_a[] * mc_f[] * (1 - alpha) * L_f[]^(-alpha) * (K_f[-1] * z_f[])^alpha = 0
- (19)  Y_s[] - nu_p[] * Y[] = 0
- (20)  -Y_f[] + Y_s_f[] = 0
+ (19)  -Y_f[] + Y_s_f[] = 0
+ (20)  Y_s[] - nu_p[] * Y[] = 0
  (21)  -Y_s_f[] + Y_f[] * P_j_f[]^(-lambda_p^-1 * (1 + lambda_p)) = 0
  (22)  beta * E[][epsilon_b[1] * (C_f[1] - h * C_f[])^(-sigma_c)] - epsilon_b[] * R_f[]^-1 * (C_f[] - h * C_f[-1])^(-sigma_c) = 0
  (23)  beta * E[][epsilon_b[1] * pi[1]^-1 * (C[1] - h * C[])^(-sigma_c)] - epsilon_b[] * R[]^-1 * (C[] - h * C[-1])^(-sigma_c) = 0
@@ -288,8 +288,8 @@ Steady state equations (54):
  (19)  -Q_f[ss] + epsilon_b[ss]^-1 * q_f[ss] * (C_f[ss] - h * C_f[ss])^(sigma_c) = 0
  (20)  -W[ss] + epsilon_a[ss] * mc[ss] * (1 - alpha) * L[ss]^(-alpha) * (z[ss] * K[ss])^alpha = 0
  (21)  -W_f[ss] + epsilon_a[ss] * mc_f[ss] * (1 - alpha) * L_f[ss]^(-alpha) * (z_f[ss] * K_f[ss])^alpha = 0
- (22)  Y_s[ss] - nu_p[ss] * Y[ss] = 0
- (23)  -Y_f[ss] + Y_s_f[ss] = 0
+ (22)  -Y_f[ss] + Y_s_f[ss] = 0
+ (23)  Y_s[ss] - nu_p[ss] * Y[ss] = 0
  (24)  -Y_s_f[ss] + Y_f[ss] * P_j_f[ss]^(-lambda_p^-1 * (1 + lambda_p)) = 0
  (25)  -log(epsilon_G[ss]) + rho_G * log(epsilon_G[ss]) = 0
  (26)  -log(epsilon_b[ss]) + rho_b * log(epsilon_b[ss]) = 0
